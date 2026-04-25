@@ -294,8 +294,6 @@ const Checkout = () => {
                             </div>
 
                         </div>
-                            </div>
-                        </div>
                     </div>
 
                     {/* Step 3: Review Items */}
