@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --accent-blue: #007aff;
+    --deep-black: #050505;
+    --soft-gray: #f5f5f7;
+    --text-secondary: #86868b;
+    --accent-blue: #007aff;
+    --electric-blue: #2d5bff;
+    --deep-black: #050505;
+    --dark-surface: #0a0a0c;
+    --soft-gray: #f5f5f7;
+    --text-zinc: #86868b;
+    --glass: rgba(255, 255, 255, 0.7);
+    --glass-dark: rgba(0, 0, 0, 0.4);
+  }
+
+  body {
+    @apply bg-white text-[#1d1d1f] antialiased overflow-x-hidden relative;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  /* Global Grain Texture for Premium Feel */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: overlay;
+  }
+
+  h1 {
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-8xl uppercase italic font-black tracking-[-0.04em] leading-[0.9] text-black;
+    font-family: 'Archivo', sans-serif;
+  }
+
+  h2 {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-7xl uppercase italic font-black tracking-[-0.04em] leading-[0.9] text-black;
+    font-family: 'Archivo', sans-serif;
+  }
+
+  h3 {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase italic font-black tracking-[-0.04em] leading-[0.9] text-black;
+    font-family: 'Archivo', sans-serif;
+  }
+
+  h4, h5, h6 {
+    @apply uppercase font-bold tracking-[0.1em] text-black;
+    font-family: 'Archivo', sans-serif;
+  }
+}
+
+@layer components {
+  .luxe-heading {
+    @apply uppercase italic font-black tracking-[-0.04em] leading-[0.9];
+    font-family: 'Archivo', sans-serif;
+  }
+
+  .luxe-subheading {
+    @apply uppercase font-bold tracking-[0.3em] text-[10px] text-[#86868b] italic;
+  }
+
+  .tech-card {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    @apply rounded-[3.5rem] border border-white/60 shadow-[0_20px_50px_rgba(0,0,0,0.03)] transition-all duration-1000 hover:shadow-[0_50px_80px_rgba(0,0,0,0.08)] hover:-translate-y-2;
+  }
+
+  .luxe-button {
+    @apply px-6 py-4 md:px-10 md:py-5 bg-[#007aff] text-white rounded-full text-[11px] font-black uppercase italic tracking-[0.2em] transition-all duration-700 hover:bg-black hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)] active:scale-95 flex items-center gap-4 justify-center;
+  }
+
+
+  .glass-nav {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Modern Animations */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-luxe {
+  animation: fade-in-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.glass-dark {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glow-blue {
+  box-shadow: 0 0 20px rgba(45, 91, 255, 0.2);
+}
+
+.text-gradient-blue {
+  background: linear-gradient(135deg, #fff 0%, #007aff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Admin Dashboard Specific Animations */
+@keyframes progress-fast {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-progress-fast {
+  animation: progress-fast 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Custom Scrollbar for Luxury Aesthetics */
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f5f5f7;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #e5e5e7;
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #007aff;
+  }
+}
+
+/* Mobile Polish Utilities */
+@media (max-width: 1023px) {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+

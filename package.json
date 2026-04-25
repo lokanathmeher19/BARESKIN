@@ -1,0 +1,14 @@
+{
+  "name": "bareskin-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "server": "npm start --prefix BACKEND_API",
+    "client": "npm run dev --prefix FRONTEND_CLIENT",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "install:all": "npm install && npm install --prefix BACKEND_API && npm install --prefix FRONTEND_CLIENT"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
