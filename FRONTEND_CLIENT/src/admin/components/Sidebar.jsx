@@ -27,9 +27,8 @@ const Sidebar = ({ isOpen, onClose }) => {
     };
 
     return (
-        <div className={`w-72 bg-[#050505] text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-50 border-r border-white-[0.05] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-            isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}>
+        <div className={`w-72 bg-[#050505] text-white shrink-0 flex flex-col fixed inset-y-0 left-0 z-50 border-r border-white-[0.05] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+            }`}>
             {/* Header Section */}
             <div className="p-8 mb-4 flex items-center justify-between">
                 <div className="relative group cursor-pointer" onClick={() => { navigate('/admin'); onClose(); }}>
@@ -47,7 +46,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <X size={20} />
                 </button>
             </div>
-            
+
             {/* Main Navigation */}
             <nav className="flex-1 px-4 space-y-3 overflow-y-auto">
                 <div className="px-4 mb-4">
@@ -56,15 +55,14 @@ const Sidebar = ({ isOpen, onClose }) => {
                 {navItems.map((item) => {
                     const active = isActive(item.path);
                     return (
-                        <Link 
-                            key={item.path} 
+                        <Link
+                            key={item.path}
                             to={item.path}
                             onClick={onClose}
-                            className={`relative flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group overflow-hidden ${
-                                active 
-                                ? 'bg-white/[0.03] text-white' 
+                            className={`relative flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-500 group overflow-hidden ${active
+                                ? 'bg-white/[0.03] text-white'
                                 : 'text-zinc-500 hover:text-white hover:bg-white/[0.02]'
-                            }`}
+                                }`}
                         >
                             {/* Active Indicator */}
                             {active && (
@@ -74,7 +72,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                             <div className={`transition-all duration-500 ${active ? 'text-[#007aff] scale-110' : 'group-hover:scale-110 group-hover:text-white'}`}>
                                 {item.icon}
                             </div>
-                            
+
                             <span className={`text-[11px] font-bold tracking-[0.15em] uppercase transition-all duration-500 ${active ? 'opacity-100 italic' : 'opacity-50 group-hover:opacity-100'}`}>
                                 {item.label}
                             </span>
@@ -86,7 +84,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-700">Explore Store</span>
                 </div>
 
-                <Link 
+                <Link
                     to="/"
                     onClick={onClose}
                     className="flex items-center justify-between px-6 py-4 rounded-2xl text-zinc-500 hover:text-white hover:bg-[#007aff]/10 border border-white-[0.03] hover:border-[#007aff]/30 transition-all duration-500 group"
@@ -101,7 +99,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
             {/* Footer Section */}
             <div className="p-6 mt-auto">
-                <button 
+                <button
                     onClick={handleLogout}
                     className="flex items-center gap-4 px-6 py-5 w-full bg-zinc-900/40 hover:bg-red-500/10 text-zinc-500 hover:text-red-500 rounded-2xl transition-all duration-500 group border border-transparent hover:border-red-500/20"
                 >
@@ -117,3 +115,4 @@ const Sidebar = ({ isOpen, onClose }) => {
 };
 
 export default Sidebar;
+
