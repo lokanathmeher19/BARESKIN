@@ -28,6 +28,7 @@ const Checkout = () => {
 
     const [guestEmail, setGuestEmail] = React.useState('');
     const [guestName, setGuestName] = React.useState('');
+    const [paymentMethod, setPaymentMethod] = React.useState('online');
     const [pointsToRedeem, setPointsToRedeem] = React.useState(0);
 
     useEffect(() => {
@@ -60,6 +61,36 @@ const Checkout = () => {
         }
         
         try {
+
+        if (paymentMethod === 'cod') {
+            try {
+                const { data } = await api.post('/payment/cod', {
+                    amount: finalTotalWithPoints,
+                    products: cart,
+                    userId: user?._id,
+                    guestEmail: user ? undefined : guestEmail,
+                    guestName: user ? undefined : guestName,
+                    address: `${address}, ${city}, ${state} - ${zip}`,
+                    pointsToRedeem: pointsToRedeem
+                });
+
+                if (data.success) {
+                    if (promoCode) {
+                        await api.post('/promos/use', { code: promoCode.code });
+                    }
+                    toast.success("Order placed successfully (COD)!");
+                    clearCart();
+                    navigate('/my-orders');
+                } else {
+                    toast.error(data.message || "Failed to place order.");
+                }
+            } catch (error) {
+                console.error("COD checkout error:", error);
+                toast.error("Order placement failed. Please check server.");
+            }
+            return;
+        }
+
             const { data } = await api.post('/payment/create-order', {
                 amount: finalTotalWithPoints,
                 products: cart,
@@ -233,14 +264,36 @@ const Checkout = () => {
                             <h2 className="text-sm font-black uppercase tracking-widest italic">2. Select Payment Method</h2>
                         </div>
                         <div className="p-10 space-y-6">
-                            <div className="p-8 border-2 border-black bg-zinc-50 rounded-3xl flex justify-between items-center group cursor-pointer transition-all">
+                            
+                            {/* Online Payment */}
+                            <div 
+                                onClick={() => setPaymentMethod('online')}
+                                className={`p-8 border-2 rounded-3xl flex justify-between items-center cursor-pointer transition-all ${paymentMethod === 'online' ? 'border-black bg-zinc-50' : 'border-zinc-100 hover:border-zinc-300'}`}
+                            >
                                 <div className="flex items-center gap-6">
-                                    <div className="w-5 h-5 rounded-full border-[6px] border-black"></div>
+                                    <div className={`w-5 h-5 rounded-full border-[6px] ${paymentMethod === 'online' ? 'border-black' : 'border-zinc-200 bg-white'}`}></div>
                                     <div>
                                         <h4 className="text-sm font-black italic uppercase">Secure Online Payment</h4>
                                         <p className="text-[10px] font-bold text-zinc-400 mt-1 uppercase tracking-widest">Cards, UPI, Netbanking, Wallets</p>
                                     </div>
                                 </div>
+                            </div>
+
+                            {/* Cash on Delivery */}
+                            <div 
+                                onClick={() => setPaymentMethod('cod')}
+                                className={`p-8 border-2 rounded-3xl flex justify-between items-center cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-black bg-zinc-50' : 'border-zinc-100 hover:border-zinc-300'}`}
+                            >
+                                <div className="flex items-center gap-6">
+                                    <div className={`w-5 h-5 rounded-full border-[6px] ${paymentMethod === 'cod' ? 'border-black' : 'border-zinc-200 bg-white'}`}></div>
+                                    <div>
+                                        <h4 className="text-sm font-black italic uppercase">Cash on Delivery (COD)</h4>
+                                        <p className="text-[10px] font-bold text-zinc-400 mt-1 uppercase tracking-widest">Pay with cash when your order arrives</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                             </div>
                         </div>
                     </div>
@@ -283,7 +336,7 @@ const Checkout = () => {
                             onClick={handleCheckout}
                             className="w-full bg-black text-white hover:bg-[#007aff] font-black uppercase tracking-[0.2em] text-[10px] py-6 rounded-2xl shadow-xl transition-all active:scale-95 italic"
                         >
-                            Confirm Order & Pay
+                            {paymentMethod === 'cod' ? 'Place COD Order' : 'Confirm Order & Pay'}
                         </button>
 
                         {/* Loyalty Points Slider */}

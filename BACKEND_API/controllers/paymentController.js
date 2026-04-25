@@ -246,7 +246,147 @@ const verifyPayment = async (req, res) => {
     }
 };
 
+
+const createCodOrder = async (req, res) => {
+    try {
+        const { amount, products, userId, guestEmail, guestName, address, pointsToRedeem = 0 } = req.body;
+
+        if (!amount) {
+            return res.status(400).json({ success: false, message: 'Amount is required' });
+        }
+
+        let finalAmount = amount;
+        let userObj = null;
+
+        const currentUserId = req.user?._id || userId;
+
+        if (currentUserId && pointsToRedeem > 0) {
+            const User = require('../models/User');
+            userObj = await User.findById(currentUserId);
+            if (userObj) {
+                if (pointsToRedeem > userObj.points) {
+                    return res.status(400).json({ success: false, message: 'Not enough points to redeem' });
+                }
+                finalAmount = Math.max(1, amount - pointsToRedeem);
+            }
+        }
+
+        // Stock Check and Reservation
+        const Product = require('../models/Product');
+        const Order = require('../models/Order');
+        
+        if (products && products.length > 0) {
+            for (const p of products) {
+                const productItem = await Product.findById(p._id || p.id);
+                if (!productItem) continue;
+
+                if (p.selectedSize && productItem.variants && productItem.variants.length > 0) {
+                    const variant = productItem.variants.find(v => v.size === p.selectedSize);
+                    if (variant && variant.stock < p.qty) {
+                        return res.status(400).json({ success: false, message: `Not enough stock for ${productItem.name} - ${p.selectedSize}` });
+                    }
+                } else {
+                    if (productItem.stock < p.qty) {
+                        return res.status(400).json({ success: false, message: `Not enough stock for ${productItem.name}` });
+                    }
+                }
+            }
+
+            // Decrement Stock
+            for (const p of products) {
+                const productItem = await Product.findById(p._id || p.id);
+                if (!productItem) continue;
+
+                if (p.selectedSize && productItem.variants && productItem.variants.length > 0) {
+                    const variant = productItem.variants.find(v => v.size === p.selectedSize);
+                    if (variant) variant.stock -= p.qty;
+                } else {
+                    productItem.stock -= p.qty;
+                }
+                await productItem.save();
+            }
+        }
+
+        // Create COD Order
+        const newOrder = await Order.create({
+            user: currentUserId || undefined,
+            guestEmail: currentUserId ? undefined : guestEmail,
+            guestName: currentUserId ? undefined : guestName,
+            products: products ? products.map(p => ({
+                product: p._id || p.id,
+                quantity: p.qty,
+                selectedSize: p.selectedSize
+            })) : [],
+            totalPrice: finalAmount,
+            paymentStatus: 'COD - Pending',
+            address: address || 'Default Address',
+            pointsUsed: pointsToRedeem
+        });
+
+        // Accrue points if logged in
+        if (currentUserId) {
+            const User = require('../models/User');
+            if (!userObj) userObj = await User.findById(currentUserId);
+            if (userObj) {
+                const pointsUsed = newOrder.pointsUsed || 0;
+                const pointsEarned = Math.floor(finalAmount / 10);
+                
+                userObj.points = Math.max(0, userObj.points - pointsUsed + pointsEarned);
+                await userObj.save();
+                
+                newOrder.pointsEarned = pointsEarned;
+                await newOrder.save();
+            }
+        }
+
+        // Send Email
+        try {
+            const sendEmail = require('../utils/sendEmail');
+            let targetEmail = guestEmail;
+            let targetName = guestName || 'Customer';
+
+            if (currentUserId) {
+                const User = require('../models/User');
+                const u = await User.findById(currentUserId);
+                if (u) {
+                    targetEmail = u.email;
+                    targetName = u.name;
+                }
+            }
+
+            if (targetEmail) {
+                await sendEmail({
+                    email: targetEmail,
+                    subject: `Order Confirmation (COD) - #${newOrder._id.toString().substring(0, 8).toUpperCase()}`,
+                    html: `
+                      <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto;">
+                        <h1 style="color: #000; font-style: italic; text-transform: uppercase;">BARESKIN.</h1>
+                        <h2>Thank you for your order, ${targetName}!</h2>
+                        <p>Your order <strong>#${newOrder._id.toString().substring(0, 8).toUpperCase()}</strong> has been successfully placed using <strong>Cash on Delivery</strong>.</p>
+                        <p><strong>Total Price to Pay:</strong> ₹${finalAmount.toLocaleString()}</p>
+                        <p><strong>Shipping To:</strong> ${address || 'Default Address'}</p>
+                        ${currentUserId ? '<p>You can track your order status in your dashboard.</p>' : ''}
+                        <br/>
+                        <p style="color: #888; font-size: 12px;">BareSkin Premium Essentials</p>
+                      </div>
+                    `
+                });
+            }
+        } catch (emailError) {
+            console.error('Failed to send order confirmation email:', emailError);
+        }
+
+        res.status(201).json({ success: true, message: 'COD Order placed successfully', order: newOrder });
+
+    } catch (error) {
+        console.error('Error creating COD order:', error);
+        res.status(500).json({ success: false, message: 'Could not place order', error: error.message });
+    }
+};
+
 module.exports = {
     createOrder,
     verifyPayment
+,
+    createCodOrder
 };

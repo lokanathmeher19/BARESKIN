@@ -10,7 +10,15 @@ import api from '../utils/api';
 
 
 
+const renderBannerText = (text, formatPrice) => {
+    if (!text) return "";
+    return text.replace(/{formatPrice\((\d+)\)}/gi, (match, price) => {
+        return formatPrice ? formatPrice(Number(price)) : `₹${price}`;
+    });
+};
+
 const Navbar = () => {
+
     const { formatPrice } = useCurrency();
 
     const { user } = useContext(AuthContext);
@@ -86,7 +94,7 @@ const Navbar = () => {
                         >
                             <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.4em] flex items-center gap-6">
                                 <span className="opacity-20 group-hover:opacity-100 transition-opacity">/</span>
-                                {text}
+                                {renderBannerText(text, formatPrice)}
                                 <span className="opacity-20 group-hover:opacity-100 transition-opacity">/</span>
                             </span>
                         </div>
