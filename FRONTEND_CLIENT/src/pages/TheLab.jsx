@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Beaker, BookOpen, Sparkles, ShieldCheck, Zap, Microscope, Pill, FlaskConical } from 'lucide-react';
 import BackButton from '../components/BackButton';
 
@@ -68,6 +68,27 @@ const ingredients = [
 ];
 
 const TheLab = () => {
+    const [ing1, setIng1] = useState('');
+    const [ing2, setIng2] = useState('');
+    
+    const getCompatibility = () => {
+        if (!ing1 || !ing2) return null;
+        if (ing1 === ing2) return { status: 'Identical', message: 'Evaluating a single active ingredient does not trigger reactions. Safely incorporated into regimens.', type: 'neutral' };
+        
+        const combo = [ing1, ing2].sort().join(' + ');
+        
+        const rules = {
+            'Niacinamide + Salicylic Acid': { status: 'Use with Caution', message: 'Layering these active properties together may cause excessive sensitivity. Alternate routines.', type: 'warning' },
+            'Salicylic Acid + Vitamin C': { status: 'Irritation Warning', message: 'Both compounds maintain low acidic thresholds. Risk of dermal redness.', type: 'danger' },
+            'Niacinamide + Vitamin C': { status: 'Optimal at Separate Times', message: 'Best applied AM/PM sequentially.', type: 'warning' },
+            'Ceramides + Hyaluronic Acid': { status: 'Highly Synergistic', message: 'Exceptional restorative hydration.', type: 'safe' },
+        };
+        
+        return rules[combo] || { status: 'Compatible', message: 'Safely formulated alongside foundational serums.', type: 'safe' };
+    };
+    
+    const result = getCompatibility();
+
     return (
         <div className="min-h-screen bg-white pt-32 pb-24 px-6 md:px-10 lg:px-20 overflow-hidden">
             <div className="max-w-7xl mx-auto">
@@ -126,6 +147,78 @@ const TheLab = () => {
                             </button>
                         </div>
                     ))}
+                </div>
+
+                {/* Interactive Mixing Lab */}
+                <div className="mt-40 bg-zinc-50 rounded-[3rem] p-10 md:p-16 border border-zinc-100 space-y-12 relative overflow-hidden">
+                    <div className="max-w-xl">
+                        <span className="luxe-subheading text-[#007aff] text-xs mb-2 block underline underline-offset-4 uppercase tracking-[0.2em]">Interactive Tool</span>
+                        <h2 className="text-4xl font-black italic uppercase tracking-tighter text-black">Chemical Safety Evaluator<span className="text-zinc-200">.</span></h2>
+                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest italic mt-2 leading-relaxed">
+                            Cross-evaluate reactive pathways across common dermal supplements safely.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Dropdown 1 */}
+                        <div className="flex flex-col space-y-3">
+                            <label className="text-[9px] font-black tracking-[0.3em] uppercase text-zinc-400 ml-1">Active Compound #1</label>
+                            <select 
+                                value={ing1} 
+                                onChange={(e) => setIng1(e.target.value)}
+                                className="p-5 bg-white border border-zinc-100 rounded-2xl text-xs font-black uppercase focus:ring-2 focus:ring-[#007aff]/10 outline-none cursor-pointer transition-all"
+                            >
+                                <option value="">-- Select Molecule --</option>
+                                {ingredients.map((ing, i) => (
+                                    <option key={i} value={ing.name}>{ing.name}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Dropdown 2 */}
+                        <div className="flex flex-col space-y-3">
+                            <label className="text-[9px] font-black tracking-[0.3em] uppercase text-zinc-400 ml-1">Active Compound #2</label>
+                            <select 
+                                value={ing2} 
+                                onChange={(e) => setIng2(e.target.value)}
+                                className="p-5 bg-white border border-zinc-100 rounded-2xl text-xs font-black uppercase focus:ring-2 focus:ring-[#007aff]/10 outline-none cursor-pointer transition-all"
+                            >
+                                <option value="">-- Select Molecule --</option>
+                                {ingredients.map((ing, i) => (
+                                    <option key={i} value={ing.name}>{ing.name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Result Output */}
+                    {result && (
+                        <div className={`p-8 rounded-3xl border animate-fade-in flex flex-col md:flex-row items-start md:items-center gap-6 ${
+                            result.type === 'danger' ? 'bg-red-50 border-red-100 text-red-800' :
+                            result.type === 'warning' ? 'bg-amber-50 border-amber-100 text-amber-800' :
+                            result.type === 'safe' ? 'bg-green-50 border-green-100 text-green-800' :
+                            'bg-zinc-100 border-zinc-200 text-zinc-800'
+                        }`}>
+                            <div className="flex items-center gap-4">
+                                <div className={`p-3 rounded-xl ${
+                                    result.type === 'danger' ? 'bg-red-100 text-red-500' :
+                                    result.type === 'warning' ? 'bg-amber-100 text-amber-500' :
+                                    result.type === 'safe' ? 'bg-green-100 text-green-500' :
+                                    'bg-zinc-200 text-zinc-500'
+                                }`}>
+                                    <Beaker size={20} className="animate-pulse" />
+                                </div>
+                                <div>
+                                    <p className="text-[9px] font-black uppercase tracking-[0.2em] opacity-60">Compatibility Check</p>
+                                    <h4 className="text-base font-black uppercase tracking-tight mt-0.5 italic">{result.status}</h4>
+                                </div>
+                            </div>
+                            <div className="flex-grow"></div>
+                            <p className="text-xs font-bold italic max-w-md leading-relaxed md:text-right">
+                                "{result.message}"
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 {/* Educational Quote */}

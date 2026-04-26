@@ -19,6 +19,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         { path: '/admin/users', icon: <Users size={20} />, label: 'Users' },
         { path: '/admin/banners', icon: <PlusCircle size={20} />, label: 'Offer Banners' },
         { path: '/admin/promos', icon: <PlusCircle size={20} />, label: 'Promo Codes' },
+        { path: '/admin/abandoned-carts', icon: <ShoppingCart size={20} />, label: 'Abandoned Carts' },
     ];
 
     const handleLogout = () => {

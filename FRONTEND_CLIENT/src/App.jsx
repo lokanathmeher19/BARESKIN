@@ -44,6 +44,7 @@ import AdminSubscriptions from './admin/pages/AdminSubscriptions';
 import AdminLogin from './admin/pages/Login';
 import ManageBanners from './admin/pages/ManageBanners';
 import AdminPromos from './admin/pages/AdminPromos';
+import AbandonedCarts from './admin/pages/AbandonedCarts';
 
 import { HelmetProvider } from 'react-helmet-async';
 import NotFound from './pages/NotFound';
@@ -126,6 +127,7 @@ function App() {
                 <Route path="banners" element={<ManageBanners />} />
                 <Route path="subscriptions" element={<AdminSubscriptions />} />
                 <Route path="promos" element={<AdminPromos />} />
+                <Route path="abandoned-carts" element={<AbandonedCarts />} />
               </Route>
             </Route>
 

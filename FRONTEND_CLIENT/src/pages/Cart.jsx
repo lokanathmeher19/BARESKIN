@@ -10,19 +10,14 @@ import api from '../utils/api';
 
 const Cart = () => {
     const { formatPrice } = useCurrency();
-
-    const { cart, removeFromCart, cartTotal, finalTotal, discountAmount, promoCode, applyPromo, removePromo } = useContext(CartContext);
+    const { cart, removeFromCart, cartTotal, finalTotal, discountAmount, promoCode, applyPromo, removePromo, cartCount } = useContext(CartContext);
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const [promoInput, setPromoInput] = React.useState('');
     const [applyingPromo, setApplyingPromo] = React.useState(false);
 
     const handleCheckout = () => {
-        if (!user) {
-            navigate('/register');
-        } else {
-            navigate('/checkout');
-        }
+        navigate('/checkout');
     };
 
     const handleApplyPromo = async () => {
@@ -60,12 +55,11 @@ const Cart = () => {
         <div className="max-w-6xl mx-auto pt-32 md:pt-48 mb-24 animate-fade-in px-4 md:px-10">
             <BackButton className="mb-10" />
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-zinc-100 pb-12">
-
                 <div>
                     <span className="luxe-subheading text-[#007aff] mb-4 block">Cart Items</span>
                     <h1 className="text-4xl md:text-6xl">Your Cart<span className="text-[#007aff]">.</span></h1>
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-300 italic">{cart.length} Unit(s) in Cart</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-300 italic">{cartCount} Unit(s) in Cart</span>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
@@ -127,7 +121,6 @@ const Cart = () => {
                 </div>
                 
                 <div className="lg:col-span-4 sticky top-40 space-y-6">
-                    {/* Promo Code Section */}
                     <div className="tech-card p-6 bg-white border border-zinc-100 shadow-sm">
                         <div className="flex items-center gap-3 mb-4">
                             <Tag size={18} className="text-[#007aff]" />
@@ -170,7 +163,7 @@ const Cart = () => {
                             <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#007aff] underline underline-offset-8">Price Details</span>
                             <div className="space-y-5 pt-4">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Cart Total ({cart.length} items)</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Cart Total ({cartCount} units)</span>
                                     <span className="text-sm font-black italic text-zinc-400">{formatPrice(cartTotal)}</span>
                                 </div>
                                 {promoCode && (

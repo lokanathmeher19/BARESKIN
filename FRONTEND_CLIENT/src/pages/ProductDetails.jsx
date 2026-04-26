@@ -79,6 +79,55 @@ const ProductDetails = () => {
         return '3-5 Days';
     };
 
+    const [timeLeft, setTimeLeft] = useState('');
+
+    useEffect(() => {
+        const calculateTimeLeft = () => {
+            const now = new Date();
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999);
+            
+            const diff = endOfDay - now;
+            if (diff <= 0) {
+                setTimeLeft('0 hrs 0 mins');
+                return;
+            }
+
+            const hrs = Math.floor(diff / (1000 * 60 * 60));
+            const mins = Math.floor((diff / (1000 * 60)) % 60);
+            setTimeLeft(`${hrs} hrs ${mins}`);
+        };
+
+        calculateTimeLeft();
+        const interval = setInterval(calculateTimeLeft, 60000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const getEstimatedDeliveryDate = () => {
+        if (!product) return "";
+        
+        let productBaseDays = 2;
+        if (product.category === 'Face Care' || product.category === 'Beauty' || product.category === 'Makeup') {
+            productBaseDays = 1;
+        } else if (product.category === 'Lip Care') {
+            productBaseDays = 2;
+        } else if (product.category === 'Hair Care' || product.category === 'Body Care') {
+            productBaseDays = 3;
+        } else {
+            productBaseDays = 4;
+        }
+        
+        const geoOffset = pincodeData?.State ? (getDeliveryTimeframe(pincodeData.State) === '1-2 Days' ? 1 : 3) : 3;
+        
+        const daysToAdd = productBaseDays + geoOffset;
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + daysToAdd);
+        
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        return targetDate.toLocaleDateString('en-IN', options);
+    };
+
+
     const handlePincodeCheck = async () => {
         if (pincode.length !== 6) {
             toast.error('Enter a valid 6-digit Pincode');
@@ -176,7 +225,9 @@ const ProductDetails = () => {
     const images = [product.image, ...(product.images || [])].filter(Boolean);
 
     return (
-        <div className="bg-white min-h-screen animate-luxe">
+        <>
+            <div className="bg-white min-h-screen animate-luxe">
+
             <Helmet>
                 <title>{product.name} | BareSkin Premium Skincare</title>
                 <meta name="description" content={product.description || `Buy ${product.name} on BareSkin. High-quality dermatologically-tested skincare.`} />
@@ -210,7 +261,9 @@ const ProductDetails = () => {
                 <div className="flex flex-col lg:flex-row gap-12 items-start">
                     
                     {/* 1. IMAGE GALLERY (Amazon Style - MASSIVE) */}
-                    <div className="w-full lg:w-[50%] flex flex-col md:flex-row gap-6 sticky top-40">
+                    <div className="w-full lg:w-[45%] flex flex-col md:flex-row gap-6 lg:sticky lg:top-40">
+
+
                         {/* Vertical Thumbnails */}
                         <div className="hidden md:flex flex-col gap-3 order-1">
                             {images.map((img, idx) => (
@@ -235,7 +288,8 @@ const ProductDetails = () => {
                     </div>
 
                     {/* 2. PRODUCT INFO (Middle Column) */}
-                    <div className="w-full lg:w-[35%] space-y-6">
+                    <div className="w-full lg:w-[30%] space-y-6">
+
                         <div className="border-b border-zinc-100 pb-6 space-y-4">
                             <h1 className="text-2xl md:text-3xl font-bold text-zinc-900 leading-snug">
                                 {product.name}
@@ -270,6 +324,24 @@ const ProductDetails = () => {
                             <div className="flex items-center gap-2 mt-6">
                                 <ShieldCheck size={20} className="text-[#007aff]" />
                                 <span className="text-sm font-black text-[#007aff] italic uppercase tracking-wider">BareSkin. Assured Listing</span>
+                            </div>
+                        </div>
+
+                        {/* Amazon-style Offers Section */}
+                        <div className="border-b border-zinc-100 pb-6 space-y-3">
+                            <div className="flex items-center gap-2">
+                                <Zap size={16} className="text-red-500" />
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-900">Special Offers</h3>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="border border-zinc-200 rounded-xl p-3 space-y-1 hover:shadow-sm transition-shadow">
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-zinc-900 block italic">Bank Offer</span>
+                                    <p className="text-[10px] text-zinc-600 leading-relaxed italic font-medium">Upto ₹500.00 discount on select Credit Cards.</p>
+                                </div>
+                                <div className="border border-zinc-200 rounded-xl p-3 space-y-1 hover:shadow-sm transition-shadow">
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-zinc-900 block italic">Partner Offer</span>
+                                    <p className="text-[10px] text-zinc-600 leading-relaxed italic font-medium">Get GST invoice and save up to 28%.</p>
+                                </div>
                             </div>
                         </div>
 
@@ -421,7 +493,8 @@ const ProductDetails = () => {
                     </div>
 
                     {/* 3. BUY BOX (Right Column - Fixed Style) */}
-                    <div className="w-full lg:w-[20%] sticky top-40 bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm space-y-6">
+                    <div className="w-full lg:w-[20%] lg:sticky lg:top-40 bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm space-y-6">
+
                          <div className="space-y-4">
                             <div className="flex items-start">
                                 <span className="text-lg mt-1 mr-0.5 font-bold">₹</span>
@@ -438,9 +511,16 @@ const ProductDetails = () => {
                                     {(!selectedVariant && product.stock > 0) || (selectedVariant && selectedVariant.stock > 0) ? 'In Stock' : 'Out of Stock'}
                                 </span>
                             </div>
-                            <div className="flex items-center gap-2 text-zinc-600">
-                                <Truck size={16} />
-                                <span className="text-xs font-medium">FREE Delivery: {pincodeData?.State ? `Expected in ${getDeliveryTimeframe(pincodeData.State)}` : '3-5 Business Days'}</span>
+                            <div className="flex items-start gap-3 text-zinc-600 border-y border-zinc-100 py-3">
+                                <Truck size={18} className="text-[#007aff] mt-0.5 shrink-0" />
+                                <div className="flex flex-col gap-1">
+                                    <span className="text-xs font-bold text-zinc-800 leading-tight">
+                                        FREE delivery <span className="text-black font-black underline decoration-[#007aff] decoration-2 underline-offset-4">{getEstimatedDeliveryDate()}</span>
+                                    </span>
+                                    <span className="text-[9px] font-black uppercase tracking-widest text-[#ffa41c] italic flex items-center gap-1 mt-1.5">
+                                        <Zap size={12} className="fill-[#ffa41c] text-[#ffa41c] shrink-0"/> Order within <span className="text-zinc-900 font-bold">{timeLeft}</span>
+                                    </span>
+                                </div>
                             </div>
                             <div className="bg-zinc-50 p-4 rounded-xl space-y-3">
                                 <div className="flex flex-col gap-2">
@@ -513,11 +593,7 @@ const ProductDetails = () => {
                                                 toast.error('Please select a size first.');
                                                 return;
                                             }
-                                            if (!user) {
-                                                toast('Please create an account to place an order.', { icon: '👋' });
-                                                navigate('/register');
-                                                return;
-                                            }
+
                                             addToCart({ ...product, selectedSize, isSubscription, price }, 1);
                                             navigate('/checkout');
                                         }}
@@ -904,42 +980,44 @@ const ProductDetails = () => {
             <div className="py-20 border-t border-zinc-50 text-center">
                 <p className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-200">BareSkin // Premium Skincare</p>
             </div>
-            {/* MOBILE STICKY ACTION BAR (Amazon/Flipkart Style) */}
-            <div className="lg:hidden fixed bottom-[80px] left-0 right-0 bg-white/95 backdrop-blur-md border-t border-zinc-100 p-4 flex gap-3 z-[250] shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
-                <button 
-                    onClick={() => {
-                        if (product.sizes && product.sizes.length > 0 && !selectedSize) {
-                            toast.error('Select size');
-                            return;
-                        }
-                        addToCart({ ...product, selectedSize, isSubscription, price }, 1);
-                        toast.success('Added to cart');
-                    }}
-                    className="flex-1 bg-white border-2 border-black text-black py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all italic"
-                >
-                    Add to Cart
-                </button>
-                <button 
-                    onClick={() => { 
-                        if (product.sizes && product.sizes.length > 0 && !selectedSize) {
-                            toast.error('Select size');
-                            return;
-                        }
-                        if (!user) {
-                            toast('Please create an account to place an order.', { icon: '👋' });
-                            navigate('/register');
-                            return;
-                        }
-                        addToCart({ ...product, selectedSize, isSubscription, price }, 1); 
-                        navigate('/checkout'); 
-                    }}
-                    className="flex-1 bg-black text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest active:scale-95 transition-all shadow-xl italic"
-                >
-                    Buy Now
-                </button>
-            </div>
         </div>
+        {/* MOBILE STICKY ACTION BAR (Amazon/Flipkart Style) */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 p-3 flex gap-3 z-[250] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+            <button 
+                onClick={() => {
+                    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+                        toast.error('Please select a size first.');
+                        return;
+                    }
+                    addToCart({ ...product, selectedSize, isSubscription, price }, 1);
+                    toast.success(isSubscription ? 'Subscription added to cart!' : 'Added to your cart!');
+                }}
+                className="flex-1 bg-[#ffd814] hover:bg-[#f7ca00] text-black py-3.5 rounded-full text-xs font-bold transition-all shadow-sm uppercase tracking-widest italic"
+            >
+                Add to Cart
+            </button>
+            <button 
+                onClick={() => { 
+                    if (product.sizes && product.sizes.length > 0 && !selectedSize) {
+                        toast.error('Please select a size first.');
+                        return;
+                    }
+                    if (!user) {
+                        toast('Please create an account to place an order.', { icon: '👋' });
+                        navigate('/register');
+                        return;
+                    }
+                    addToCart({ ...product, selectedSize, isSubscription, price }, 1); 
+                    navigate('/checkout'); 
+                }}
+                className="flex-1 bg-[#ffa41c] hover:bg-[#ff8f00] text-black py-3.5 rounded-full text-xs font-bold transition-all shadow-sm uppercase tracking-widest italic"
+            >
+                Buy Now
+            </button>
+        </div>
+        </>
     );
+
 };
 
 export default ProductDetails;

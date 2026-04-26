@@ -26,6 +26,34 @@ const Checkout = () => {
         return '3-5 Days';
     };
 
+    const getEstimatedDeliveryDate = () => {
+        if (!cart || cart.length === 0) return "";
+        
+        let maxProductBaseDays = 2;
+        cart.forEach(item => {
+            let base = 2;
+            if (item.category === 'Face Care' || item.category === 'Beauty' || item.category === 'Makeup') {
+                base = 1;
+            } else if (item.category === 'Lip Care') {
+                base = 2;
+            } else if (item.category === 'Hair Care' || item.category === 'Body Care') {
+                base = 3;
+            } else {
+                base = 4;
+            }
+            if (base > maxProductBaseDays) maxProductBaseDays = base;
+        });
+        
+        const geoOffset = state ? (getDeliveryTimeframe(state) === '1-2 Days' ? 1 : 3) : 3;
+        
+        const daysToAdd = maxProductBaseDays + geoOffset;
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + daysToAdd);
+        
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        return targetDate.toLocaleDateString('en-IN', options);
+    };
+
     const [guestEmail, setGuestEmail] = React.useState('');
     const [guestName, setGuestName] = React.useState('');
     const [paymentMethod, setPaymentMethod] = React.useState('online');
@@ -99,6 +127,36 @@ const Checkout = () => {
             });
 
             if (!data.success) throw new Error(data.message);
+
+            if (data.orderId && data.orderId.startsWith('order_mock_')) {
+                toast.success("Sandbox Simulation active! Processing...", { icon: '⚙️' });
+                try {
+                    const verificationResult = await api.post('/payment/verify', {
+                        razorpay_order_id: data.orderId,
+                        razorpay_payment_id: `pay_mock_${Date.now()}`,
+                        razorpay_signature: 'mock_signature',
+                        userId: user?._id,
+                        guestEmail: user ? undefined : guestEmail,
+                        guestName: user ? undefined : guestName,
+                        products: cart,
+                        totalPrice: finalTotalWithPoints,
+                        address: `${address}, ${city}, ${state} - ${zip}`
+                    });
+                    
+                    if (verificationResult.data.success) {
+                        if (promoCode) {
+                            await api.post('/promos/use', { code: promoCode.code });
+                        }
+                        toast.success("Sandbox Payment Authorized!");
+                        clearCart();
+                        navigate('/my-orders');
+                    }
+                } catch (err) {
+                    console.error("Sandbox verify failed", err);
+                    toast.error("Sandbox verification collapsed.");
+                }
+                return;
+            }
 
             const options = {
                 key: data.keyId,
@@ -326,8 +384,13 @@ const Checkout = () => {
                 <div className="lg:col-span-4 sticky top-40 space-y-6">
                     <div className="bg-white border border-zinc-100 rounded-[2.5rem] p-10 shadow-sm space-y-8">
                         {state && (
-                            <div className="p-4 bg-green-50 text-green-600 rounded-2xl border border-green-100 text-center text-[9px] font-black uppercase tracking-widest italic">
-                                🚚 Delivery to {state}: {getDeliveryTimeframe(state)}
+                            <div className="p-6 bg-green-50 text-green-600 rounded-[1.5rem] border border-green-100 text-center flex flex-col gap-2 animate-fade-in">
+                                <span className="text-[10px] font-black uppercase tracking-widest italic flex items-center justify-center gap-2">
+                                    🚚 Shipping to {city || state}
+                                </span>
+                                <span className="text-xs font-bold text-zinc-900">
+                                    Estimated delivery: <span className="font-black underline decoration-[#007aff] decoration-2 underline-offset-4">{getEstimatedDeliveryDate()}</span>
+                                </span>
                             </div>
                         )}
                         <button 

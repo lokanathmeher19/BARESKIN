@@ -8,8 +8,6 @@ import { WishlistContext } from '../context/WishlistContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
-
-
 const renderBannerText = (text, formatPrice) => {
     if (!text) return "";
     return text.replace(/{formatPrice\((\d+)\)}/gi, (match, price) => {
@@ -102,105 +100,41 @@ const Navbar = () => {
                 </div>
             )}
 
-            {/* Smart Navbar Float */}
-            <nav className={`max-w-[1700px] mx-auto transition-all duration-700 rounded-[1.5rem] sm:rounded-[2.5rem] px-4 sm:px-8 lg:px-12 py-3 sm:py-4 flex flex-col gap-4 border ${
+            {/* Redesigned Amazon-style Navbar */}
+            <nav className={`max-w-[1700px] mx-auto transition-all duration-700 rounded-[1.5rem] sm:rounded-[2.5rem] px-4 sm:px-8 lg:px-12 py-3 sm:py-4 flex flex-col gap-4 border shadow-[0_20px_50px_rgba(0,0,0,0.03)] ${
                 scrolled 
-                ? 'glass-nav shadow-[0_40px_100px_-20px_rgba(0,0,0,0.12)] border-white/40 backdrop-blur-3xl' 
-                : 'bg-white/5 backdrop-blur-md border-white/10 shadow-none'
+                ? 'glass-nav border-white/40 backdrop-blur-3xl' 
+                : 'bg-white border-zinc-100 shadow-sm'
             }`}>
-                <div className="flex items-center justify-between w-full">
+                {/* TOP ROW: Logo, Search (PC), Actions */}
+                <div className="flex items-center justify-between w-full gap-6">
                     
                     {/* Brand Logo */}
                     <Link to="/" className="flex items-center gap-3 sm:gap-4 group shrink-0">
                         <img src="/LOGO.png" alt="BareSkin Logo" className="w-9 h-9 sm:w-11 sm:h-11 object-contain transition-transform duration-700 group-hover:rotate-[360deg]" />
                         <div className="flex flex-col">
-                            <span className={`text-xl sm:text-3xl font-black uppercase tracking-tighter leading-none transition-colors ${scrolled ? 'text-black' : 'text-black'}`}>
+                            <span className="text-xl sm:text-3xl font-black uppercase tracking-tighter leading-none text-black">
                                 BareSkin<span className="text-[#007aff]">.</span>
                             </span>
                             <span className="text-[7px] sm:text-[9px] font-bold uppercase tracking-[0.5em] text-gray-400 mt-1 pl-1 italic hidden xs:block">Advanced Formulations</span>
                         </div>
                     </Link>
 
-                    {/* Interactive Nav Links */}
-                    <div className="hidden lg:flex items-center gap-6 xl:gap-10">
-                        {[
-                            { name: 'Home', path: '/' },
-                            { name: 'Shop', path: '/products' },
-
-                            { 
-                                name: 'Categories', 
-                                type: 'dropdown',
-                                subItems: [
-                                    { name: 'Face Care', path: '/products?category=Face Care', icon: <Sparkles size={14} /> },
-                                    { name: 'Lip Care', path: '/products?category=Lip Care', icon: <Droplets size={14} /> },
-                                    { name: 'Hair Care', path: '/products?category=Hair Care', icon: <Wind size={14} /> },
-                                    { name: 'Body Care', path: '/products?category=Body Care', icon: <Sun size={14} /> },
-                                    { name: 'Makeup', path: '/products?category=Makeup', icon: <User size={14} /> },
-                                    { name: 'Beauty', path: '/products?category=Beauty', icon: <Sparkles size={14} /> },
-                                    { name: "Men's Care", path: "/products?category=Men's Care", icon: <Fingerprint size={14} /> },
-                                ]
-                            },
-
-                            { 
-                                name: 'Science', 
-                                type: 'dropdown',
-                                subItems: [
-                                    { name: 'Our Story', path: '/the-lab', icon: <Cpu size={14} /> },
-                                    { name: 'Our Ingredients', path: '/analyze-ingredients', icon: <Command size={14} /> },
-                                    { name: 'Skin Quiz', path: '/skin-quiz', icon: <Sparkles size={14} /> },
-                                ]
-                            },
-                            { name: 'Best Sellers', path: '/products' },
-                            { name: 'Orders', path: '/my-orders' }
-                        ].map((item) => (
-                            item.type === 'dropdown' ? (
-                                <div key={item.name} className="relative group py-2">
-                                    <button className="flex items-center gap-1.5 text-[10px] xl:text-[11px] font-black uppercase tracking-[0.2em] text-black/40 hover:text-black transition-all cursor-pointer outline-none italic">
-                                        {item.name}
-                                        <ChevronDown size={10} className="transition-transform duration-300 group-hover:rotate-180" />
-                                    </button>
-                                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 z-50">
-                                        <div className="glass-nav rounded-[2rem] overflow-hidden border border-white/40 shadow-2xl p-2">
-                                            {item.subItems.map((sub) => (
-                                                <Link 
-                                                    key={sub.name}
-                                                    to={sub.path}
-                                                    className="flex items-center gap-4 px-5 py-4 text-[9px] font-black text-gray-400 hover:bg-black hover:text-white rounded-2xl transition-all tracking-[0.15em] uppercase italic"
-                                                >
-                                                    <span className="opacity-50">{sub.icon}</span>
-                                                    {sub.name}
-                                                </Link>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                            ) : (
-                                <Link 
-                                    key={item.name} 
-                                    to={item.path} 
-                                    className="relative group py-2 text-[10px] xl:text-[11px] font-black uppercase tracking-[0.2em] text-black/40 hover:text-black transition-all italic"
-                                >
-                                    {item.name}
-                                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#007aff] transition-all duration-500 group-hover:w-full"></span>
-                                </Link>
-                            )
-                        ))}
+                    {/* PC SEARCH BAR (Amazon style - Center) */}
+                    <div className="hidden lg:flex items-center flex-grow max-w-2xl mx-6 rounded-full px-6 py-3 bg-[#f5f5f7] focus-within:bg-white focus-within:border-gray-200 border border-transparent transition-all duration-300 shadow-sm">
+                        <Search size={16} className="text-gray-400 mr-3" />
+                        <input 
+                            type="text" 
+                            placeholder="SEARCH PRODUCTS, BRANDS, AND MORE..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={handleSearch}
+                            className="bg-transparent text-xs font-bold tracking-widest italic outline-none w-full placeholder:text-gray-400"
+                        />
                     </div>
 
                     {/* Advanced Actions Area */}
                     <div className="flex items-center gap-2 sm:gap-4">
-                        <div className="hidden md:flex items-center rounded-full px-6 py-3 bg-[#f5f5f7] group transition-all duration-500">
-                            <Search size={14} className="text-gray-400 mr-3" />
-                            <input 
-                                type="text" 
-                                placeholder="SEARCH..." 
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                onKeyDown={handleSearch}
-                                className="bg-transparent text-[9px] font-black tracking-[0.2em] italic outline-none w-20 lg:w-32 group-focus-within:w-48 transition-all placeholder:text-gray-300"
-                            />
-                        </div>
-
                         <div className="flex items-center gap-1.5 sm:gap-3">
                             {user && !user.isAdmin ? (
                                 <Link to="/profile" className="px-4 xs:px-6 py-2.5 bg-black text-white rounded-full text-[8px] xs:text-[9px] font-black uppercase italic tracking-[0.2em] transition-all flex items-center gap-1.5 xs:gap-2 hover:bg-[#007aff] shadow-lg">
@@ -241,6 +175,70 @@ const Navbar = () => {
                     </div>
                 </div>
 
+                {/* BOTTOM ROW: Nav Links (PC Only) */}
+                <div className="hidden lg:flex items-center justify-center gap-8 xl:gap-12 border-t border-gray-100 pt-4 mt-2">
+                    {[
+                        { name: 'Home', path: '/' },
+                        { name: 'Shop', path: '/products' },
+                        { 
+                            name: 'Categories', 
+                            type: 'dropdown',
+                            subItems: [
+                                { name: 'Face Care', path: '/products?category=Face Care', icon: <Sparkles size={14} /> },
+                                { name: 'Lip Care', path: '/products?category=Lip Care', icon: <Droplets size={14} /> },
+                                { name: 'Hair Care', path: '/products?category=Hair Care', icon: <Wind size={14} /> },
+                                { name: 'Body Care', path: '/products?category=Body Care', icon: <Sun size={14} /> },
+                                { name: 'Makeup', path: '/products?category=Makeup', icon: <User size={14} /> },
+                                { name: 'Beauty', path: '/products?category=Beauty', icon: <Sparkles size={14} /> },
+                                { name: "Men's Care", path: "/products?category=Men's Care", icon: <Fingerprint size={14} /> },
+                            ]
+                        },
+                        { 
+                            name: 'Science', 
+                            type: 'dropdown',
+                            subItems: [
+                                { name: 'Our Story', path: '/the-lab', icon: <Cpu size={14} /> },
+                                { name: 'Our Ingredients', path: '/analyze-ingredients', icon: <Command size={14} /> },
+                                { name: 'Skin Quiz', path: '/skin-quiz', icon: <Sparkles size={14} /> },
+                            ]
+                        },
+                        { name: 'Best Sellers', path: '/products' },
+                        { name: 'Orders', path: '/my-orders' }
+                    ].map((item) => (
+                        item.type === 'dropdown' ? (
+                            <div key={item.name} className="relative group py-2">
+                                <button className="flex items-center gap-1.5 text-[10px] xl:text-[11px] font-black uppercase tracking-[0.2em] text-black/40 hover:text-black transition-all cursor-pointer outline-none italic">
+                                    {item.name}
+                                    <ChevronDown size={10} className="transition-transform duration-300 group-hover:rotate-180" />
+                                </button>
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 z-50">
+                                    <div className="glass-nav rounded-[2rem] overflow-hidden border border-white/40 shadow-2xl p-2">
+                                        {item.subItems.map((sub) => (
+                                            <Link 
+                                                key={sub.name}
+                                                to={sub.path}
+                                                className="flex items-center gap-4 px-5 py-4 text-[9px] font-black text-gray-400 hover:bg-black hover:text-white rounded-2xl transition-all tracking-[0.15em] uppercase italic"
+                                            >
+                                                <span className="opacity-50">{sub.icon}</span>
+                                                {sub.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <Link 
+                                key={item.name} 
+                                to={item.path} 
+                                className="relative group py-2 text-[10px] xl:text-[11px] font-black uppercase tracking-[0.2em] text-black/40 hover:text-black transition-all italic"
+                            >
+                                {item.name}
+                                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#007aff] transition-all duration-500 group-hover:w-full"></span>
+                            </Link>
+                        )
+                    ))}
+                </div>
+
                 {/* MOBILE SEARCH BAR */}
                 <div className="lg:hidden w-full flex items-center rounded-2xl px-5 py-3.5 bg-zinc-100/50 backdrop-blur-xl border border-white/40 shadow-inner group transition-all duration-500">
                     <Search size={14} className="text-zinc-400 mr-3" />
@@ -275,9 +273,8 @@ const Navbar = () => {
                             {[
                                 { name: 'Home', path: '/' },
                                 { name: 'Shop All', path: '/products' },
-
                                 { name: 'Categories', path: '/products' },
-                                 { name: 'Science', path: '/the-lab' },
+                                { name: 'Science', path: '/the-lab' },
                                 { name: 'Skin Quiz', path: '/skin-quiz' },
                                 { name: 'My Wishlist', path: '/wishlist' },
                                 { name: 'My Orders', path: '/my-orders' },

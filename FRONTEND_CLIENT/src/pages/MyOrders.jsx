@@ -14,6 +14,15 @@ const MyOrders = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    const getEstimatedDeliveryDateForOrder = (createdAt) => {
+        if (!createdAt) return "";
+        const targetDate = new Date(createdAt);
+        targetDate.setDate(targetDate.getDate() + 3);
+        
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        return targetDate.toLocaleDateString('en-IN', options);
+    };
+
     useEffect(() => {
         if (!user) {
             navigate('/login');
@@ -120,92 +129,83 @@ const MyOrders = () => {
                             {/* Order Content */}
                             <div className="p-8 sm:p-12 space-y-12">
                                 {order.products && order.products.map((item, idx) => (
-                                    <div key={idx} className="flex flex-col sm:flex-row items-center gap-10">
-                                        <div className="w-24 h-24 bg-zinc-50 rounded-2xl p-2 shrink-0 overflow-hidden">
+                                    <div key={idx} className="flex flex-col md:flex-row items-start md:items-center gap-10 py-6 border-b border-zinc-100 last:border-none">
+                                        {/* Product Image */}
+                                        <div className="w-28 h-28 bg-zinc-50 rounded-2xl p-3 shrink-0 overflow-hidden border border-zinc-100 flex items-center justify-center self-center md:self-auto">
                                             <img 
                                                 src={item.product?.image || 'https://via.placeholder.com/150'} 
                                                 alt={item.product?.name} 
-                                                className="w-full h-full object-contain mix-blend-darken scale-110 group-hover:scale-125 transition-transform duration-1000" 
+                                                className="w-full h-full object-contain mix-blend-darken scale-105" 
                                             />
                                         </div>
-                                        <div className="flex-grow flex flex-col sm:flex-row justify-between items-center gap-8 w-full">
-                                            <div className="space-y-2 text-center sm:text-left">
-                                                <h4 className="text-lg font-black italic uppercase tracking-tight text-black flex items-center gap-3 justify-center sm:justify-start">
-                                                    {item.product?.name || 'BareSkin Product'}
-                                                </h4>
-                                                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
-                                                    <span className="px-3 py-1 bg-zinc-100 rounded-lg text-[9px] font-black uppercase text-zinc-400 tracking-widest">Qty: {item.quantity}</span>
-                                                    <span className="text-[9px] font-black uppercase text-[#007aff] tracking-widest italic">Sold by: BareSkin Official</span>
-                                                </div>
+
+                                        {/* Product Meta & Status */}
+                                        <div className="flex-grow space-y-3 text-center md:text-left w-full">
+                                            <h4 className="text-md font-black uppercase tracking-tight text-black hover:text-[#007aff] cursor-pointer" onClick={() => item.product?._id && navigate(`/product/${item.product._id}`)}>
+                                                {item.product?.name || 'BareSkin Product'}
+                                            </h4>
+                                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[10px] font-black uppercase text-zinc-400">
+                                                <span className="bg-zinc-100 px-2.5 py-1 rounded-lg">Qty: {item.quantity}</span>
+                                                {item.selectedSize && <span className="bg-[#007aff]/5 text-[#007aff] px-2.5 py-1 rounded-lg italic">Size: {item.selectedSize}</span>}
                                             </div>
+                                            
+                                            {/* Arrival / Status Timeline (Amazon Style) */}
+                                            <div className="pt-3 flex flex-col items-center md:items-start gap-1 w-full">
+                                                {order.paymentStatus === 'Cancelled' ? (
+                                                    <span className="text-xs font-black uppercase text-red-600 flex items-center gap-1.5 bg-red-50 px-3 py-1 rounded-full italic">
+                                                        ● Order Cancelled
+                                                    </span>
+                                                ) : order.orderStatus === 'Delivered' ? (
+                                                    <span className="text-xs font-black uppercase text-green-600 flex items-center gap-1.5 bg-green-50 px-3 py-1 rounded-full italic">
+                                                        ● Delivered on {getEstimatedDeliveryDateForOrder(order.createdAt)}
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-xs font-bold text-zinc-900">
+                                                        Estimated Delivery: <span className="font-black underline decoration-[#007aff] decoration-2 underline-offset-4">{getEstimatedDeliveryDateForOrder(order.createdAt)}</span>
+                                                    </span>
+                                                )}
+                                                <span className="text-[9px] font-black uppercase text-[#ffa41c] tracking-widest mt-1 bg-[#ffa41c]/5 px-2.5 py-0.5 rounded-md italic">
+                                                    Status: {order.orderStatus || 'Processing'}
+                                                </span>
+                                            </div>
+                                        </div>
 
-                                            <div className="flex flex-col items-center sm:items-end gap-6 shrink-0 w-full lg:w-auto">
-                                                {/* Timeline Logic */}
-                                                <div className="w-full max-w-lg">
-                                                    <div className="flex justify-between items-center mb-8 relative">
-                                                        {/* Progress Line */}
-                                                        <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-zinc-100 -translate-y-1/2"></div>
-                                                        <div className={`absolute top-1/2 left-0 h-[1px] bg-[#007aff] -translate-y-1/2 transition-all duration-1000 ${
-                                                            (order.orderStatus === 'Delivered') ? 'w-full' : 
-                                                            (order.orderStatus === 'Out for Delivery') ? 'w-[75%]' : 
-                                                             (order.orderStatus === 'Shipped') ? 'w-[50%]' : 
-                                                             (order.orderStatus === 'Processing') ? 'w-[25%]' : 'w-[0%]'
-                                                        }`}></div>
+                                        {/* Action Controls */}
+                                        <div className="flex flex-row md:flex-col gap-3 justify-center md:justify-end w-full md:w-auto shrink-0 flex-wrap">
+                                            <button 
+                                                onClick={() => toast.success(`Tracking active: package is currently ${order.orderStatus || 'Processing'}.`, { 
+                                                    icon: '📍',
+                                                    style: { background: '#000', color: '#fff', borderRadius: '15px', fontSize: '10px', fontStyle: 'italic', fontWeight: '900' }
+                                                })}
+                                                className="px-6 py-3 bg-[#ffd814] hover:bg-[#f7ca00] text-black rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm hover:shadow transition-all italic min-w-[140px] text-center"
+                                            >
+                                                Track Delivery
+                                            </button>
 
-                                                        {[
-                                                            { label: 'Placed', icon: ShoppingBag, status: 'Order Placed' },
-                                                            { label: 'Processing', icon: Zap, status: 'Processing' },
-                                                            { label: 'Shipped', icon: Truck, status: 'Shipped' },
-                                                            { label: 'Out for Delivery', icon: Package, status: 'Out for Delivery' },
-                                                            { label: 'Delivered', icon: CheckCircle, status: 'Delivered' }
-                                                        ].map((step, i) => {
-                                                            const statusOrder = ['Order Placed', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered'];
-                                                            const currentIdx = statusOrder.indexOf(order.orderStatus || 'Order Placed');
-                                                            const isPast = i <= currentIdx;
-                                                            const isCurrent = i === currentIdx;
-
-                                                            return (
-                                                                 <div key={i} className="flex flex-col items-center gap-3 relative z-10">
-                                                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-500 ${
-                                                                         isPast ? 'bg-[#007aff] text-white shadow-lg shadow-[#007aff]/20' : 'bg-white border border-zinc-200 text-zinc-300'
-                                                                     } ${isCurrent ? 'scale-125 ring-4 ring-[#007aff]/10' : ''}`}>
-                                                                         <step.icon size={12} />
-                                                                     </div>
-                                                                     <span className={`text-[8px] font-black uppercase tracking-widest ${isPast ? 'text-black' : 'text-zinc-300'}`}>{step.label}</span>
-                                                                 </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                </div>
-
+                                            {(order.paymentStatus === 'Paid' || order.paymentStatus === 'Pending' || order.paymentStatus === 'COD - Pending') && order.orderStatus !== 'Delivered' && order.orderStatus !== 'Cancelled' && (
                                                 <button 
-                                                    onClick={() => toast.success('Initializing Global Tracking System...', { 
-                                                        icon: '📍',
-                                                        style: { background: '#000', color: '#fff', borderRadius: '15px', fontSize: '10px', fontStyle: 'italic', fontWeight: '900' }
-                                                    })}
-                                                    className="w-full sm:w-auto px-8 py-3 bg-zinc-50 hover:bg-black hover:text-white rounded-2xl text-[9px] font-black uppercase tracking-widest italic border border-zinc-100 transition-all flex items-center justify-center gap-3"
+                                                    onClick={() => handleCancelOrder(order._id)} 
+                                                    className="px-6 py-3 bg-zinc-100 hover:bg-red-50 text-zinc-900 hover:text-red-500 border border-zinc-200 hover:border-red-100 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all italic min-w-[140px] text-center"
                                                 >
-                                                    <Search size={14} /> Track Delivery
+                                                    Cancel Order
                                                 </button>
-
-                                                {/* Return / Cancel Order Buttons */}
-                                                {(order.paymentStatus === 'Paid' || order.paymentStatus === 'Pending') && order.orderStatus !== 'Delivered' && order.orderStatus !== 'Cancelled' && (
-                                                    <button onClick={() => handleCancelOrder(order._id)} className="w-full sm:w-auto px-8 py-3 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-2xl text-[9px] font-black uppercase tracking-widest italic transition-all flex items-center justify-center gap-3">
-                                                        Cancel Order
-                                                    </button>
-                                                )}
-                                                {order.orderStatus === 'Delivered' && (
-                                                    <button onClick={() => handleReturnOrder(order._id)} className="w-full sm:w-auto px-8 py-3 bg-orange-50 text-orange-500 hover:bg-orange-500 hover:text-white rounded-2xl text-[9px] font-black uppercase tracking-widest italic transition-all flex items-center justify-center gap-3">
-                                                        Request Return
-                                                    </button>
-                                                )}
-                                                {order.paymentStatus === 'Cancelled' && (
-                                                    <span className="text-[10px] font-black uppercase tracking-widest text-red-500 italic">Order Cancelled</span>
-                                                )}
-                                                {order.paymentStatus === 'Return Requested' && (
-                                                    <span className="text-[10px] font-black uppercase tracking-widest text-orange-500 italic">Return Requested</span>
-                                                )}
-                                            </div>
+                                            )}
+                                            
+                                            {order.orderStatus === 'Delivered' && (
+                                                <button 
+                                                    onClick={() => handleReturnOrder(order._id)} 
+                                                    className="px-6 py-3 bg-zinc-100 hover:bg-orange-50 text-zinc-900 hover:text-orange-500 border border-zinc-200 hover:border-orange-100 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all italic min-w-[140px] text-center"
+                                                >
+                                                    Return Item
+                                                </button>
+                                            )}
+                                            
+                                            <button 
+                                                onClick={() => navigate(`/product/${item.product?._id || ''}`)} 
+                                                className="px-6 py-3 bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-200 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm transition-all italic min-w-[140px] text-center"
+                                            >
+                                                Review Product
+                                            </button>
                                         </div>
                                     </div>
                                 ))}

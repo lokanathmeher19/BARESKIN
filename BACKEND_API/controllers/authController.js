@@ -55,6 +55,9 @@ const registerUser = async (req, res, next) => {
         address: user.address || '',
         points: user.points,
         isAdmin: user.isAdmin,
+        skinType: user.skinType,
+        skinConcerns: user.skinConcerns,
+        usageProtocols: user.usageProtocols,
         token: generateToken(user._id),
       });
     } else {
@@ -97,6 +100,9 @@ const loginUser = async (req, res, next) => {
         isAdmin: user.isAdmin,
         cart: user.cart ? user.cart.filter(c => c.product).map(c => ({ ...c.product.toObject(), qty: c.qty, selectedSize: c.selectedSize })) : [],
         wishlist: user.wishlist || [],
+        skinType: user.skinType,
+        skinConcerns: user.skinConcerns,
+        usageProtocols: user.usageProtocols,
         token: generateToken(user._id),
       });
     } else {
@@ -168,7 +174,7 @@ const googleLogin = async (req, res, next) => {
 const updateUserProfile = async (req, res, next) => {
   try {
     const updateData = {};
-    const fields = ['name', 'phone', 'zip', 'city', 'state', 'address', 'notificationSettings'];
+    const fields = ['name', 'phone', 'zip', 'city', 'state', 'address', 'notificationSettings', 'skinType', 'skinConcerns', 'usageProtocols'];
     
     fields.forEach(field => {
       if (req.body[field] !== undefined) {
@@ -197,6 +203,9 @@ const updateUserProfile = async (req, res, next) => {
           points: updatedUser.points,
           notificationSettings: updatedUser.notificationSettings,
           isAdmin: updatedUser.isAdmin,
+          skinType: updatedUser.skinType,
+          skinConcerns: updatedUser.skinConcerns,
+          usageProtocols: updatedUser.usageProtocols,
         },
         token: generateToken(updatedUser._id),
       });

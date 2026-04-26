@@ -51,6 +51,9 @@ const Profile = () => {
         city: user?.city || '',
         state: user?.state || '',
         address: user?.address || '',
+        skinType: user?.skinType || 'Normal',
+        skinConcerns: user?.skinConcerns || [],
+        usageProtocols: user?.usageProtocols || []
     });
 
     const [passwordData, setPasswordData] = useState({
@@ -69,6 +72,9 @@ const Profile = () => {
                 city: user.city || '',
                 state: user.state || '',
                 address: user.address || '',
+                skinType: user.skinType || 'Normal',
+                skinConcerns: user.skinConcerns || [],
+                usageProtocols: user.usageProtocols || []
             });
         }
     }, [user]);
@@ -235,6 +241,7 @@ const Profile = () => {
         { id: 'orders', label: 'Orders', icon: <Package size={18} /> },
         { id: 'billing', label: 'Billing', icon: <CreditCard size={18} /> },
         { id: 'subscriptions', label: 'Subscriptions', icon: <RefreshCw size={18} /> },
+        { id: 'skin', label: 'Skin Profile', icon: <Activity size={18} /> },
         { id: 'security', label: 'Security', icon: <Lock size={18} /> },
         { id: 'notifications', label: 'Notifications', icon: <Bell size={18} /> },
     ];
@@ -676,6 +683,113 @@ const Profile = () => {
                                 </Link>
                             </div>
                         )}
+                    </div>
+                )}
+
+                {activeTab === 'skin' && (
+                    <div className="bg-white rounded-[2.5rem] border border-zinc-100 p-8 sm:p-12 shadow-sm space-y-12">
+                        <div>
+                            <h2 className="text-2xl font-black uppercase tracking-tight italic">Skin Characteristics<span className="text-[#007aff]">.</span></h2>
+                            <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest italic mt-1">Customize your clinical profile for hyper-targeted treatments.</p>
+                        </div>
+
+                        {/* Skin Type */}
+                        <div className="space-y-4">
+                            <h3 className="text-xs font-black tracking-[0.2em] uppercase text-zinc-400 italic">// Select Skin Type</h3>
+                            <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                                {['Normal', 'Dry', 'Oily', 'Combination', 'Sensitive'].map((type) => (
+                                    <button
+                                        key={type}
+                                        type="button"
+                                        onClick={() => setProfileData({ ...profileData, skinType: type })}
+                                        className={`p-6 rounded-2xl border text-center transition-all duration-500 font-black uppercase tracking-widest text-[10px] ${
+                                            profileData.skinType === type
+                                                ? 'bg-black text-white border-black shadow-xl shadow-black/10 scale-[1.02]'
+                                                : 'bg-zinc-50 border-zinc-100 text-zinc-500 hover:bg-white hover:border-zinc-300'
+                                        }`}
+                                    >
+                                        {type}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Skin Concerns */}
+                        <div className="space-y-4">
+                            <h3 className="text-xs font-black tracking-[0.2em] uppercase text-zinc-400 italic">// Key Skin Concerns</h3>
+                            <div className="flex flex-wrap gap-3">
+                                {['Acne', 'Aging', 'Dullness', 'Dark Spots', 'Rosacea', 'Large Pores', 'Fine Lines', 'Redness', 'Dehydration'].map((concern) => {
+                                    const isSelected = (profileData.skinConcerns || []).includes(concern);
+                                    return (
+                                        <button
+                                            key={concern}
+                                            type="button"
+                                            onClick={() => {
+                                                const concerns = isSelected
+                                                    ? profileData.skinConcerns.filter(c => c !== concern)
+                                                    : [...profileData.skinConcerns, concern];
+                                                setProfileData({ ...profileData, skinConcerns: concerns });
+                                            }}
+                                            className={`px-6 py-3 rounded-full border transition-all font-black uppercase tracking-widest text-[9px] ${
+                                                isSelected
+                                                    ? 'bg-[#007aff] text-white border-[#007aff]'
+                                                    : 'bg-zinc-50 border-zinc-100 text-zinc-400 hover:border-zinc-300'
+                                            }`}
+                                        >
+                                            {concern}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Usage Protocols */}
+                        <div className="space-y-6 pt-6 border-t border-zinc-100">
+                            <div>
+                                <h3 className="text-xl font-black uppercase tracking-tight italic">Usage Protocols<span className="text-[#007aff]">.</span></h3>
+                                <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest italic mt-1">Historical product application logs</p>
+                            </div>
+                            
+                            {orders.length > 0 ? (
+                                <div className="space-y-4">
+                                    {orders.flatMap(o => o.products || []).map((item, idx) => (
+                                        <div key={idx} className="p-6 rounded-3xl border border-zinc-50 bg-zinc-50/30 flex items-center justify-between gap-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-12 h-12 bg-white border border-zinc-100 rounded-xl p-1 flex items-center justify-center">
+                                                    <img src={item.product?.image} className="w-full h-full object-contain mix-blend-multiply" alt="protocol" />
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-xs font-black uppercase tracking-tight">{item.product?.name}</h4>
+                                                    <span className="text-[8px] font-black uppercase tracking-[0.2em] text-[#007aff] italic mt-1 block">Protocol Step #{idx + 1}</span>
+                                                </div>
+                                            </div>
+                                            <div className="text-right hidden sm:block">
+                                                <span className="px-3 py-1 bg-zinc-100 rounded-full text-[8px] font-black uppercase tracking-widest text-zinc-500 italic">
+                                                    Apply AM & PM
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="p-8 bg-zinc-50/50 border border-zinc-100 rounded-3xl text-center">
+                                    <Clock size={32} className="mx-auto text-zinc-300 mb-4 animate-pulse" />
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 italic">No usage protocols mapped yet. Purchase products to generate routines.</p>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex justify-end pt-4">
+                            <button
+                                type="button"
+                                disabled={updating}
+                                onClick={handleProfileUpdate}
+                                className="px-10 py-4 bg-black text-white rounded-full text-[10px] font-black uppercase tracking-[0.3em] hover:bg-[#007aff] transition-all italic flex items-center gap-2 disabled:opacity-50"
+                            >
+                                {updating ? <Loader2 className="animate-spin" size={14}/> : <Save size={14}/>}
+                                Save Skin Profile
+                            </button>
+                        </div>
                     </div>
                 )}
 

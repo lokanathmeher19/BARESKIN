@@ -86,6 +86,21 @@ const userSchema = new mongoose.Schema({
     directMessages: { type: Boolean, default: true },
     weeklyReports: { type: Boolean, default: false },
   },
+  skinType: {
+    type: String,
+    default: 'Normal',
+  },
+  skinConcerns: {
+    type: [String],
+    default: [],
+  },
+  usageProtocols: [
+    {
+      productName: String,
+      routine: String,
+      steps: String,
+    }
+  ],
 }, {
   timestamps: true,
 });
