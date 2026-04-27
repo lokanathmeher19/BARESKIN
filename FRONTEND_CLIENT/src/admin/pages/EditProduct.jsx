@@ -25,6 +25,7 @@ const EditProduct = () => {
         brand: 'BareSkin.',
         price: '',
         category: '',
+        subCategory: '',
         description: '',
         stock: 0,
         image: '',
@@ -56,6 +57,7 @@ const EditProduct = () => {
                 brand: p.brand || 'BareSkin.',
                 price: p.price,
                 category: p.category,
+                subCategory: p.subCategory || '',
                 description: p.description,
                 stock: p.stock,
                 image: p.image,
@@ -219,33 +221,60 @@ const EditProduct = () => {
                                         <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider">Brand</label>
                                         <input type="text" name="brand" value={formData.brand} onChange={handleInputChange} required className="w-full border border-zinc-300 rounded-lg px-4 py-3 text-sm outline-none" />
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1">Product Category <span className="text-red-500">*</span></label>
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
-                                            {[
-                                                { id: 'Face Care', label: 'FACE CARE', icon: Sparkles },
-                                                { id: 'Lip Care', label: 'LIP CARE', icon: Waves },
-                                                { id: 'Hair Care', label: 'HAIR CARE', icon: Waves },
-                                                { id: 'Body Care', label: 'BODY CARE', icon: Sun },
-                                                { id: 'Makeup', label: 'MAKEUP', icon: User },
-                                                { id: 'Beauty', label: 'BEAUTY', icon: Layout },
-                                                { id: "Men's Care", label: "MEN'S CARE", icon: Fingerprint }
-                                            ].map((cat) => (
-                                                <button
-                                                    key={cat.id}
-                                                    type="button"
-                                                    onClick={() => setFormData({ ...formData, category: cat.id })}
-                                                    className={`flex flex-col items-center justify-center gap-3 p-4 rounded-xl border transition-all ${
-                                                        formData.category === cat.id
-                                                        ? 'bg-[#007aff]/5 border-[#007aff] text-[#007aff] shadow-sm ring-1 ring-[#007aff]'
-                                                        : 'bg-white border-zinc-200 text-zinc-400 hover:border-zinc-300'
-                                                    }`}
-                                                >
-                                                    <cat.icon size={20} className={formData.category === cat.id ? 'text-[#007aff]' : 'text-zinc-300'} />
-                                                    <span className="text-[9px] font-black uppercase tracking-widest text-center">{cat.label}</span>
-                                                </button>
-                                            ))}
+                                    <div className="space-y-6">
+                                        <div className="space-y-1.5">
+                                            <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider flex items-center gap-1">Product Category <span className="text-red-500">*</span></label>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+                                                {[
+                                                    { id: 'Face Care', label: 'FACE CARE', icon: Sparkles },
+                                                    { id: 'Lip Care', label: 'LIP CARE', icon: Waves },
+                                                    { id: 'Hair Care', label: 'HAIR CARE', icon: Waves },
+                                                    { id: 'Body Care', label: 'BODY CARE', icon: Sun },
+                                                    { id: 'Makeup', label: 'MAKEUP', icon: User },
+                                                    { id: 'Beauty', label: 'BEAUTY', icon: Layout },
+                                                    { id: "Men's Care", label: "MEN'S CARE", icon: Fingerprint }
+                                                ].map((cat) => (
+                                                    <button
+                                                        key={cat.id}
+                                                        type="button"
+                                                        onClick={() => setFormData({ ...formData, category: cat.id, subCategory: '' })}
+                                                        className={`flex flex-col items-center justify-center gap-3 p-4 rounded-xl border transition-all ${
+                                                            formData.category === cat.id
+                                                            ? 'bg-[#007aff]/5 border-[#007aff] text-[#007aff] shadow-sm ring-1 ring-[#007aff]'
+                                                            : 'bg-white border-zinc-200 text-zinc-400 hover:border-zinc-300'
+                                                        }`}
+                                                    >
+                                                        <cat.icon size={20} className={formData.category === cat.id ? 'text-[#007aff]' : 'text-zinc-300'} />
+                                                        <span className="text-[9px] font-black uppercase tracking-widest text-center">{cat.label}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
+
+                                        {formData.category === 'Face Care' && (
+                                            <div className="space-y-2 animate-in slide-in-from-top-2 duration-300 bg-zinc-50/50 p-6 rounded-2xl border border-zinc-100">
+                                                <label className="text-[11px] font-bold text-[#007aff] uppercase tracking-wider flex items-center gap-1">Select Face Care Sub-Category</label>
+                                                <div className="flex flex-wrap gap-2 mt-2">
+                                                    {[
+                                                        "Cleansers", "Exfoliators", "Toners & Mists", "Serums", 
+                                                        "Moisturizers", "Sunscreens", "Face Masks", "Eye Care", "Face Oils"
+                                                    ].map((sub) => (
+                                                        <button
+                                                            key={sub}
+                                                            type="button"
+                                                            onClick={() => setFormData({ ...formData, subCategory: sub })}
+                                                            className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider border transition-all ${
+                                                                formData.subCategory === sub
+                                                                ? 'bg-black text-white border-black shadow-md'
+                                                                : 'bg-white border-zinc-200 text-zinc-400 hover:border-zinc-300'
+                                                            }`}
+                                                        >
+                                                            {sub}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

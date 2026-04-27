@@ -11,7 +11,7 @@ import api from '../utils/api';
 const Cart = () => {
     const { formatPrice } = useCurrency();
     const { cart, removeFromCart, cartTotal, finalTotal, discountAmount, promoCode, applyPromo, removePromo, cartCount } = useContext(CartContext);
-    const { user } = useContext(AuthContext);
+
     const navigate = useNavigate();
     const [promoInput, setPromoInput] = React.useState('');
     const [applyingPromo, setApplyingPromo] = React.useState(false);

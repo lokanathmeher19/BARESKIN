@@ -66,7 +66,7 @@ const Footer = () => {
                         </li>
                         <li className="flex flex-col md:flex-row gap-4 items-center md:items-start text-zinc-400 text-[10px] font-black tracking-widest uppercase italic border-t border-zinc-50 pt-8 md:pt-6 w-full justify-center md:justify-start">
                             <Mail size={18} className="shrink-0 text-black" strokeWidth={1.5} />
-                            <span className="lowercase">support@bareskin.co</span>
+                            <span className="lowercase">bareskin@gmail.com</span>
                         </li>
                     </ul>
                 </div>

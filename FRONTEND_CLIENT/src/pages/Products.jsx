@@ -136,7 +136,10 @@ const Products = () => {
                     {categories.map(cat => (
                         <button 
                             key={cat}
-                            onClick={() => setSelectedCategory(cat)}
+                            onClick={() => {
+                                setSelectedCategory(cat);
+                                setSearchQuery("");
+                            }}
                             className={`whitespace-nowrap px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
                                 selectedCategory === cat 
                                 ? 'bg-black text-white shadow-xl' 
@@ -158,16 +161,40 @@ const Products = () => {
                                 </h3>
                                 <div className="flex flex-col gap-4">
                                     {categories.map(cat => (
-                                        <button 
-                                            key={cat}
-                                            onClick={() => setSelectedCategory(cat)}
-                                            className={`text-left text-[11px] font-black tracking-widest transition-all flex items-center justify-between group uppercase italic ${
-                                                selectedCategory === cat ? 'text-black translate-x-2' : 'text-zinc-400 hover:text-black hover:translate-x-1'
-                                            }`}
-                                        >
-                                            {cat}
-                                            <span className={`w-1.5 h-1.5 rounded-full bg-[#007aff] transition-all duration-500 ${selectedCategory === cat ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></span>
-                                        </button>
+                                        <div key={cat} className="flex flex-col gap-2">
+                                            <button 
+                                                onClick={() => {
+                                                    setSelectedCategory(cat);
+                                                    setSearchQuery(""); // Reset subcategory search filter when swapping categories
+                                                }}
+                                                className={`text-left text-[11px] font-black tracking-widest transition-all flex items-center justify-between group uppercase italic ${
+                                                    selectedCategory === cat ? 'text-black translate-x-2' : 'text-zinc-400 hover:text-black hover:translate-x-1'
+                                                }`}
+                                            >
+                                                {cat}
+                                                <span className={`w-1.5 h-1.5 rounded-full bg-[#007aff] transition-all duration-500 ${selectedCategory === cat ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`}></span>
+                                            </button>
+                                            
+                                            {/* Expandable subcategories for Face Care */}
+                                            {cat === "Face Care" && selectedCategory === "Face Care" && (
+                                                <div className="pl-4 flex flex-col gap-2 border-l border-zinc-100 ml-1 my-2">
+                                                    {[
+                                                        "Cleansers", "Exfoliators", "Toners & Mists", "Serums", 
+                                                        "Moisturizers", "Sunscreens", "Face Masks", "Eye Care", "Face Oils"
+                                                    ].map(sub => (
+                                                        <button 
+                                                            key={sub}
+                                                            onClick={() => setSearchQuery(sub)}
+                                                            className={`text-left text-[9px] font-bold uppercase tracking-widest italic transition-all hover:text-black ${
+                                                                searchQuery === sub ? 'text-[#007aff]' : 'text-zinc-400'
+                                                            }`}
+                                                        >
+                                                            {sub}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -311,17 +338,47 @@ const Products = () => {
                                 <h3 className="text-[10px] font-black uppercase tracking-widest text-[#007aff] mb-6">Store Section</h3>
                                 <div className="grid grid-cols-1 gap-4">
                                     {categories.map(cat => (
-                                        <button 
-                                            key={cat}
-                                            onClick={() => {setSelectedCategory(cat); setIsFilterOpen(false);}}
-                                            className={`text-left px-6 py-4 rounded-2xl text-[11px] font-black tracking-widest transition-all uppercase italic border ${
-                                                selectedCategory === cat 
-                                                ? 'bg-black text-white border-black' 
-                                                : 'bg-zinc-50 text-gray-400 border-transparent'
-                                            }`}
-                                        >
-                                            {cat}
-                                        </button>
+                                        <div key={cat} className="flex flex-col gap-2">
+                                            <button 
+                                                onClick={() => {
+                                                    setSelectedCategory(cat);
+                                                    setSearchQuery(""); // Reset search when swapping main category
+                                                    if (cat !== "Face Care") setIsFilterOpen(false); // Close drawer if not Face Care
+                                                }}
+                                                className={`text-left px-6 py-4 rounded-2xl text-[11px] font-black tracking-widest transition-all uppercase italic border ${
+                                                    selectedCategory === cat 
+                                                    ? 'bg-black text-white border-black shadow-xl' 
+                                                    : 'bg-zinc-50 text-gray-400 border-transparent'
+                                                }`}
+                                            >
+                                                {cat}
+                                            </button>
+                                            
+                                            {/* Mobile Subcategories for Face Care */}
+                                            {cat === "Face Care" && selectedCategory === "Face Care" && (
+                                                <div className="pl-4 grid grid-cols-2 gap-2 my-2">
+                                                    {[
+                                                        "Cleansers", "Exfoliators", "Toners & Mists", "Serums", 
+                                                        "Moisturizers", "Sunscreens", "Face Masks", "Eye Care", "Face Oils"
+                                                    ].map(sub => (
+                                                        <button 
+                                                            key={sub}
+                                                            onClick={() => {
+                                                                setSearchQuery(sub);
+                                                                setIsFilterOpen(false); // Close drawer after fine selection
+                                                            }}
+                                                            className={`text-left px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic transition-all border ${
+                                                                searchQuery === sub 
+                                                                ? 'bg-[#007aff] text-white border-[#007aff] shadow-md' 
+                                                                : 'bg-zinc-50/50 text-zinc-400 border-zinc-100'
+                                                            }`}
+                                                        >
+                                                            {sub}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
                                     ))}
                                 </div>
                             </div>
