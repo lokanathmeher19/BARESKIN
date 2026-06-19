@@ -139,7 +139,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
     return (
         <div 
             onClick={() => navigate(`/product/${product._id}`)}
-            className={`flex flex-col bg-white h-full relative cursor-pointer border border-zinc-100/50 hover:border-zinc-200 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500 group rounded-[2rem] overflow-hidden font-sans ${isSmall ? 'p-4' : 'p-6'}`}
+            className={`flex flex-col bg-white h-full relative cursor-pointer border border-zinc-100/50 hover:border-zinc-200 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500 group rounded-[2rem] overflow-hidden font-sans ${isSmall ? 'p-3' : 'p-4 sm:p-6'}`}
         >
             {/* Top Right: Wishlist */}
             <button 
@@ -150,7 +150,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             </button>
 
             {/* Image Section */}
-            <div className={`relative mb-4 ${isSmall ? 'h-40' : 'h-48 sm:h-64'} bg-[#fcfcfd] rounded-2xl p-4 md:p-6 overflow-hidden border border-zinc-100/50`}>
+            <div className={`relative mb-4 ${isSmall ? 'h-32 sm:h-40' : 'h-40 sm:h-48 md:h-64'} bg-[#fcfcfd] rounded-2xl p-4 md:p-6 overflow-hidden border border-zinc-100/50`}>
                 <img 
                     src={product.image} 
                     alt={product.name} 

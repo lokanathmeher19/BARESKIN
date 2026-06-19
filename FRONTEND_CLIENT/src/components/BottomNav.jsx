@@ -12,7 +12,7 @@ const BottomNav = () => {
     if (location.pathname.startsWith('/product/')) return null;
 
     return (
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[200] bg-white border-t border-zinc-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] px-2 py-1.5 flex items-center justify-around">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-[200] bg-white border-t border-zinc-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] px-2 pt-1.5 pb-2 safe-bottom flex items-center justify-around">
             <NavLink 
                 to="/" 
                 className={({ isActive }) => `flex flex-col items-center gap-0.5 transition-all ${isActive ? 'text-[#007aff]' : 'text-zinc-400'}`}
