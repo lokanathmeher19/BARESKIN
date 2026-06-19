@@ -95,10 +95,10 @@ const ChatBubble = () => {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-[90] flex flex-col items-end">
+        <div className="fixed bottom-[90px] lg:bottom-6 right-4 lg:right-6 z-[90] flex flex-col items-end">
             {/* Chat Window */}
             {isOpen && (
-                <div className="mb-4 w-[340px] sm:w-[400px] h-[550px] bg-white border border-zinc-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in origin-bottom-right transform transition-all">
+                <div className="mb-4 w-[calc(100vw-2rem)] sm:w-[400px] h-[60vh] sm:h-[550px] bg-white border border-zinc-200 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in origin-bottom-right transform transition-all">
                     {/* Header */}
                     <div className="bg-black text-white px-6 py-5 flex items-center justify-between shrink-0">
                         <div className="flex items-center gap-3">
