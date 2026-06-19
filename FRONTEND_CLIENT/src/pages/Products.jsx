@@ -106,25 +106,25 @@ const Products = () => {
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10 md:mb-16 border-b border-gray-100 pb-10 md:pb-16 text-center md:text-left">
                     <div>
-                        <span className="luxe-subheading text-[#007aff] mb-4 block">Store</span>
-                        <h1 className="text-4xl md:text-6xl">{selectedCategory === "All Products" ? "Our Products" : selectedCategory}</h1>
+                        <span className="text-[#86868b] text-[11px] font-medium uppercase tracking-[0.2em] mb-3 block font-sans">Store</span>
+                        <h1 className="text-4xl md:text-5xl font-black uppercase tracking-tighter italic text-black font-sans">{selectedCategory === "All Products" ? "Our Products" : selectedCategory}</h1>
                     </div>
                     
                     <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
                         <div className="relative group w-full">
-                            <Search size={16} className="absolute left-6 md:left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors" />
+                            <Search size={16} className="absolute left-6 md:left-5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-zinc-800 transition-colors" />
                             <input 
                                 type="text" 
                                 placeholder="Search products..." 
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-14 pr-6 py-4 bg-[#f5f5f7] rounded-2xl text-[10px] md:text-xs font-normal tracking-widest outline-none w-full md:w-64 focus:bg-white border border-transparent focus:border-gray-200 transition-all shadow-sm"
+                                className="pl-14 pr-6 py-4 bg-[#f5f5f7] rounded-full text-[11px] md:text-xs font-normal tracking-wider outline-none w-full md:w-64 focus:bg-white border border-transparent focus:border-zinc-200 transition-all shadow-sm font-sans"
                             />
                         </div>
                         {/* Mobile Filter Toggle */}
                         <button 
                             onClick={() => setIsFilterOpen(true)}
-                            className="lg:hidden flex items-center justify-center gap-3 w-full sm:w-auto bg-black text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase italic tracking-widest shadow-xl"
+                            className="lg:hidden flex items-center justify-center gap-3 w-full sm:w-auto bg-zinc-900 text-white px-8 py-4 rounded-full text-[11px] font-semibold uppercase tracking-widest shadow-xl hover:bg-black transition-all font-sans"
                         >
                             <Filter size={14} /> Filter & Sort
                         </button>
@@ -140,10 +140,10 @@ const Products = () => {
                                 setSelectedCategory(cat);
                                 setSearchQuery("");
                             }}
-                            className={`whitespace-nowrap px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                            className={`whitespace-nowrap px-8 py-3 rounded-full text-[11px] font-medium uppercase tracking-wider transition-all font-sans ${
                                 selectedCategory === cat 
-                                ? 'bg-black text-white shadow-xl' 
-                                : 'bg-zinc-50 text-zinc-400 border border-zinc-100/50'
+                                ? 'bg-zinc-900 text-white shadow-md' 
+                                : 'bg-zinc-50 text-zinc-500 border border-zinc-100/50 hover:bg-zinc-100'
                             }`}
                         >
                             {cat}
@@ -153,11 +153,12 @@ const Products = () => {
 
                 <div className="flex flex-col lg:flex-row gap-12">
                     {/* Sidebar Filters - Desktop */}
+                    {/* Sidebar Filters - Desktop */}
                     <div className="lg:w-64 shrink-0 hidden lg:block">
-                        <div className="sticky top-40 space-y-12">
+                        <div className="sticky top-40 space-y-12 bg-[#fcfcfd]/50 backdrop-blur-lg p-8 rounded-[2.5rem] border border-zinc-100/50 shadow-[0_10px_30px_rgba(0,0,0,0.02)]">
                             <div>
-                                <h3 className="text-[10px] flex items-center gap-2 mb-6 uppercase tracking-widest font-black text-[#007aff]">
-                                     <SlidersHorizontal size={14} /> Categories
+                                <h3 className="text-[11px] flex items-center gap-2 mb-6 uppercase tracking-[0.15em] font-semibold text-zinc-800 font-sans not-italic">
+                                     <SlidersHorizontal size={14} className="text-[#007aff]" /> Categories
                                 </h3>
                                 <div className="flex flex-col gap-4">
                                     {categories.map(cat => (
@@ -167,8 +168,8 @@ const Products = () => {
                                                     setSelectedCategory(cat);
                                                     setSearchQuery(""); // Reset subcategory search filter when swapping categories
                                                 }}
-                                                className={`text-left text-[11px] font-black tracking-widest transition-all flex items-center justify-between group uppercase italic ${
-                                                    selectedCategory === cat ? 'text-black translate-x-2' : 'text-zinc-400 hover:text-black hover:translate-x-1'
+                                                className={`text-left text-[12px] font-bold tracking-wider transition-all flex items-center justify-between group uppercase font-sans italic ${
+                                                    selectedCategory === cat ? 'text-zinc-900 font-black' : 'text-zinc-400 hover:text-zinc-800'
                                                 }`}
                                             >
                                                 {cat}
@@ -185,8 +186,8 @@ const Products = () => {
                                                         <button 
                                                             key={sub}
                                                             onClick={() => setSearchQuery(sub)}
-                                                            className={`text-left text-[9px] font-bold uppercase tracking-widest italic transition-all hover:text-black ${
-                                                                searchQuery === sub ? 'text-[#007aff]' : 'text-zinc-400'
+                                                            className={`text-left text-[11px] font-bold uppercase tracking-wider transition-all font-sans italic hover:text-zinc-900 ${
+                                                                searchQuery === sub ? 'text-[#007aff] font-black' : 'text-zinc-400'
                                                             }`}
                                                         >
                                                             {sub}
@@ -200,14 +201,14 @@ const Products = () => {
                             </div>
 
                             <div className="pt-10 border-t border-zinc-100">
-                                <h3 className="text-[10px] mb-6 uppercase tracking-widest font-black text-[#007aff]">Skin Concern</h3>
+                                <h3 className="text-[11px] mb-6 uppercase tracking-[0.15em] font-semibold text-zinc-800 font-sans not-italic">Skin Concern</h3>
                                 <div className="flex flex-col gap-4">
                                     {concerns.map(con => (
                                         <button 
                                             key={con}
                                             onClick={() => setSelectedConcern(con)}
-                                            className={`text-left text-[11px] font-black tracking-widest transition-all uppercase italic ${
-                                                selectedConcern === con ? 'text-black' : 'text-zinc-400 hover:text-black'
+                                            className={`text-left text-[12px] font-bold tracking-wider transition-all uppercase font-sans italic ${
+                                                selectedConcern === con ? 'text-zinc-900 font-black' : 'text-zinc-400 hover:text-zinc-800'
                                             }`}
                                         >
                                             {con}
@@ -217,14 +218,14 @@ const Products = () => {
                             </div>
 
                             <div className="pt-10 border-t border-zinc-100">
-                                <h3 className="text-[10px] mb-6 uppercase tracking-widest font-black text-[#007aff]">Price Range</h3>
+                                <h3 className="text-[11px] mb-6 uppercase tracking-[0.15em] font-semibold text-zinc-800 font-sans not-italic">Price Range</h3>
                                 <div className="flex flex-col gap-4">
                                     {priceRanges.map(range => (
                                         <button 
                                             key={range.label}
                                             onClick={() => setSelectedPriceRange(range)}
-                                            className={`text-left text-[11px] font-black tracking-widest transition-all uppercase italic ${
-                                                selectedPriceRange.label === range.label ? 'text-black' : 'text-zinc-400 hover:text-black'
+                                            className={`text-left text-[12px] font-bold tracking-wider transition-all uppercase font-sans italic ${
+                                                selectedPriceRange.label === range.label ? 'text-zinc-900 font-black' : 'text-zinc-400 hover:text-zinc-800'
                                             }`}
                                         >
                                             {range.label}
@@ -234,16 +235,19 @@ const Products = () => {
                             </div>
 
                             <div className="pt-10 border-t border-zinc-100">
-                                <h3 className="text-[10px] mb-6 uppercase tracking-widest font-black text-zinc-300">Sort By</h3>
-                                <select 
-                                    className="w-full bg-[#f5f5f7] rounded-xl px-4 py-3 text-[10px] font-medium tracking-widest outline-none border border-transparent focus:border-gray-200 transition-all appearance-none uppercase italic"
-                                    value={sortBy}
-                                    onChange={(e) => setSortBy(e.target.value)}
-                                >
-                                    <option>Newest</option>
-                                    <option>Price: Low to High</option>
-                                    <option>Price: High to Low</option>
-                                </select>
+                                <h3 className="text-[11px] mb-6 uppercase tracking-[0.15em] font-semibold text-zinc-800 font-sans not-italic">Sort By</h3>
+                                <div className="relative">
+                                    <select 
+                                        className="w-full bg-[#f5f5f7] rounded-full px-6 py-3 text-[11px] font-medium tracking-wider outline-none border border-transparent focus:border-zinc-200 transition-all appearance-none uppercase font-sans not-italic text-zinc-700"
+                                        value={sortBy}
+                                        onChange={(e) => setSortBy(e.target.value)}
+                                    >
+                                        <option>Newest</option>
+                                        <option>Price: Low to High</option>
+                                        <option>Price: High to Low</option>
+                                    </select>
+                                    <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -258,19 +262,19 @@ const Products = () => {
                             </div>
                         ) : filteredProducts.length > 0 ? (
                             <>
-                                <div className="flex items-center justify-between mb-8 text-[9px] font-black text-gray-400 tracking-[0.3em] uppercase italic">
+                                <div className="flex items-center justify-between mb-8 text-[10px] font-semibold text-zinc-400 tracking-[0.2em] uppercase font-sans not-italic">
                                     <span>Showing {filteredProducts.length} Items</span>
                                     <div className="flex items-center gap-6">
                                         <button 
                                             onClick={() => setViewMode('small')}
-                                            className={`transition-all ${viewMode === 'small' ? 'text-black scale-110' : 'opacity-20 hover:opacity-100'}`}
+                                            className={`transition-all ${viewMode === 'small' ? 'text-zinc-900 scale-110' : 'opacity-40 hover:opacity-100'}`}
                                             title="Small Cards"
                                         >
                                             <Grid3X3 size={18} />
                                         </button>
                                         <button 
                                             onClick={() => setViewMode('large')}
-                                            className={`hidden sm:block transition-all ${viewMode === 'large' ? 'text-black scale-110' : 'opacity-20 hover:opacity-100'}`}
+                                            className={`hidden sm:block transition-all ${viewMode === 'large' ? 'text-zinc-900 scale-110' : 'opacity-40 hover:opacity-100'}`}
                                             title="Large Cards"
                                         >
                                             <div className="grid grid-cols-2 gap-0.5">
@@ -282,7 +286,7 @@ const Products = () => {
                                         </button>
                                         <button 
                                             onClick={() => setViewMode('list')}
-                                            className={`transition-all ${viewMode === 'list' ? 'text-black scale-110' : 'opacity-20 hover:opacity-100'}`}
+                                            className={`transition-all ${viewMode === 'list' ? 'text-zinc-900 scale-110' : 'opacity-40 hover:opacity-100'}`}
                                             title="List View"
                                         >
                                             <List size={18} />
@@ -327,15 +331,15 @@ const Products = () => {
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={() => setIsFilterOpen(false)}></div>
                     <div className="absolute right-0 top-0 bottom-0 w-[85%] max-w-sm bg-white p-8 flex flex-col animate-slide-in-right">
                         <div className="flex items-center justify-between mb-12">
-                            <h2 className="text-2xl italic">Filters.</h2>
-                            <button onClick={() => setIsFilterOpen(false)} className="p-3 bg-zinc-50 rounded-2xl">
+                            <h2 className="text-2xl font-light font-sans text-zinc-900">Filters</h2>
+                            <button onClick={() => setIsFilterOpen(false)} className="p-3 bg-zinc-50 rounded-full hover:bg-zinc-100 transition-all">
                                 <X size={24} />
                             </button>
                         </div>
 
                         <div className="flex-grow overflow-y-auto space-y-12 pb-10">
                             <div>
-                                <h3 className="text-[10px] font-black uppercase tracking-widest text-[#007aff] mb-6">Store Section</h3>
+                                <h3 className="text-[11px] font-semibold uppercase tracking-[0.15em] text-zinc-800 mb-6 font-sans not-italic">Store Section</h3>
                                 <div className="grid grid-cols-1 gap-4">
                                     {categories.map(cat => (
                                         <div key={cat} className="flex flex-col gap-2">
@@ -345,10 +349,10 @@ const Products = () => {
                                                     setSearchQuery(""); // Reset search when swapping main category
                                                     if (cat !== "Face Care") setIsFilterOpen(false); // Close drawer if not Face Care
                                                 }}
-                                                className={`text-left px-6 py-4 rounded-2xl text-[11px] font-black tracking-widest transition-all uppercase italic border ${
+                                                className={`text-left px-6 py-4 rounded-full text-[11px] font-medium tracking-wider transition-all uppercase font-sans not-italic border ${
                                                     selectedCategory === cat 
-                                                    ? 'bg-black text-white border-black shadow-xl' 
-                                                    : 'bg-zinc-50 text-gray-400 border-transparent'
+                                                    ? 'bg-zinc-900 text-white border-zinc-900 shadow-md' 
+                                                    : 'bg-zinc-50 text-zinc-500 border-transparent hover:bg-zinc-100'
                                                 }`}
                                             >
                                                 {cat}
@@ -367,9 +371,9 @@ const Products = () => {
                                                                 setSearchQuery(sub);
                                                                 setIsFilterOpen(false); // Close drawer after fine selection
                                                             }}
-                                                            className={`text-left px-4 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest italic transition-all border ${
+                                                            className={`text-left px-4 py-2.5 rounded-full text-[10px] font-medium uppercase tracking-wider transition-all font-sans not-italic border ${
                                                                 searchQuery === sub 
-                                                                ? 'bg-[#007aff] text-white border-[#007aff] shadow-md' 
+                                                                ? 'bg-[#007aff] text-white border-[#007aff] shadow-sm font-semibold' 
                                                                 : 'bg-zinc-50/50 text-zinc-400 border-zinc-100'
                                                             }`}
                                                         >
@@ -384,16 +388,16 @@ const Products = () => {
                             </div>
 
                             <div>
-                                <h3 className="text-[10px] font-black uppercase tracking-widest text-[#007aff] mb-6">Order By</h3>
+                                <h3 className="text-[11px] font-semibold uppercase tracking-[0.15em] text-zinc-800 mb-6 font-sans not-italic">Order By</h3>
                                 <div className="grid grid-cols-1 gap-4">
                                     {["Newest", "Price: Low to High", "Price: High to Low"].map(opt => (
                                         <button 
                                             key={opt}
                                             onClick={() => {setSortBy(opt); setIsFilterOpen(false);}}
-                                            className={`text-left px-6 py-4 rounded-2xl text-[11px] font-black tracking-widest transition-all uppercase italic border ${
+                                            className={`text-left px-6 py-4 rounded-full text-[11px] font-medium tracking-wider transition-all uppercase font-sans not-italic border ${
                                                 sortBy === opt 
-                                                ? 'bg-black text-white border-black' 
-                                                : 'bg-zinc-50 text-gray-400 border-transparent'
+                                                ? 'bg-zinc-900 text-white border-zinc-900 shadow-md' 
+                                                : 'bg-zinc-50 text-zinc-500 border-transparent hover:bg-zinc-100'
                                             }`}
                                         >
                                             {opt}
@@ -405,7 +409,7 @@ const Products = () => {
 
                         <button 
                             onClick={() => setIsFilterOpen(false)}
-                            className="w-full bg-black text-white py-6 rounded-full text-[11px] font-black uppercase tracking-[0.2em] italic shadow-2xl shadow-black/20"
+                            className="w-full bg-zinc-900 text-white py-6 rounded-full text-[11px] font-semibold uppercase tracking-[0.2em] shadow-2xl shadow-black/20 hover:bg-black transition-all font-sans not-italic"
                         >
                             Apply Filters
                         </button>
