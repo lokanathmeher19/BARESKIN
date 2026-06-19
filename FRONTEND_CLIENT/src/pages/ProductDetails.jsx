@@ -982,7 +982,7 @@ const ProductDetails = () => {
             </div>
         </div>
         {/* MOBILE STICKY ACTION BAR (Amazon/Flipkart Style) */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 p-3 flex gap-3 z-[250] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 px-3 pt-3 pb-4 safe-bottom flex gap-3 z-[250] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
             <button 
                 onClick={() => {
                     if (product.sizes && product.sizes.length > 0 && !selectedSize) {
