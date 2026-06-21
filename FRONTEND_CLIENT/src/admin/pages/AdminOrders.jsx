@@ -213,6 +213,7 @@ const AdminOrders = () => {
             
             <footer className="py-10 text-center">
                 <p className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-300 italic">Order Management System v4.2.0</p>
+                <p className="text-[10px] font-bold text-[#007aff] uppercase tracking-widest text-center italic mt-2">Developed by Lokanath Meher.</p>
             </footer>
         </div>
     );

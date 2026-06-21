@@ -75,7 +75,8 @@ const Footer = () => {
             {/* Bottom Bar */}
             <div className="max-w-[1440px] mx-auto px-6 lg:px-12 pt-12 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-10">
                 <p className="text-zinc-300 text-[9px] font-black tracking-[0.4em] uppercase italic text-center md:text-left">
-                    &copy; {new Date().getFullYear()} BareSkin Skincare. Secure Shopping Experience.
+                    &copy; {new Date().getFullYear()} BareSkin Skincare. Secure Shopping Experience. <br/>
+                    <span className="text-[#007aff]">Developed by Lokanath Meher.</span>
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-8 md:gap-10">
                     {['Visa', 'Mastercard', 'UPI', 'PayPal'].map((pay) => (
