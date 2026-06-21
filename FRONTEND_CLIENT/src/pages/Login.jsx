@@ -1,12 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import api from '../utils/api';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const { login, logout } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -85,14 +87,28 @@ const Login = () => {
                 </div>
                 <div>
                     <label className="block text-[10px] font-medium  tracking-[0.3em] text-gray-400 mb-3 ml-1 ">Password</label>
-                    <input 
-                        type="password" 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full bg-gray-50/50 border-none rounded-2xl px-6 py-4.5 text-[13px] font-normal focus:ring-2 focus:ring-[#007aff]/20 outline-none transition-all placeholder:text-gray-300"
-                        placeholder="••••••••"
-                        required
-                    />
+                    <div className="relative">
+                        <input 
+                            type={showPassword ? "text" : "password"} 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full bg-gray-50/50 border-none rounded-2xl px-6 py-4.5 text-[13px] font-normal focus:ring-2 focus:ring-[#007aff]/20 outline-none transition-all placeholder:text-gray-300 pr-12"
+                            placeholder="••••••••"
+                            required
+                        />
+                        <button 
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
+                        >
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                    </div>
+                    <div className="flex justify-end mt-2">
+                        <Link to="/forgot-password" className="text-[10px] text-gray-400 hover:text-[#007aff] transition-colors tracking-widest">
+                            Forgot Password?
+                        </Link>
+                    </div>
                 </div>
                 
                 <button type="submit" className="w-full bg-black text-white hover:bg-[#007aff] transition-all duration-500 py-5 rounded-2xl  tracking-[0.25em] text-[11px] font-medium shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_-10px_rgba(0,122,255,0.3)] transform hover:-translate-y-1 active:scale-95">

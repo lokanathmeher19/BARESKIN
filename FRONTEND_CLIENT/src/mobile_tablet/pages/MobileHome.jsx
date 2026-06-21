@@ -177,7 +177,7 @@ const MobileHome = () => {
                             .slice(0, 5)
                             .map(product => (
                                 <div key={product._id} className="w-[160px] shrink-0">
-                                    <ProductCard product={product} />
+                                    <ProductCard product={product} viewMode="small" />
                                 </div>
                             ))
                     ) : (
@@ -204,7 +204,7 @@ const MobileHome = () => {
                             .sort((a, b) => (b.rating || 0) - (a.rating || 0))
                             .slice(0, 6)
                             .map(product => (
-                                <ProductCard key={product._id} product={product} />
+                                <ProductCard key={product._id} product={product} viewMode="small" />
                             ))
                     ) : (
                         <div className="col-span-2 py-20 bg-zinc-50 border border-dashed border-zinc-200 rounded-2xl flex items-center justify-center">

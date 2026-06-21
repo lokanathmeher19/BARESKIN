@@ -1,12 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import api from '../../utils/api';
 
 const MobileLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
     const { login, logout } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -79,14 +81,28 @@ const MobileLogin = () => {
                     />
                 </div>
                 <div>
-                    <input 
-                        type="password" 
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="w-full bg-zinc-50 border-2 border-transparent focus:border-[#007aff]/20 rounded-2xl px-5 py-4 text-xs font-black italic outline-none transition-all placeholder:text-zinc-300 placeholder:not-italic"
-                        placeholder="PASSWORD"
-                        required
-                    />
+                    <div className="relative">
+                        <input 
+                            type={showPassword ? "text" : "password"} 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full bg-zinc-50 border-2 border-transparent focus:border-[#007aff]/20 rounded-2xl px-5 py-4 text-xs font-black italic outline-none transition-all placeholder:text-zinc-300 placeholder:not-italic pr-12"
+                            placeholder="PASSWORD"
+                            required
+                        />
+                        <button 
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-black transition-colors"
+                        >
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                    </div>
+                    <div className="flex justify-end mt-2">
+                        <Link to="/forgot-password" className="text-[9px] font-black uppercase text-zinc-400 hover:text-[#007aff] transition-colors tracking-widest">
+                            Forgot Password?
+                        </Link>
+                    </div>
                 </div>
                 
                 <button type="submit" className="w-full bg-black text-white active:scale-95 transition-transform py-4 rounded-2xl tracking-widest text-[10px] font-black uppercase italic shadow-lg">

@@ -9,6 +9,8 @@ import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Checkout from './pages/Checkout';
 import MyOrders from './pages/MyOrders';
 import Profile from './pages/Profile';
@@ -36,6 +38,8 @@ import MobileTheLab from './mobile_tablet/pages/MobileTheLab';
 import MobileWishlist from './mobile_tablet/pages/MobileWishlist';
 import MobileLogin from './mobile_tablet/pages/MobileLogin';
 import MobileRegister from './mobile_tablet/pages/MobileRegister';
+import MobileForgotPassword from './mobile_tablet/pages/MobileForgotPassword';
+import MobileResetPassword from './mobile_tablet/pages/MobileResetPassword';
 import MobileCheckout from './mobile_tablet/pages/MobileCheckout';
 import MobileMyOrders from './mobile_tablet/pages/MobileMyOrders';
 import MobileIngredientAnalyzer from './mobile_tablet/pages/MobileIngredientAnalyzer';
@@ -83,6 +87,8 @@ function App() {
           <Routes>
             <Route path="/login" element={isMobileOrTablet ? <MobileLogin /> : <Login />} />
             <Route path="/register" element={isMobileOrTablet ? <MobileRegister /> : <Register />} />
+            <Route path="/forgot-password" element={isMobileOrTablet ? <MobileForgotPassword /> : <ForgotPassword />} />
+            <Route path="/reset-password/:token" element={isMobileOrTablet ? <MobileResetPassword /> : <ResetPassword />} />
             
             <Route path="/" element={isMobileOrTablet ? <MobileHome /> : <Home />} />
             <Route path="/products" element={isMobileOrTablet ? <MobileProducts /> : <Products />} />
@@ -154,7 +160,7 @@ function App() {
             {/* Catch-all 404 Route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-          {!isAdminArea && isMobileOrTablet && <MobileFooter />}
+          {!isAdminArea && isMobileOrTablet && !['/login', '/register', '/profile', '/wishlist', '/cart', '/checkout', '/my-orders'].includes(location.pathname) && <MobileFooter />}
         </main>
         {!isAdminArea && !isMobileOrTablet && <RecentlyViewed />}
         {!isAdminArea && !isMobileOrTablet && <Footer />}

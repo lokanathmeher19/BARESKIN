@@ -8,7 +8,7 @@ const MobileWishlist = () => {
     const { wishlist } = useContext(WishlistContext);
 
     return (
-        <div className="pt-24 pb-32 px-4 bg-white min-h-screen">
+        <div className="pt-8 px-4 bg-white min-h-screen">
             <div className="mb-6 flex justify-between items-end">
                 <div>
                     <span className="text-[9px] font-black text-zinc-400 uppercase tracking-widest block">Saved Items</span>
@@ -22,7 +22,7 @@ const MobileWishlist = () => {
             {wishlist.length > 0 ? (
                 <div className="grid grid-cols-2 gap-3">
                     {wishlist.map(product => (
-                        <ProductCard key={product._id} product={product} />
+                        <ProductCard key={product._id} product={product} viewMode="small" />
                     ))}
                 </div>
             ) : (

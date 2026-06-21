@@ -112,7 +112,7 @@ const MobileProfile = () => {
     };
 
     return (
-        <div className="pt-24 pb-32 px-4 bg-white min-h-screen">
+        <div className="pt-8 px-4 bg-white min-h-screen">
             {/* Header User Card */}
             <div className="bg-zinc-50 border border-zinc-100 rounded-3xl p-5 mb-6 flex items-center gap-4">
                 <div className="w-16 h-16 bg-[#007aff]/5 border border-[#007aff]/10 rounded-2xl flex items-center justify-center text-[#007aff]">
