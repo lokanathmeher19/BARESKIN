@@ -63,7 +63,6 @@ import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const location = useLocation();
-  const { } = useContext(AuthContext);
   const isAdminArea = location.pathname.startsWith('/admin');
   const { isMobileOrTablet } = useDevice();
 

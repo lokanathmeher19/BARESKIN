@@ -56,8 +56,6 @@ const cleanserSlides = [
 
 const Home = () => {
     const { products, loading } = useContext(ProductContext);
-    const { user } = useContext(AuthContext);
-    const { } = useContext(WishlistContext);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [cleanserIndex, setCleanserIndex] = useState(0);
 

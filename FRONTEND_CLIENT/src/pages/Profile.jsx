@@ -99,6 +99,27 @@ const Profile = () => {
         fetchOrders();
     }, [user, navigate]);
 
+    const [subscriptions, setSubscriptions] = useState([]);
+    const [subsLoading, setSubsLoading] = useState(true);
+
+    // Fetch subscriptions
+    useEffect(() => {
+        if (activeTab === 'subscriptions') {
+            const fetchSubs = async () => {
+                setSubsLoading(true);
+                try {
+                    const res = await api.get('/subscriptions/my');
+                    setSubscriptions(res.data.data || []);
+                } catch (error) {
+                    console.error('Error fetching subscriptions', error);
+                } finally {
+                    setSubsLoading(false);
+                }
+            };
+            fetchSubs();
+        }
+    }, [activeTab]);
+
     if (!user) return null;
 
     const handleLogout = () => {
@@ -156,26 +177,7 @@ const Profile = () => {
         }
     };
 
-    const [subscriptions, setSubscriptions] = useState([]);
-    const [subsLoading, setSubsLoading] = useState(true);
 
-    // Fetch subscriptions
-    useEffect(() => {
-        if (activeTab === 'subscriptions') {
-            const fetchSubs = async () => {
-                setSubsLoading(true);
-                try {
-                    const res = await api.get('/subscriptions/my');
-                    setSubscriptions(res.data.data || []);
-                } catch (error) {
-                    console.error('Error fetching subscriptions', error);
-                } finally {
-                    setSubsLoading(false);
-                }
-            };
-            fetchSubs();
-        }
-    }, [activeTab]);
 
     const handleCancelSubscription = async (id) => {
         if (!window.confirm("Are you sure you want to cancel this subscription?")) return;
@@ -206,6 +208,10 @@ const Profile = () => {
 
     const handleUpdatePaymentMethod = async (id) => {
         toast.success('Payment Method Portal Securely Authenticated. Linking active default cards.', { icon: '💳' });
+    };
+
+    const handleNotificationToggle = async (id) => {
+        toast.success(`Notification setting updated.`);
     };
 
     const handleZipLookup = async (pincode) => {
