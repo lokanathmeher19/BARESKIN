@@ -21,7 +21,18 @@ import LegalPage from './pages/LegalPage';
 import RecentlyViewed from './components/RecentlyViewed';
 import Compare from './pages/Compare';
 
-
+// Mobile and Tablet Optimized Experience Imports
+import { useDevice } from './utils/useDevice';
+import MobileNavbar from './mobile_tablet/components/MobileNavbar';
+import MobileBottomNav from './mobile_tablet/components/MobileBottomNav';
+import MobileHome from './mobile_tablet/pages/MobileHome';
+import MobileProducts from './mobile_tablet/pages/MobileProducts';
+import MobileProductDetails from './mobile_tablet/pages/MobileProductDetails';
+import MobileCart from './mobile_tablet/pages/MobileCart';
+import MobileProfile from './mobile_tablet/pages/MobileProfile';
+import MobileSkinQuiz from './mobile_tablet/pages/MobileSkinQuiz';
+import MobileTheLab from './mobile_tablet/pages/MobileTheLab';
+import MobileWishlist from './mobile_tablet/pages/MobileWishlist';
 
 import { AuthContext } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
@@ -54,23 +65,25 @@ function App() {
   const location = useLocation();
   const { } = useContext(AuthContext);
   const isAdminArea = location.pathname.startsWith('/admin');
+  const { isMobileOrTablet } = useDevice();
 
   return (
     <HelmetProvider>
       <ScrollToTop />
       <div className={`flex flex-col min-h-screen bg-white text-black font-sans ${isAdminArea ? 'overflow-hidden' : ''}`}>
-        {!isAdminArea && <Navbar />}
-        <main className={`${isAdminArea ? 'flex-grow' : 'flex-grow pt-[120px] sm:pt-40 lg:pt-48 pb-[70px] lg:pb-0'}`}>
+        {!isAdminArea && (isMobileOrTablet ? <MobileNavbar /> : <Navbar />)}
+        <main className={`${isAdminArea ? 'flex-grow' : isMobileOrTablet ? 'flex-grow pt-[50px] pb-[80px]' : 'flex-grow pt-[120px] sm:pt-40 lg:pt-48 pb-[70px] lg:pb-0'}`}>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/skin-quiz" element={<SkinQuiz />} />
+            
+            <Route path="/" element={isMobileOrTablet ? <MobileHome /> : <Home />} />
+            <Route path="/products" element={isMobileOrTablet ? <MobileProducts /> : <Products />} />
+            <Route path="/product/:id" element={isMobileOrTablet ? <MobileProductDetails /> : <ProductDetails />} />
+            <Route path="/cart" element={isMobileOrTablet ? <MobileCart /> : <Cart />} />
+            <Route path="/skin-quiz" element={isMobileOrTablet ? <MobileSkinQuiz /> : <SkinQuiz />} />
             <Route path="/analyze-ingredients" element={<IngredientAnalyzer />} />
-            <Route path="/the-lab" element={<TheLab />} />
+            <Route path="/the-lab" element={isMobileOrTablet ? <MobileTheLab /> : <TheLab />} />
             <Route path="/ar-tryon" element={<ARTryOn />} />
             <Route path="/compare" element={<Compare />} />
             
@@ -78,8 +91,8 @@ function App() {
             <Route element={<PrivateRoute />}>
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/my-orders" element={<MyOrders />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/profile" element={isMobileOrTablet ? <MobileProfile /> : <Profile />} />
+                <Route path="/wishlist" element={isMobileOrTablet ? <MobileWishlist /> : <Wishlist />} />
             </Route>
             {/* Legal Routes */}
             <Route path="/privacy-policy" element={
@@ -135,9 +148,9 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
-        {!isAdminArea && <RecentlyViewed />}
-        {!isAdminArea && <Footer />}
-        {!isAdminArea && <BottomNav />}
+        {!isAdminArea && !isMobileOrTablet && <RecentlyViewed />}
+        {!isAdminArea && !isMobileOrTablet && <Footer />}
+        {!isAdminArea && (isMobileOrTablet ? <MobileBottomNav /> : <BottomNav />)}
         <ChatBubble />
         <Toaster position="bottom-right" reverseOrder={false} />
       </div>
