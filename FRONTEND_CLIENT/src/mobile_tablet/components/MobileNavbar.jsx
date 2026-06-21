@@ -71,7 +71,7 @@ const MobileNavbar = () => {
     };
 
     return (
-        <header className="w-full fixed top-0 z-[100] transition-all duration-300">
+        <header className="w-full fixed top-0 z-[100] transition-all duration-300 safe-top">
             {/* Top Offer Banner */}
             <div className="bg-black text-white h-8 flex items-center justify-center overflow-hidden relative">
                 {banners.map((text, idx) => (

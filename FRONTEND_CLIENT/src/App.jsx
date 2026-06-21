@@ -25,6 +25,7 @@ import Compare from './pages/Compare';
 import { useDevice } from './utils/useDevice';
 import MobileNavbar from './mobile_tablet/components/MobileNavbar';
 import MobileBottomNav from './mobile_tablet/components/MobileBottomNav';
+import MobileFooter from './mobile_tablet/components/MobileFooter';
 import MobileHome from './mobile_tablet/pages/MobileHome';
 import MobileProducts from './mobile_tablet/pages/MobileProducts';
 import MobileProductDetails from './mobile_tablet/pages/MobileProductDetails';
@@ -33,6 +34,13 @@ import MobileProfile from './mobile_tablet/pages/MobileProfile';
 import MobileSkinQuiz from './mobile_tablet/pages/MobileSkinQuiz';
 import MobileTheLab from './mobile_tablet/pages/MobileTheLab';
 import MobileWishlist from './mobile_tablet/pages/MobileWishlist';
+import MobileLogin from './mobile_tablet/pages/MobileLogin';
+import MobileRegister from './mobile_tablet/pages/MobileRegister';
+import MobileCheckout from './mobile_tablet/pages/MobileCheckout';
+import MobileMyOrders from './mobile_tablet/pages/MobileMyOrders';
+import MobileIngredientAnalyzer from './mobile_tablet/pages/MobileIngredientAnalyzer';
+import MobileARTryOn from './mobile_tablet/pages/MobileARTryOn';
+import MobileCompare from './mobile_tablet/pages/MobileCompare';
 
 import { AuthContext } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
@@ -73,23 +81,23 @@ function App() {
         {!isAdminArea && (isMobileOrTablet ? <MobileNavbar /> : <Navbar />)}
         <main className={`${isAdminArea ? 'flex-grow' : isMobileOrTablet ? 'flex-grow pt-[50px] pb-[80px]' : 'flex-grow pt-[120px] sm:pt-40 lg:pt-48 pb-[70px] lg:pb-0'}`}>
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={isMobileOrTablet ? <MobileLogin /> : <Login />} />
+            <Route path="/register" element={isMobileOrTablet ? <MobileRegister /> : <Register />} />
             
             <Route path="/" element={isMobileOrTablet ? <MobileHome /> : <Home />} />
             <Route path="/products" element={isMobileOrTablet ? <MobileProducts /> : <Products />} />
             <Route path="/product/:id" element={isMobileOrTablet ? <MobileProductDetails /> : <ProductDetails />} />
             <Route path="/cart" element={isMobileOrTablet ? <MobileCart /> : <Cart />} />
             <Route path="/skin-quiz" element={isMobileOrTablet ? <MobileSkinQuiz /> : <SkinQuiz />} />
-            <Route path="/analyze-ingredients" element={<IngredientAnalyzer />} />
+            <Route path="/analyze-ingredients" element={isMobileOrTablet ? <MobileIngredientAnalyzer /> : <IngredientAnalyzer />} />
             <Route path="/the-lab" element={isMobileOrTablet ? <MobileTheLab /> : <TheLab />} />
-            <Route path="/ar-tryon" element={<ARTryOn />} />
-            <Route path="/compare" element={<Compare />} />
+            <Route path="/ar-tryon" element={isMobileOrTablet ? <MobileARTryOn /> : <ARTryOn />} />
+            <Route path="/compare" element={isMobileOrTablet ? <MobileCompare /> : <Compare />} />
             
             {/* Protected User Routes */}
             <Route element={<PrivateRoute />}>
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/my-orders" element={<MyOrders />} />
+                <Route path="/checkout" element={isMobileOrTablet ? <MobileCheckout /> : <Checkout />} />
+                <Route path="/my-orders" element={isMobileOrTablet ? <MobileMyOrders /> : <MyOrders />} />
                 <Route path="/profile" element={isMobileOrTablet ? <MobileProfile /> : <Profile />} />
                 <Route path="/wishlist" element={isMobileOrTablet ? <MobileWishlist /> : <Wishlist />} />
             </Route>
@@ -146,6 +154,7 @@ function App() {
             {/* Catch-all 404 Route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          {!isAdminArea && isMobileOrTablet && <MobileFooter />}
         </main>
         {!isAdminArea && !isMobileOrTablet && <RecentlyViewed />}
         {!isAdminArea && !isMobileOrTablet && <Footer />}
