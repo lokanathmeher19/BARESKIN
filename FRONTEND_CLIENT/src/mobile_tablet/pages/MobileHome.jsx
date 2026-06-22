@@ -351,14 +351,14 @@ const MobileHome = () => {
                         { name: "Emily R.", review: "Finally a serum that actually hydrates without feeling sticky.", rating: 5 },
                         { name: "Jessica T.", review: "The beauty bundle is the best value. My skin has never looked better.", rating: 5 }
                     ].map((item, i) => (
-                        <div key={i} className="w-[85%] shrink-0 snap-center bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div key={i} className="w-[260px] sm:w-[320px] shrink-0 snap-start bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10 flex flex-col justify-between">
                             <div>
-                                <div className="flex gap-1 mb-4">
-                                    {[...Array(item.rating)].map((_, j) => <Star key={j} size={12} className="fill-[#007aff] text-[#007aff]" />)}
+                                <div className="flex gap-1 mb-3">
+                                    {[...Array(item.rating)].map((_, j) => <Star key={j} size={10} className="fill-[#007aff] text-[#007aff]" />)}
                                 </div>
-                                <p className="text-sm leading-relaxed text-zinc-300 italic mb-6">"{item.review}"</p>
+                                <p className="text-[12px] sm:text-sm leading-relaxed text-zinc-300 italic mb-5">"{item.review}"</p>
                             </div>
-                            <span className="text-[9px] font-black uppercase tracking-widest text-zinc-500">- {item.name} <span className="text-[#007aff] ml-1">✓ Verified</span></span>
+                            <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-zinc-500">- {item.name} <span className="text-[#007aff] ml-1">✓ Verified</span></span>
                         </div>
                     ))}
                 </div>
