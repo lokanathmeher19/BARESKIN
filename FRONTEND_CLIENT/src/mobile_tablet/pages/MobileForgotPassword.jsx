@@ -15,7 +15,10 @@ const MobileForgotPassword = () => {
         setLoading(true);
 
         try {
-            const res = await api.post('/auth/forgotpassword', { email });
+            const res = await api.post('/auth/forgotpassword', { 
+                email,
+                frontendUrl: window.location.origin
+            });
             setMessage(res.data.message || 'Check your email for the reset link.');
         } catch (err) {
             setError(err.response?.data?.message || 'Error sending email');

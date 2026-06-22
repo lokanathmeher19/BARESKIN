@@ -322,8 +322,9 @@ const forgotPassword = async (req, res, next) => {
     await user.save();
 
     // Create reset url
-    // For localhost development, assume frontend is running on 5173
-    const resetUrl = `${req.protocol}://${req.hostname}:5173/reset-password/${resetToken}`;
+    // Use the frontendUrl passed from the client if available, so it works perfectly across devices (e.g. mobile phones accessing the local IP)
+    const baseUrl = req.body.frontendUrl || `${req.protocol}://${req.hostname}:5173`;
+    const resetUrl = `${baseUrl}/reset-password/${resetToken}`;
 
     const message = `
       <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto;">
