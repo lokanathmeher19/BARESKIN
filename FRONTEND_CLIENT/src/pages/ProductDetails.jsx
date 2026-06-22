@@ -727,7 +727,7 @@ const ProductDetails = () => {
                             <tbody className="divide-y divide-zinc-50">
                                 {[
                                     { label: 'Customer Rating', val: `${(product.rating || 0).toFixed(1)}/5`, alt: '4.1/5', pro: '4.8/5' },
-                                    { label: 'Price', val: `${formatPrice(basePrice)}`, alt: '{formatPrice(650)}', pro: '{formatPrice(1,240)}' },
+                                    { label: 'Price', val: `${formatPrice(basePrice)}`, alt: formatPrice(650), pro: formatPrice(1240) },
                                     { label: 'Sold by', val: 'BareSkin Official', alt: 'CloudTail', pro: 'BareSkin Premium' },
                                     { label: 'Natural Ingredients', val: '98%', alt: '85%', pro: '100%' },
                                     { label: 'pH Balanced', val: 'Yes', alt: 'Yes', pro: 'Yes' },

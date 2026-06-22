@@ -60,7 +60,7 @@ async function run() {
             console.error('Response Status:', error.response.status);
             console.error('Response Data:', error.response.data);
         } else {
-            console.error(error.message);
+            console.error(error.message || error);
         }
     } finally {
         mongoose.disconnect();
