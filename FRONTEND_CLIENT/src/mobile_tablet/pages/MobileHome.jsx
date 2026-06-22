@@ -380,10 +380,10 @@ const MobileHome = () => {
                         { title: "Morning routine for glowing skin", category: "Routine", read: "3 min read", img: bodyCareImg }
                     ].map((post, i) => (
                         <Link key={i} to="/the-lab" className="flex items-center gap-4 group active:scale-[0.98] transition-transform bg-white p-3 rounded-2xl shadow-[0_4px_15px_-5px_rgba(0,0,0,0.05)] border border-zinc-50">
-                            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0">
-                                <img src={post.img} className="w-full h-full object-cover" />
+                            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-zinc-100">
+                                <img src={post.img} alt={post.title} className="w-full h-full object-cover" />
                             </div>
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-1 flex-1 min-w-0">
                                 <span className="text-[7px] font-black uppercase tracking-widest text-[#007aff]">{post.category}</span>
                                 <h4 className="text-xs font-bold leading-tight text-black group-hover:text-[#007aff] transition-colors line-clamp-2">{post.title}</h4>
                                 <span className="text-[9px] text-zinc-400 font-medium">{post.read}</span>
