@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ProductContext } from '../../context/ProductContext';
-import { Sparkles, ArrowRight, Activity, Target, ShieldCheck, Leaf, ChevronRight } from 'lucide-react';
+import { Sparkles, ArrowRight, Activity, Target, ShieldCheck, Leaf, ChevronRight, Search, Clock, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../../components/ProductCard';
 
@@ -35,31 +35,56 @@ const heroSlides = [
     }
 ];
 
+const cleanserSlides = [
+    {
+        title: "Cleanse Without Stripping",
+        desc: "Our Salicylic Acid cleanser removes oil and dirt without damaging your skin barrier.",
+        img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=800&q=80",
+        label: "Soap-Free Formula"
+    },
+    {
+        title: "Pore-Deep Optimization",
+        desc: "2% Active BHA targets blackheads and congested pores for a clearer complexion.",
+        img: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80",
+        label: "Dermatological Grade"
+    }
+];
+
 const MobileHome = () => {
     const { products, loading } = useContext(ProductContext);
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [cleanserIndex, setCleanserIndex] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1));
         }, 5000);
-        return () => clearInterval(timer);
-    }, []);
+        
+        const cleanserTimer = setInterval(() => {
+            setCleanserIndex((prev) => (prev === cleanserSlides.length -1 ? 0 : prev + 1));
+        }, 5000);
 
-    if (loading) return (
-        <div className="flex h-screen items-center justify-center bg-white">
-            <div className="flex flex-col items-center">
-                <div className="w-12 h-1 bg-zinc-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-[#007aff] animate-loading-bar w-0"></div>
-                </div>
-            </div>
-        </div>
-    );
+        return () => {
+            clearInterval(timer);
+            clearInterval(cleanserTimer);
+        };
+    }, []);
 
     const activeSlide = heroSlides[currentSlide];
 
     return (
         <div className="w-full bg-white pb-20 overflow-x-hidden">
+            {/* Prominent Search Bar */}
+            <div className="px-4 pt-6 pb-4 bg-zinc-50 relative z-20">
+                <div className="relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
+                    <input 
+                        type="text" 
+                        placeholder="Search for products, concerns..." 
+                        className="w-full bg-white border border-zinc-200 pl-12 pr-4 py-3.5 rounded-full text-[11px] font-medium focus:outline-none focus:border-[#007aff] shadow-sm transition-colors"
+                    />
+                </div>
+            </div>
             {/* Dynamic Swipeable Hero Banner */}
             <div className="relative h-[480px] bg-zinc-50 flex flex-col justify-end p-6 overflow-hidden">
                 <div className="absolute inset-0 z-0">
@@ -146,6 +171,88 @@ const MobileHome = () => {
                 ))}
             </div>
 
+            {/* Shop by Concern */}
+            <div className="py-8 px-4 border-b border-zinc-100">
+                <div className="text-center mb-6">
+                    <h3 className="text-xl font-black uppercase text-black">Shop By Concern</h3>
+                    <p className="text-[9px] text-zinc-500 uppercase tracking-widest mt-1">Targeted solutions for your skin</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                    {[
+                        { title: "Acne & Blemishes", desc: "Clear & Prevent", color: "bg-blue-50/50" },
+                        { title: "Anti-Aging", desc: "Firm & Smooth", color: "bg-purple-50/50" },
+                        { title: "Hydration", desc: "Plump & Nourish", color: "bg-cyan-50/50" },
+                        { title: "Glow", desc: "Brighten & Even", color: "bg-orange-50/50" }
+                    ].map((concern, i) => (
+                        <Link key={i} to={`/products?category=${concern.title}`} className={`${concern.color} p-4 rounded-2xl flex flex-col items-start gap-1 border border-zinc-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] active:scale-95 transition-transform`}>
+                            <h4 className="text-[11px] font-black uppercase text-black">{concern.title}</h4>
+                            <span className="text-[8px] uppercase tracking-widest text-zinc-500">{concern.desc}</span>
+                        </Link>
+                    ))}
+                </div>
+            </div>
+
+            {/* Flash Sale / Deal of the Day */}
+            <div className="py-8 bg-[#007aff]/5">
+                <div className="px-4 flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-2">
+                        <div className="bg-[#007aff] text-white p-1.5 rounded-lg animate-pulse shadow-md">
+                            <Clock size={14} />
+                        </div>
+                        <div>
+                            <span className="text-[8px] font-black uppercase tracking-widest text-[#007aff] block">Limited Time</span>
+                            <h3 className="text-xl font-black uppercase text-black">Flash Sale</h3>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-full shadow-sm border border-zinc-100">
+                        <span className="text-[10px] font-bold text-[#007aff]">04</span><span className="text-[10px] text-zinc-400">:</span>
+                        <span className="text-[10px] font-bold text-[#007aff]">12</span><span className="text-[10px] text-zinc-400">:</span>
+                        <span className="text-[10px] font-bold text-[#007aff]">35</span>
+                    </div>
+                </div>
+                <div className="flex overflow-x-auto gap-4 pb-4 no-scrollbar -mx-4 px-4">
+                    {loading ? (
+                        <div className="flex gap-4">
+                            {[1, 2].map(i => <div key={i} className="w-[180px] shrink-0 h-[240px] bg-white rounded-2xl animate-pulse shadow-sm border border-zinc-100" />)}
+                        </div>
+                    ) : products && products.length > 2 ? (
+                        [...products].slice(2, 4).map(product => (
+                            <div key={product._id} className="w-[180px] shrink-0 relative">
+                                <div className="absolute top-2 right-2 z-10 bg-[#ff3b30] text-white px-2.5 py-1 rounded-full text-[8px] font-black tracking-widest shadow-md">-40%</div>
+                                <ProductCard product={product} viewMode="small" />
+                            </div>
+                        ))
+                    ) : (
+                        <span className="text-[10px] text-zinc-400 pl-4">Loading deals...</span>
+                    )}
+                </div>
+            </div>
+
+            {/* Cleanser Focus Bento (Mobile Adapted) */}
+            <div className="mx-4 my-6 bg-white rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-gray-50 overflow-hidden">
+                <div className="relative h-[250px] w-full bg-zinc-100">
+                    <img 
+                        src={cleanserSlides[cleanserIndex].img} 
+                        alt="Cleanser Showcase" 
+                        className="w-full h-full object-cover transition-transform duration-1000"
+                    />
+                    <div className="absolute top-4 left-4 bg-black text-white px-3 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest shadow-lg">
+                        New Arrival
+                    </div>
+                </div>
+                <div className="p-6 flex flex-col gap-3">
+                    <h3 className="text-2xl font-black leading-tight text-black">
+                        {cleanserSlides[cleanserIndex].title}
+                    </h3>
+                    <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">
+                        {cleanserSlides[cleanserIndex].desc}
+                    </p>
+                    <button className="mt-2 w-full bg-black text-white py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2">
+                        Buy Now <ArrowRight size={14} />
+                    </button>
+                </div>
+            </div>
+
             {/* Interactive Skin Quiz Card */}
             <div className="mx-4 my-6 bg-gradient-to-r from-[#007aff] to-[#0055b3] text-white p-6 rounded-3xl relative overflow-hidden shadow-xl">
                 <div className="absolute right-0 top-0 opacity-10 translate-x-4 -translate-y-4">
@@ -172,7 +279,13 @@ const MobileHome = () => {
                     </div>
                 </div>
                 <div className="flex overflow-x-auto gap-4 pb-4 no-scrollbar -mx-4 px-4">
-                    {products && products.length > 0 ? (
+                    {loading ? (
+                        <div className="flex gap-4">
+                            {[1, 2, 3].map(i => (
+                                <div key={i} className="w-[160px] shrink-0 h-[220px] bg-zinc-100 animate-pulse rounded-2xl"></div>
+                            ))}
+                        </div>
+                    ) : products && products.length > 0 ? (
                         [...products]
                             .slice(0, 5)
                             .map(product => (
@@ -181,7 +294,7 @@ const MobileHome = () => {
                                 </div>
                             ))
                     ) : (
-                        <div className="w-full py-10 text-center text-xs text-zinc-400">Loading new drops...</div>
+                        <div className="w-full py-10 text-center text-xs text-zinc-400">No new drops found.</div>
                     )}
                 </div>
             </div>
@@ -199,7 +312,13 @@ const MobileHome = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
-                    {products && products.length > 0 ? (
+                    {loading ? (
+                        <div className="col-span-2 grid grid-cols-2 gap-3">
+                            {[1, 2, 3, 4].map(i => (
+                                <div key={i} className="h-[220px] bg-zinc-100 animate-pulse rounded-2xl"></div>
+                            ))}
+                        </div>
+                    ) : products && products.length > 0 ? (
                         [...products]
                             .sort((a, b) => (b.rating || 0) - (a.rating || 0))
                             .slice(0, 6)
@@ -208,9 +327,77 @@ const MobileHome = () => {
                             ))
                     ) : (
                         <div className="col-span-2 py-20 bg-zinc-50 border border-dashed border-zinc-200 rounded-2xl flex items-center justify-center">
-                            <span className="text-[10px] font-bold uppercase text-zinc-400">Loading Products...</span>
+                            <span className="text-[10px] font-bold uppercase text-zinc-400">No Products found.</span>
                         </div>
                     )}
+                </div>
+            </div>
+
+            {/* Premium Promo Section */}
+            <div className="px-4 pb-6">
+                <div className="w-full h-[200px] relative rounded-3xl overflow-hidden shadow-xl group">
+                    <img src={beautyPromoImg} alt="Beauty Promotion" className="w-full h-full object-cover group-active:scale-105 transition-all duration-700" />
+                    <div className="absolute inset-0 bg-black/30"></div>
+                    <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                        <span className="text-white/80 text-[9px] font-black uppercase tracking-widest mb-1">Exclusive Bundle</span>
+                        <h3 className="text-white text-2xl font-black uppercase leading-tight mb-3">The Beauty <br/> Essentials</h3>
+                        <Link to="/products?category=Beauty" className="self-start px-5 py-2 bg-white text-black rounded-full text-[9px] font-black uppercase tracking-widest">
+                            Shop Now
+                        </Link>
+                    </div>
+                </div>
+            </div>
+
+            {/* Social Proof / Reviews */}
+            <div className="py-8 bg-[#111] text-white overflow-hidden mt-6 mb-2 mx-2 rounded-3xl shadow-2xl">
+                <div className="px-4 mb-6">
+                    <span className="text-[8px] font-black uppercase tracking-widest text-[#007aff] block mb-1">Real Results</span>
+                    <h3 className="text-2xl font-black uppercase leading-none">Loved By<br/>Thousands</h3>
+                </div>
+                <div className="flex overflow-x-auto gap-4 pb-4 no-scrollbar px-4">
+                    {[
+                        { name: "Sarah M.", review: "The salicylic cleanser completely cleared my texture in 2 weeks. Obsessed!", rating: 5 },
+                        { name: "Emily R.", review: "Finally a serum that actually hydrates without feeling sticky.", rating: 5 },
+                        { name: "Jessica T.", review: "The beauty bundle is the best value. My skin has never looked better.", rating: 5 }
+                    ].map((item, i) => (
+                        <div key={i} className="w-[240px] shrink-0 bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10">
+                            <div className="flex gap-1 mb-3">
+                                {[...Array(item.rating)].map((_, j) => <Star key={j} size={10} className="fill-[#007aff] text-[#007aff]" />)}
+                            </div>
+                            <p className="text-[11px] leading-relaxed text-zinc-300 italic mb-4">"{item.review}"</p>
+                            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-500">- {item.name} <span className="text-[#007aff] ml-1">✓ Verified</span></span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* The Lab Highlights */}
+            <div className="py-10 px-4">
+                <div className="flex items-center justify-between mb-6">
+                    <div>
+                        <span className="text-[8px] font-black uppercase tracking-widest text-[#007aff] block">Education</span>
+                        <h3 className="text-xl font-black uppercase text-black">The Lab</h3>
+                    </div>
+                    <Link to="/the-lab" className="px-4 py-2 bg-zinc-100 rounded-full text-[9px] font-bold text-zinc-600 uppercase tracking-widest hover:bg-zinc-200 transition-colors">
+                        Read All
+                    </Link>
+                </div>
+                <div className="flex flex-col gap-4">
+                    {[
+                        { title: "How to layer active acids", category: "Guide", read: "4 min read", img: "https://images.unsplash.com/photo-1556228720-192a6af4e86e?auto=format&fit=crop&w=400&q=80" },
+                        { title: "Morning routine for glowing skin", category: "Routine", read: "3 min read", img: "https://images.unsplash.com/photo-1615397323862-5883654406fc?auto=format&fit=crop&w=400&q=80" }
+                    ].map((post, i) => (
+                        <Link key={i} to="/the-lab" className="flex items-center gap-4 group active:scale-[0.98] transition-transform bg-white p-3 rounded-2xl shadow-[0_4px_15px_-5px_rgba(0,0,0,0.05)] border border-zinc-50">
+                            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0">
+                                <img src={post.img} className="w-full h-full object-cover" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <span className="text-[7px] font-black uppercase tracking-widest text-[#007aff]">{post.category}</span>
+                                <h4 className="text-xs font-bold leading-tight text-black group-hover:text-[#007aff] transition-colors line-clamp-2">{post.title}</h4>
+                                <span className="text-[9px] text-zinc-400 font-medium">{post.read}</span>
+                            </div>
+                        </Link>
+                    ))}
                 </div>
             </div>
 
