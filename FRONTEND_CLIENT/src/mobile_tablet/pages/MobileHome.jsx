@@ -74,17 +74,6 @@ const MobileHome = () => {
 
     return (
         <div className="w-full bg-white pb-20 overflow-x-hidden">
-            {/* Prominent Search Bar */}
-            <div className="px-4 pt-6 pb-4 bg-zinc-50 relative z-20">
-                <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={16} />
-                    <input 
-                        type="text" 
-                        placeholder="Search for products, concerns..." 
-                        className="w-full bg-white border border-zinc-200 pl-12 pr-4 py-3.5 rounded-full text-[11px] font-medium focus:outline-none focus:border-[#007aff] shadow-sm transition-colors"
-                    />
-                </div>
-            </div>
             {/* Dynamic Swipeable Hero Banner */}
             <div className="relative h-[480px] bg-zinc-50 flex flex-col justify-end p-6 overflow-hidden">
                 <div className="absolute inset-0 z-0">

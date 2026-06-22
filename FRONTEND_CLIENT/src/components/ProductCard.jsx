@@ -139,7 +139,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
     return (
         <div 
             onClick={() => navigate(`/product/${product._id}`)}
-            className={`flex flex-col bg-white h-full relative cursor-pointer border border-zinc-100/50 hover:border-zinc-200 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500 group rounded-[2rem] overflow-hidden font-sans ${isSmall ? 'p-3' : 'p-4 sm:p-6'}`}
+            className={`flex flex-col bg-white h-full relative cursor-pointer border border-zinc-100/50 hover:border-zinc-200 hover:shadow-lg transition-all duration-500 group overflow-hidden font-sans ${isSmall ? 'rounded-2xl p-2.5' : 'rounded-[2rem] p-4 sm:p-6'}`}
         >
             {/* Top Right: Wishlist */}
             <button 
@@ -150,72 +150,60 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
             </button>
 
             {/* Image Section */}
-            <div className={`relative mb-4 ${isSmall ? 'h-32 sm:h-40' : 'h-40 sm:h-48 md:h-64'} bg-[#fcfcfd] rounded-2xl p-4 md:p-6 overflow-hidden border border-zinc-100/50`}>
+            <div className={`relative mb-3 ${isSmall ? 'h-28 sm:h-32 p-2 rounded-xl' : 'h-40 sm:h-48 md:h-64 p-4 md:p-6 rounded-2xl'} bg-[#fcfcfd] overflow-hidden border border-zinc-100/50`}>
                 <img 
                     src={product.image} 
                     alt={product.name} 
-                    className="w-full h-full object-contain mix-blend-darken scale-90 group-hover:scale-95 transition-transform duration-700"
+                    className="w-full h-full object-contain mix-blend-darken scale-95 group-hover:scale-100 transition-transform duration-700"
                 />
             </div>
 
             {/* Content Section */}
             <div className="flex flex-col flex-grow font-sans">
+                {/* Brand / Mini Info */}
+                <span className={`text-[#007aff] font-bold uppercase tracking-widest mb-1 ${isSmall ? 'text-[8px]' : 'text-[10px]'}`}>
+                    {product.brand || 'BareSkin'}
+                </span>
+
                 {/* Title */}
-                <h3 className={`text-zinc-900 font-medium mb-2 line-clamp-2 leading-snug tracking-tight font-sans ${isSmall ? 'text-[13px]' : 'text-[16px]'}`}>
+                <h3 className={`text-zinc-900 font-bold mb-1.5 line-clamp-2 leading-snug tracking-tight font-sans ${isSmall ? 'text-[11px]' : 'text-[16px]'}`}>
                     {product.name}
                 </h3>
 
                 {/* Rating & Reviews */}
-                <div className="flex items-center gap-2 mb-3">
-                    <div className="flex items-center gap-1 bg-zinc-900 text-white px-2 py-0.5 rounded-full text-[10px] font-semibold">
-                        {product.rating || '4.3'} <Star size={8} className="fill-white text-white" />
+                <div className={`flex items-center gap-1.5 mb-2.5 ${isSmall ? '' : 'mb-3'}`}>
+                    <div className="flex items-center gap-0.5">
+                        <Star size={isSmall ? 10 : 12} className="fill-[#007aff] text-[#007aff]" />
+                        <span className={`font-bold text-zinc-900 ${isSmall ? 'text-[10px]' : 'text-xs'}`}>{product.rating || '4.3'}</span>
                     </div>
-                    <span className="text-zinc-400 text-[10px] font-medium">({(product.numReviews || 0).toLocaleString()})</span>
-                    <div className="flex items-center gap-1 text-zinc-400 ml-auto">
-                         <ShieldCheck size={14} />
-                         <span className="text-[9px] uppercase font-semibold tracking-wider">Assured</span>
-                    </div>
+                    <span className={`text-zinc-400 font-medium ${isSmall ? 'text-[9px]' : 'text-[10px]'}`}>({(product.numReviews || 0).toLocaleString()})</span>
+                    {!isSmall && (
+                        <div className="flex items-center gap-1 text-zinc-400 ml-auto">
+                            <ShieldCheck size={14} />
+                            <span className="text-[9px] uppercase font-semibold tracking-wider">Assured</span>
+                        </div>
+                    )}
                 </div>
 
                 {/* Pricing Section */}
-                <div className="flex items-baseline gap-2 mb-3">
-                    <span className={`font-light text-zinc-900 ${isSmall ? 'text-lg' : 'text-2xl'}`}>{formatPrice(product.price)}</span>
+                <div className="flex items-baseline gap-1.5 mb-2">
+                    <span className={`font-black text-zinc-900 ${isSmall ? 'text-sm' : 'text-2xl'}`}>{formatPrice(product.price)}</span>
                     {product.discountPercentage > 0 && (
                         <>
-                            <span className="text-zinc-400 line-through text-[12px]">{formatPrice(Math.round(product.price / (1 - product.discountPercentage / 100)))}</span>
-                            <span className="text-rose-600 font-semibold text-[11px] uppercase tracking-wider">{product.discountPercentage}% OFF</span>
+                            <span className={`text-zinc-400 line-through ${isSmall ? 'text-[9px]' : 'text-[12px]'}`}>{formatPrice(Math.round(product.price / (1 - product.discountPercentage / 100)))}</span>
+                            <span className={`text-rose-600 font-black uppercase tracking-wider ${isSmall ? 'text-[8px]' : 'text-[11px]'}`}>{product.discountPercentage}% OFF</span>
                         </>
                     )}
                 </div>
 
-                {/* Offers */}
-                <div className="space-y-1 mb-4">
-                    {product.promoTag && (
-                        <p className="text-rose-600 text-[10px] font-medium tracking-wide">{product.promoTag}</p>
-                    )}
-                    {product.badgeText ? (
-                        <span className="bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full text-[8px] font-semibold uppercase tracking-wider inline-block border border-rose-100">{product.badgeText}</span>
-                    ) : product.price < 500 ? (
-                        <p className="text-zinc-400 text-[9px] font-medium uppercase tracking-wider">Free Delivery</p>
-                    ) : null}
-                </div>
-
-                {/* Quick Buy & Cart */}
-                <div className="mt-auto pt-3 transition-all duration-300 opacity-100">
-                    <div className="flex gap-2">
-                        <button 
-                            onClick={handleAddToCart}
-                            className="flex-1 py-2.5 bg-zinc-50 text-zinc-800 text-[10px] font-semibold uppercase tracking-wider rounded-full hover:bg-zinc-100 transition-all border border-zinc-100/80"
-                        >
-                            + Cart
-                        </button>
-                        <button 
-                            onClick={handleBuyNow}
-                            className="flex-1 py-2.5 bg-zinc-900 text-white text-[10px] font-semibold uppercase tracking-wider rounded-full hover:bg-black transition-all shadow-sm shadow-black/5"
-                        >
-                            Buy Now
-                        </button>
-                    </div>
+                {/* Quick Add Button */}
+                <div className="mt-auto pt-2">
+                    <button 
+                        onClick={handleAddToCart}
+                        className={`w-full bg-white border border-zinc-200 text-zinc-900 font-black uppercase tracking-widest rounded-xl hover:bg-zinc-50 transition-all ${isSmall ? 'py-1.5 text-[9px]' : 'py-2.5 text-[10px]'}`}
+                    >
+                        Add to bag
+                    </button>
                 </div>
             </div>
             
