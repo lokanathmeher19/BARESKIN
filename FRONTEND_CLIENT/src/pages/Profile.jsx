@@ -104,21 +104,21 @@ const Profile = () => {
 
     // Fetch subscriptions
     useEffect(() => {
-        if (activeTab === 'subscriptions') {
-            const fetchSubs = async () => {
-                setSubsLoading(true);
-                try {
-                    const res = await api.get('/subscriptions/my');
-                    setSubscriptions(res.data.data || []);
-                } catch (error) {
-                    console.error('Error fetching subscriptions', error);
-                } finally {
-                    setSubsLoading(false);
-                }
-            };
-            fetchSubs();
-        }
-    }, [activeTab]);
+        const fetchSubs = async () => {
+            setSubsLoading(true);
+            try {
+                const res = await api.get('/subscriptions/my');
+                setSubscriptions(res.data.data || []);
+            } catch (error) {
+                console.error('Error fetching subscriptions', error);
+            } finally {
+                setSubsLoading(false);
+            }
+        };
+        fetchSubs();
+    }, []);
+
+    const isPremium = subscriptions.some(sub => sub.status === 'Active');
 
     if (!user) return null;
 
@@ -296,7 +296,7 @@ const Profile = () => {
                             <h1 className="text-2xl sm:text-3xl font-black uppercase italic tracking-tight break-words max-w-[250px] sm:max-w-none">{user.name}</h1>
                             <div className="flex items-center justify-center md:justify-start gap-2 mt-1">
                                 <p className="text-[10px] sm:text-xs font-bold text-zinc-400 tracking-[0.3em] uppercase italic">
-                                    {user.isAdmin ? 'Site Administrator' : 'Premium Member'}
+                                    {user.isAdmin ? 'Site Administrator' : (isPremium ? 'Premium Member' : 'Standard Member')}
                                 </p>
                                 <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase italic tracking-widest ${
                                     (user.points || 0) > 2000 ? 'bg-zinc-900 text-yellow-400' : 
