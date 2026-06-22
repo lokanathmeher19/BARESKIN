@@ -338,23 +338,27 @@ const MobileHome = () => {
             </div>
 
             {/* Social Proof / Reviews */}
-            <div className="py-8 bg-[#111] text-white overflow-hidden mt-6 mb-2 mx-2 rounded-3xl shadow-2xl">
+            <div className="py-8 bg-[#111] text-white overflow-hidden mt-6 mb-2 mx-2 rounded-3xl shadow-2xl relative">
                 <div className="px-4 mb-6">
                     <span className="text-[8px] font-black uppercase tracking-widest text-[#007aff] block mb-1">Real Results</span>
                     <h3 className="text-2xl font-black uppercase leading-none">Loved By<br/>Thousands</h3>
                 </div>
-                <div className="flex overflow-x-auto gap-4 pb-4 no-scrollbar px-4">
+                
+                {/* Native CSS Carousel */}
+                <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 no-scrollbar px-4">
                     {[
                         { name: "Sarah M.", review: "The salicylic cleanser completely cleared my texture in 2 weeks. Obsessed!", rating: 5 },
                         { name: "Emily R.", review: "Finally a serum that actually hydrates without feeling sticky.", rating: 5 },
                         { name: "Jessica T.", review: "The beauty bundle is the best value. My skin has never looked better.", rating: 5 }
                     ].map((item, i) => (
-                        <div key={i} className="w-[240px] shrink-0 bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10">
-                            <div className="flex gap-1 mb-3">
-                                {[...Array(item.rating)].map((_, j) => <Star key={j} size={10} className="fill-[#007aff] text-[#007aff]" />)}
+                        <div key={i} className="w-[85%] shrink-0 snap-center bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 flex flex-col justify-between">
+                            <div>
+                                <div className="flex gap-1 mb-4">
+                                    {[...Array(item.rating)].map((_, j) => <Star key={j} size={12} className="fill-[#007aff] text-[#007aff]" />)}
+                                </div>
+                                <p className="text-sm leading-relaxed text-zinc-300 italic mb-6">"{item.review}"</p>
                             </div>
-                            <p className="text-[11px] leading-relaxed text-zinc-300 italic mb-4">"{item.review}"</p>
-                            <span className="text-[8px] font-black uppercase tracking-widest text-zinc-500">- {item.name} <span className="text-[#007aff] ml-1">✓ Verified</span></span>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-zinc-500">- {item.name} <span className="text-[#007aff] ml-1">✓ Verified</span></span>
                         </div>
                     ))}
                 </div>
