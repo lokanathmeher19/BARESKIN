@@ -338,27 +338,26 @@ const MobileHome = () => {
             </div>
 
             {/* Social Proof / Reviews */}
-            <div className="py-8 bg-[#111] text-white overflow-hidden mt-6 mb-2 mx-2 rounded-3xl shadow-2xl relative">
+            <div className="py-8 bg-[#111] text-white mt-6 mb-2 mx-2 rounded-3xl shadow-2xl relative">
                 <div className="px-4 mb-6">
                     <span className="text-[8px] font-black uppercase tracking-widest text-[#007aff] block mb-1">Real Results</span>
                     <h3 className="text-2xl font-black uppercase leading-none">Loved By<br/>Thousands</h3>
                 </div>
                 
-                {/* Native CSS Carousel */}
-                <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 no-scrollbar px-4">
+                <div className="flex flex-col sm:flex-row sm:overflow-x-auto sm:snap-x sm:snap-mandatory gap-4 pb-2 px-4 no-scrollbar">
                     {[
                         { name: "Sarah M.", review: "The salicylic cleanser completely cleared my texture in 2 weeks. Obsessed!", rating: 5 },
                         { name: "Emily R.", review: "Finally a serum that actually hydrates without feeling sticky.", rating: 5 },
                         { name: "Jessica T.", review: "The beauty bundle is the best value. My skin has never looked better.", rating: 5 }
                     ].map((item, i) => (
-                        <div key={i} className="w-[260px] sm:w-[320px] shrink-0 snap-start bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10 flex flex-col justify-between">
+                        <div key={i} className="w-full sm:w-[280px] shrink-0 sm:snap-start bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/10 flex flex-col justify-between">
                             <div>
                                 <div className="flex gap-1 mb-3">
                                     {[...Array(item.rating)].map((_, j) => <Star key={j} size={10} className="fill-[#007aff] text-[#007aff]" />)}
                                 </div>
-                                <p className="text-[12px] sm:text-sm leading-relaxed text-zinc-300 italic mb-5">"{item.review}"</p>
+                                <p className="text-[12px] leading-relaxed text-zinc-300 italic mb-5">"{item.review}"</p>
                             </div>
-                            <span className="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-zinc-500">- {item.name} <span className="text-[#007aff] ml-1">✓ Verified</span></span>
+                            <span className="text-[9px] font-black uppercase tracking-widest text-zinc-500">- {item.name} <span className="text-[#007aff] ml-1">✓ Verified</span></span>
                         </div>
                     ))}
                 </div>
@@ -377,8 +376,8 @@ const MobileHome = () => {
                 </div>
                 <div className="flex flex-col gap-4">
                     {[
-                        { title: "How to layer active acids", category: "Guide", read: "4 min read", img: "https://images.unsplash.com/photo-1556228720-192a6af4e86e?auto=format&fit=crop&w=400&q=80" },
-                        { title: "Morning routine for glowing skin", category: "Routine", read: "3 min read", img: "https://images.unsplash.com/photo-1615397323862-5883654406fc?auto=format&fit=crop&w=400&q=80" }
+                        { title: "How to layer active acids", category: "Guide", read: "4 min read", img: skinCareImg },
+                        { title: "Morning routine for glowing skin", category: "Routine", read: "3 min read", img: bodyCareImg }
                     ].map((post, i) => (
                         <Link key={i} to="/the-lab" className="flex items-center gap-4 group active:scale-[0.98] transition-transform bg-white p-3 rounded-2xl shadow-[0_4px_15px_-5px_rgba(0,0,0,0.05)] border border-zinc-50">
                             <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0">
