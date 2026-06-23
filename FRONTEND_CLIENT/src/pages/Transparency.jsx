@@ -66,7 +66,7 @@ const Transparency = () => {
                 {/* Blacklist */}
                 <div className="bg-black text-white rounded-3xl p-10 md:p-12 relative overflow-hidden">
                     <div className="absolute -top-24 -right-24 text-white/5">
-                        <Microscopic size={300} strokeWidth={0.5} />
+                        <Microscope size={300} strokeWidth={0.5} />
                     </div>
                     <div className="relative z-10">
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#007aff] italic mb-6 block">The Blacklist</span>
