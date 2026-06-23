@@ -27,6 +27,17 @@ const ProductDetails = () => {
     const { addToCart } = useContext(CartContext);
     const { user } = useContext(AuthContext);
 
+    // New Features States
+    const [buyersCount] = useState(() => Math.floor(Math.random() * 40) + 10);
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [recentlyViewedItems, setRecentlyViewedItems] = useState([]);
+
+    useEffect(() => {
+        const handleScroll = () => setIsScrolled(window.scrollY > 600);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     // Cross-Selling Bundle
     const bundleProduct1 = relatedProducts[0];
     const bundleProduct2 = relatedProducts[1];
@@ -188,6 +199,8 @@ const ProductDetails = () => {
                 // Update Recently Viewed
                 const saved = localStorage.getItem('recentlyViewed');
                 let history = saved ? JSON.parse(saved) : [];
+                setRecentlyViewedItems(history.filter(item => item._id !== productData._id));
+
                 history = history.filter(item => item._id !== productData._id);
                 history.unshift({ _id: productData._id, name: productData.name, image: productData.image, price: productData.price });
                 if (history.length > 10) history = history.slice(0, 10);
@@ -237,6 +250,41 @@ const ProductDetails = () => {
                 <meta property="og:type" content="product" />
                 <meta name="twitter:card" content="summary_large_image" />
             </Helmet>
+
+            {/* Desktop Sticky Add to Cart Header */}
+            <div className={`hidden lg:flex fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-b border-zinc-200 shadow-sm z-[200] px-10 py-3 items-center justify-between transition-transform duration-500 ${isScrolled ? 'translate-y-0' : '-translate-y-full'}`}>
+                <div className="flex items-center gap-4">
+                    <img src={product.image} className="w-12 h-12 object-contain rounded-lg border border-zinc-100 bg-white" alt="thumb" />
+                    <div>
+                        <h4 className="text-sm font-bold text-zinc-900 truncate max-w-md">{product.name}</h4>
+                        <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-xs font-bold text-zinc-500">{formatPrice(price)}</span>
+                            <span className="text-[10px] font-bold text-yellow-500 uppercase tracking-widest flex items-center gap-1"><Star size={10} className="fill-yellow-500"/> {(product.rating || 0).toFixed(1)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex items-center gap-6">
+                    {product.sizes && product.sizes.length > 0 && (
+                        <select 
+                            value={selectedSize} 
+                            onChange={(e) => setSelectedSize(e.target.value)}
+                            className="bg-zinc-50 border border-zinc-200 text-xs font-bold uppercase p-2 rounded outline-none"
+                        >
+                            {product.sizes.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                    )}
+                    <button 
+                        onClick={() => {
+                            if (product.sizes && product.sizes.length > 0 && !selectedSize) return toast.error('Select size');
+                            addToCart({ ...product, selectedSize, isSubscription, price }, 1);
+                            toast.success('Added to cart!');
+                        }}
+                        className="bg-black hover:bg-[#007aff] text-white px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest transition-colors shadow-lg shadow-black/10"
+                    >
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
 
             {/* Top Navigation Bar */}
             <div className="fixed top-0 left-0 right-0 z-[110] bg-white/80 backdrop-blur-xl border-b border-zinc-100 px-6 py-4 md:px-10 flex justify-between items-center lg:hidden">
@@ -324,6 +372,12 @@ const ProductDetails = () => {
                             <div className="flex items-center gap-2 mt-6">
                                 <ShieldCheck size={20} className="text-[#007aff]" />
                                 <span className="text-sm font-black text-[#007aff] italic uppercase tracking-wider">BareSkin. Assured Listing</span>
+                            </div>
+
+                            {/* Social Proof Banner */}
+                            <div className="mt-4 inline-flex items-center gap-2 bg-orange-50 border border-orange-100 text-orange-600 px-3 py-1.5 rounded-lg animate-pulse-slow">
+                                <Zap size={14} className="fill-orange-600" />
+                                <span className="text-[10px] font-bold uppercase tracking-widest italic">🔥 {buyersCount} people bought this in the last 24 hours</span>
                             </div>
                         </div>
 
@@ -968,6 +1022,31 @@ const ProductDetails = () => {
                                         <h4 className="text-sm font-black italic uppercase text-zinc-400 group-hover:text-black transition-colors">{p.name}</h4>
                                         <span className="text-xs font-black italic mt-2 block">{formatPrice(p.price)}</span>
                                     </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Recently Viewed Items Section */}
+                {recentlyViewedItems.length > 0 && (
+                    <div className="mt-32 pt-20 border-t border-zinc-100">
+                        <div className="flex items-center gap-2 mb-10">
+                            <RefreshCw size={18} className="text-[#007aff]" />
+                            <h3 className="text-xl font-bold text-zinc-900 uppercase tracking-widest italic">Recently Viewed By You</h3>
+                        </div>
+                        <div className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x">
+                            {recentlyViewedItems.map(item => (
+                                <div 
+                                    key={item._id} 
+                                    onClick={() => navigate(`/product/${item._id}`)}
+                                    className="min-w-[160px] md:min-w-[200px] flex-shrink-0 cursor-pointer group snap-start"
+                                >
+                                    <div className="aspect-square bg-zinc-50 rounded-2xl overflow-hidden border border-zinc-100 relative mb-4">
+                                        <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" alt={item.name} />
+                                    </div>
+                                    <h4 className="text-xs font-bold text-zinc-600 group-hover:text-black transition-colors line-clamp-1">{item.name}</h4>
+                                    <span className="text-[10px] font-black italic mt-1 block">{formatPrice(item.price)}</span>
                                 </div>
                             ))}
                         </div>
