@@ -73,20 +73,22 @@ const MobileNavbar = () => {
     return (
         <header className="w-full fixed top-0 z-[100] transition-all duration-300 safe-top">
             {/* Top Offer Banner */}
-            <div className="bg-black text-white h-8 flex items-center justify-center overflow-hidden relative">
-                {banners.map((text, idx) => (
-                    <div 
-                        key={idx}
-                        className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                            idx === msgIndex ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'
-                        }`}
-                    >
-                        <span className="text-[9px] font-black uppercase tracking-[0.25em] text-center px-4">
-                            {renderBannerText(text)}
-                        </span>
-                    </div>
-                ))}
-            </div>
+            {!scrolled && (
+                <div className="bg-black text-white h-9 flex items-center justify-center overflow-hidden relative transition-all duration-300">
+                    {banners.map((text, idx) => (
+                        <div 
+                            key={idx}
+                            className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                                idx === msgIndex ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'
+                            }`}
+                        >
+                            <span className="text-[8px] xs:text-[9px] font-black uppercase tracking-[0.25em] text-center px-4">
+                                {renderBannerText(text)}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            )}
 
             {/* Float Nav Header */}
             <nav className={`px-4 py-3 flex flex-col gap-3 transition-all duration-300 ${

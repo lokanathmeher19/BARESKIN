@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import BackButton from '../components/BackButton';
-import { Beaker, ShieldCheck, Leaf, Microscopic } from 'lucide-react';
+import { Beaker, ShieldCheck, Leaf, Microscope } from 'lucide-react';
 
 const Transparency = () => {
     return (
