@@ -76,14 +76,15 @@ import ScrollToTop from './components/ScrollToTop';
 function App() {
   const location = useLocation();
   const isAdminArea = location.pathname.startsWith('/admin');
+  const isProductPage = location.pathname.startsWith('/product/');
   const { isMobileOrTablet } = useDevice();
 
   return (
     <HelmetProvider>
       <ScrollToTop />
       <div className={`flex flex-col min-h-screen bg-white text-black font-sans ${isAdminArea ? 'overflow-hidden' : ''}`}>
-        {!isAdminArea && (isMobileOrTablet ? <MobileNavbar /> : <Navbar />)}
-        <main className={`${isAdminArea ? 'flex-grow' : isMobileOrTablet ? 'flex-grow pt-[140px] pb-[80px]' : 'flex-grow pt-[120px] sm:pt-40 lg:pt-48 pb-[70px] lg:pb-0'}`}>
+        {!isAdminArea && (isMobileOrTablet ? (!isProductPage && <MobileNavbar />) : <Navbar />)}
+        <main className={`${isAdminArea ? 'flex-grow' : isMobileOrTablet ? (isProductPage ? 'flex-grow pb-[80px]' : 'flex-grow pt-[140px] pb-[80px]') : 'flex-grow pt-[120px] sm:pt-40 lg:pt-48 pb-[70px] lg:pb-0'}`}>
           <Routes>
             <Route path="/login" element={isMobileOrTablet ? <MobileLogin /> : <Login />} />
             <Route path="/register" element={isMobileOrTablet ? <MobileRegister /> : <Register />} />
