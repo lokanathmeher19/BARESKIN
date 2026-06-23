@@ -22,6 +22,10 @@ import Wishlist from './pages/Wishlist';
 import LegalPage from './pages/LegalPage';
 import RecentlyViewed from './components/RecentlyViewed';
 import Compare from './pages/Compare';
+import About from './pages/About';
+import Transparency from './pages/Transparency';
+import FAQ from './pages/FAQ';
+import Contact from './pages/Contact';
 
 // Mobile and Tablet Optimized Experience Imports
 import { useDevice } from './utils/useDevice';
@@ -68,6 +72,7 @@ import AdminLogin from './admin/pages/Login';
 import ManageBanners from './admin/pages/ManageBanners';
 import AdminPromos from './admin/pages/AdminPromos';
 import AbandonedCarts from './admin/pages/AbandonedCarts';
+import ContactMessages from './admin/pages/ContactMessages';
 
 import { HelmetProvider } from 'react-helmet-async';
 import NotFound from './pages/NotFound';
@@ -108,6 +113,13 @@ function App() {
                 <Route path="/profile" element={isMobileOrTablet ? <MobileProfile /> : <Profile />} />
                 <Route path="/wishlist" element={isMobileOrTablet ? <MobileWishlist /> : <Wishlist />} />
             </Route>
+
+            {/* Informational Routes */}
+            <Route path="/about" element={<About />} />
+            <Route path="/transparency" element={<Transparency />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contact" element={<Contact />} />
+
             {/* Legal Routes */}
             <Route path="/privacy-policy" element={
                 <LegalPage 
@@ -154,6 +166,7 @@ function App() {
                 <Route path="banners" element={<ManageBanners />} />
                 <Route path="subscriptions" element={<AdminSubscriptions />} />
                 <Route path="promos" element={<AdminPromos />} />
+                <Route path="queries" element={<ContactMessages />} />
                 <Route path="abandoned-carts" element={<AbandonedCarts />} />
               </Route>
             </Route>

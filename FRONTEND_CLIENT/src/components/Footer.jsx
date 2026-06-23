@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, Mail, MapPin, Phone } from 'lucide-react';
+import { Globe, Mail, MapPin, Phone, ArrowRight } from 'lucide-react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const Footer = () => {
+    const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    const handleSubscribe = async (e) => {
+        e.preventDefault();
+        if (!email) return;
+        setLoading(true);
+        try {
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/newsletter`, { email });
+            toast.success(res.data.message || 'Subscribed to newsletter!');
+            setEmail('');
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to subscribe');
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <footer className="bg-white border-t border-zinc-100 pt-24 md:pt-32 pb-12 overflow-hidden">
             <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-12 lg:gap-24 mb-24 text-center md:text-left">
@@ -15,13 +34,34 @@ const Footer = () => {
                     <p className="text-gray-400 text-[10px] md:text-[11px] font-black tracking-[0.05em] uppercase italic leading-loose max-w-sm">
                         Experience transparency in dermatologically-tested skincare. Developed with premium ingredients for visible results.
                     </p>
-                    <div className="flex items-center gap-8 mt-4">
+                    <div className="flex items-center gap-8 mt-2">
                         <Link to="#" className="text-zinc-200 hover:text-[#007aff] transition-all transform hover:-translate-y-1">
                             <Globe size={20} strokeWidth={1.5} />
                         </Link>
                         <Link to="#" className="text-zinc-200 hover:text-[#007aff] transition-all transform hover:-translate-y-1">
                             <Mail size={20} strokeWidth={1.5} />
                         </Link>
+                    </div>
+
+                    {/* Newsletter Subscription */}
+                    <div className="mt-4 w-full">
+                        <span className="text-[9px] font-black uppercase tracking-widest text-zinc-400 italic mb-3 block">Join our Newsletter</span>
+                        <form onSubmit={handleSubscribe} className="relative max-w-sm">
+                            <input 
+                                type="email" 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Enter your email" 
+                                className="w-full bg-zinc-50 border border-zinc-200 text-xs italic font-bold text-black px-4 py-3 rounded-xl focus:outline-none focus:border-black transition-colors"
+                            />
+                            <button 
+                                type="submit" 
+                                disabled={loading}
+                                className="absolute right-2 top-2 bottom-2 bg-black text-white px-3 rounded-lg flex items-center justify-center hover:bg-[#007aff] transition-colors disabled:opacity-50"
+                            >
+                                <ArrowRight size={14} />
+                            </button>
+                        </form>
                     </div>
                 </div>
 

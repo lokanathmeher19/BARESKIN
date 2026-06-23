@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, PlusCircle, ShoppingCart, Users, LogOut, ArrowRight, ExternalLink, X } from 'lucide-react';
+import { LayoutDashboard, Package, PlusCircle, ShoppingCart, Users, LogOut, ArrowRight, ExternalLink, X, Mail } from 'lucide-react';
 import { AuthContext } from '../../context/AuthContext';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -19,6 +19,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         { path: '/admin/users', icon: <Users size={20} />, label: 'Users' },
         { path: '/admin/banners', icon: <PlusCircle size={20} />, label: 'Offer Banners' },
         { path: '/admin/promos', icon: <PlusCircle size={20} />, label: 'Promo Codes' },
+        { path: '/admin/queries', icon: <Mail size={20} />, label: 'Customer Queries' },
         { path: '/admin/abandoned-carts', icon: <ShoppingCart size={20} />, label: 'Abandoned Carts' },
     ];
 

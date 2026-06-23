@@ -42,6 +42,8 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/banners', require('./routes/bannerRoutes'));
 app.use('/api/subscriptions', require('./routes/subscriptionRoutes'));
 app.use('/api/promos', require('./routes/promoRoutes'));
+app.use('/api/contact', require('./routes/contactRoutes'));
+app.use('/api/newsletter', require('./routes/newsletterRoutes'));
 
 // Generic Error Handler Middleware
 app.use((err, req, res, next) => {

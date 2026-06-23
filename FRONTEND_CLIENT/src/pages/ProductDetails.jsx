@@ -1028,6 +1028,157 @@ const ProductDetails = () => {
                     </div>
                 )}
 
+                {/* CUSTOMER REVIEWS */}
+                <div className="mt-32 pt-20 border-t border-zinc-100 animate-fade-in">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+                        <div>
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#007aff] italic mb-4 block">Real Results</span>
+                            <h2 className="text-4xl font-black italic uppercase tracking-tighter">Customer <span className="text-zinc-300">Reviews</span></h2>
+                            <div className="flex items-center gap-3 mt-4">
+                                <div className="flex items-center">
+                                    {[1,2,3,4,5].map((s) => (
+                                        <Star key={s} size={20} className={s <= Math.floor(product.rating || 0) ? "fill-yellow-400 text-yellow-400" : "text-zinc-200 fill-zinc-200"} />
+                                    ))}
+                                </div>
+                                <span className="text-sm font-bold italic">{(product.rating || 0).toFixed(1)} out of 5</span>
+                                <span className="text-xs text-zinc-400">({product.numReviews || 0} reviews)</span>
+                            </div>
+                        </div>
+                        <button 
+                            onClick={() => {
+                                if (!user) {
+                                    toast.error("Please login to write a review");
+                                    navigate('/login');
+                                    return;
+                                }
+                                setShowReviewForm(!showReviewForm);
+                            }}
+                            className="bg-black text-white px-8 py-4 rounded-full text-xs font-black uppercase tracking-widest italic hover:bg-[#007aff] transition-colors shadow-lg shadow-black/10 flex items-center gap-2"
+                        >
+                            <Plus size={16} /> {showReviewForm ? 'Cancel Review' : 'Write a Review'}
+                        </button>
+                    </div>
+
+                    {/* Review Form */}
+                    {showReviewForm && (
+                        <div className="bg-zinc-50 rounded-3xl p-8 md:p-12 mb-16 border border-zinc-100 animate-fade-in">
+                            <h3 className="text-xl font-black uppercase italic tracking-tight mb-8">Share your experience</h3>
+                            <form onSubmit={submitReviewHandler} className="space-y-6">
+                                <div>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 block">Overall Rating</label>
+                                    <select 
+                                        value={rating} 
+                                        onChange={(e) => setRating(Number(e.target.value))}
+                                        className="w-full max-w-xs bg-white border border-zinc-200 px-4 py-3 rounded-xl text-sm font-bold italic focus:border-black outline-none"
+                                    >
+                                        <option value="5">5 - Excellent</option>
+                                        <option value="4">4 - Very Good</option>
+                                        <option value="3">3 - Average</option>
+                                        <option value="2">2 - Poor</option>
+                                        <option value="1">1 - Terrible</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 block">Your Review</label>
+                                    <textarea 
+                                        rows="4" 
+                                        required
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
+                                        placeholder="What did you love about this product?"
+                                        className="w-full bg-white border border-zinc-200 px-6 py-4 rounded-2xl text-sm italic focus:border-black outline-none resize-none"
+                                    ></textarea>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 block">Before Image URL (Optional)</label>
+                                        <input 
+                                            type="text" 
+                                            value={beforeImage}
+                                            onChange={(e) => setBeforeImage(e.target.value)}
+                                            placeholder="https://..."
+                                            className="w-full bg-white border border-zinc-200 px-6 py-4 rounded-xl text-xs italic focus:border-black outline-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-3 block">After Image URL (Optional)</label>
+                                        <input 
+                                            type="text" 
+                                            value={afterImage}
+                                            onChange={(e) => setAfterImage(e.target.value)}
+                                            placeholder="https://..."
+                                            className="w-full bg-white border border-zinc-200 px-6 py-4 rounded-xl text-xs italic focus:border-black outline-none"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="pt-4">
+                                    <button 
+                                        type="submit" 
+                                        disabled={submittingReview}
+                                        className="bg-[#007aff] text-white px-8 py-4 rounded-full text-xs font-black uppercase tracking-widest italic hover:bg-blue-700 transition-colors shadow-lg shadow-[#007aff]/20 disabled:opacity-50"
+                                    >
+                                        {submittingReview ? 'Submitting...' : 'Submit Review & Earn 50 Pts'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    )}
+
+                    {/* Review List */}
+                    <div className="space-y-6">
+                        {product.reviews && product.reviews.length === 0 ? (
+                            <div className="text-center py-12 bg-zinc-50 rounded-3xl border border-zinc-100">
+                                <p className="text-sm font-bold text-zinc-400 italic">No reviews yet. Be the first to share your experience!</p>
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {product.reviews?.map((rev, index) => (
+                                    <div key={index} className="bg-white p-8 rounded-3xl border border-zinc-100 shadow-sm space-y-4">
+                                        <div className="flex justify-between items-start">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 bg-zinc-100 rounded-full flex items-center justify-center text-zinc-500 font-black uppercase">
+                                                    {rev.name.charAt(0)}
+                                                </div>
+                                                <div>
+                                                    <h4 className="text-sm font-black italic">{rev.name}</h4>
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        <div className="flex">
+                                                            {[1,2,3,4,5].map((s) => (
+                                                                <Star key={s} size={12} className={s <= rev.rating ? "fill-yellow-400 text-yellow-400" : "text-zinc-200 fill-zinc-200"} />
+                                                            ))}
+                                                        </div>
+                                                        {rev.rating >= 4 && <span className="text-[8px] font-black text-green-500 uppercase tracking-widest bg-green-50 px-2 py-0.5 rounded">Verified Buyer</span>}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <span className="text-[10px] text-zinc-400 italic">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                                        </div>
+                                        <p className="text-sm text-zinc-600 leading-relaxed italic border-l-2 border-[#007aff]/30 pl-4">
+                                            "{rev.comment}"
+                                        </p>
+                                        {(rev.beforeImage || rev.afterImage) && (
+                                            <div className="flex gap-4 pt-4 mt-4 border-t border-zinc-50">
+                                                {rev.beforeImage && (
+                                                    <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-zinc-200">
+                                                        <div className="absolute top-0 left-0 bg-black/50 text-white text-[8px] font-bold px-2 py-0.5 rounded-br-lg z-10 backdrop-blur-sm uppercase tracking-widest">Before</div>
+                                                        <img src={rev.beforeImage} alt="Before" className="w-full h-full object-cover" />
+                                                    </div>
+                                                )}
+                                                {rev.afterImage && (
+                                                    <div className="relative w-24 h-24 rounded-xl overflow-hidden border border-zinc-200">
+                                                        <div className="absolute top-0 left-0 bg-[#007aff]/80 text-white text-[8px] font-bold px-2 py-0.5 rounded-br-lg z-10 backdrop-blur-sm uppercase tracking-widest">After</div>
+                                                        <img src={rev.afterImage} alt="After" className="w-full h-full object-cover" />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 {/* Recently Viewed Items Section */}
                 {recentlyViewedItems.length > 0 && (
                     <div className="mt-32 pt-20 border-t border-zinc-100">
