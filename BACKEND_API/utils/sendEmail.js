@@ -2,6 +2,9 @@ const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
     try {
+        // Create a transporter. In a real app, use SendGrid, Mailgun, or real SMTP credentials.
+        // Here we use Ethereal for testing, or simply log to console if no env vars.
+        
         let transporter;
         
         if (process.env.SMTP_HOST && process.env.SMTP_PORT) {
@@ -14,17 +17,16 @@ const sendEmail = async (options) => {
                 },
             });
         } else {
-            // Generate a test account on the fly if no real SMTP is provided
-            const testAccount = await nodemailer.createTestAccount();
-            transporter = nodemailer.createTransport({
-                host: "smtp.ethereal.email",
-                port: 587,
-                secure: false, // true for 465, false for other ports
-                auth: {
-                    user: testAccount.user, // generated ethereal user
-                    pass: testAccount.pass, // generated ethereal password
-                },
-            });
+            // Mock transporter if no SMTP configured
+            transporter = {
+                sendMail: async (mailOptions) => {
+                    console.log('====================================');
+                    console.log(`MOCK EMAIL SENT TO: ${mailOptions.to}`);
+                    console.log(`SUBJECT: ${mailOptions.subject}`);
+                    console.log('====================================');
+                    return { messageId: 'mock-id' };
+                }
+            };
         }
 
         const message = {
@@ -35,15 +37,7 @@ const sendEmail = async (options) => {
         };
 
         const info = await transporter.sendMail(message);
-        
-        if (!process.env.SMTP_HOST) {
-            console.log('====================================');
-            console.log('✉️  REAL EMAIL SENT (VIA ETHEREAL TEST SERVER)');
-            console.log(`View your email here: ${nodemailer.getTestMessageUrl(info)}`);
-            console.log('====================================');
-        } else {
-            console.log(`Email sent: ${info.messageId}`);
-        }
+        console.log(`Email sent: ${info.messageId}`);
     } catch (error) {
         console.error('Error sending email:', error);
     }

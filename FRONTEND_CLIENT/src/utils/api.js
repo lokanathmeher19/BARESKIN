@@ -1,17 +1,6 @@
 import axios from 'axios';
 
-const getBaseUrl = () => {
-    if (import.meta.env.VITE_API_URL) {
-        return import.meta.env.VITE_API_URL;
-    }
-    // If testing locally on a mobile device, use the local IP instead of hardcoded localhost
-    if (typeof window !== 'undefined' && window.location.hostname !== 'localhost') {
-        return `http://${window.location.hostname}:5000/api`;
-    }
-    return 'http://localhost:5000/api';
-};
-
-const API_BASE_URL = getBaseUrl();
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const api = axios.create({
     baseURL: API_BASE_URL,

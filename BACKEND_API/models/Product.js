@@ -48,11 +48,6 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a product category'],
   },
-  subCategory: {
-    type: String,
-    required: false,
-    default: ''
-  },
   description: {
     type: String,
     required: [true, 'Please add a product description'],

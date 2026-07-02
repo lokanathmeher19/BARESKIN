@@ -60,8 +60,7 @@ const AdminLayout = () => {
                 </main>
                 
                 <footer className="px-10 py-10 text-center text-zinc-300 text-[9px] font-black uppercase tracking-[0.5em] border-t border-zinc-100/50">
-                    Designed for BareSkin &copy; 2026 // Admin Panel Active <br/>
-                    <span className="text-[#007aff] block mt-2">Developed by Lokanath Meher.</span>
+                    Designed for BareSkin &copy; 2026 // Admin Panel Active
                 </footer>
             </div>
 

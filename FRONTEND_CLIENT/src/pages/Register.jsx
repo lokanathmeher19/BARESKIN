@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
 import { GoogleLogin } from '@react-oauth/google';
 import api from '../utils/api';
 
@@ -9,7 +8,6 @@ const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [error, setError] = useState('');
     const { register, logout } = useContext(AuthContext); 
@@ -99,23 +97,14 @@ const Register = () => {
                     </div>
                     <div>
                         <label className="block text-[10px] font-medium  tracking-[0.3em] text-gray-400 mb-3 ml-1 ">Password</label>
-                        <div className="relative">
-                            <input 
-                                type={showPassword ? "text" : "password"} 
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-gray-50/50 border-none rounded-2xl px-6 py-4.5 text-[13px] font-normal focus:ring-2 focus:ring-[#007aff]/20 outline-none transition-all placeholder:text-gray-300 pr-12"
-                                placeholder="••••••••"
-                                required
-                            />
-                            <button 
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
-                            >
-                                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                            </button>
-                        </div>
+                        <input 
+                            type="password" 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="w-full bg-gray-50/50 border-none rounded-2xl px-6 py-4.5 text-[13px] font-normal focus:ring-2 focus:ring-[#007aff]/20 outline-none transition-all placeholder:text-gray-300"
+                            placeholder="••••••••"
+                            required
+                        />
                     </div>
                     
                     <button type="submit" className="w-full bg-black text-white hover:bg-[#007aff] transition-all duration-500 py-5 rounded-2xl  tracking-[0.25em] text-[11px] font-medium shadow-[0_20px_40px_-10px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_-10px_rgba(0,122,255,0.3)] transform hover:-translate-y-1 active:scale-95">

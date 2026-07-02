@@ -6,23 +6,15 @@ const { uploadToCloudinary } = require('../utils/upload');
 // @access  Public
 const getProducts = async (req, res, next) => {
   try {
-    const { category, subCategory, search } = req.query;
+    const { category, search } = req.query;
     let query = {};
 
     if (category) {
       query.category = category;
     }
 
-    if (subCategory) {
-      query.subCategory = subCategory;
-    }
-
     if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } },
-        { subCategory: { $regex: search, $options: 'i' } }
-      ];
+      query.name = { $regex: search, $options: 'i' };
     }
 
     const products = await Product.find(query);
@@ -54,7 +46,7 @@ const getProductById = async (req, res, next) => {
 // @access  Private/Admin
 const createProduct = async (req, res, next) => {
   try {
-    const { name, brand, price, category, subCategory, description, stock, image, images, skinType, ingredients, usage, phLevel, sizes, discountPercentage, rating, numReviews } = req.body;
+    const { name, brand, price, category, description, stock, image, images, skinType, ingredients, usage, phLevel, sizes, discountPercentage, rating, numReviews } = req.body;
 
     if (!name || !price || !category || !description || stock === undefined) {
       return res.status(400).json({ success: false, message: 'Please provide all required fields' });
@@ -79,7 +71,6 @@ const createProduct = async (req, res, next) => {
       brand,
       price,
       category,
-      subCategory,
       description,
       stock,
       image: imageUrl,

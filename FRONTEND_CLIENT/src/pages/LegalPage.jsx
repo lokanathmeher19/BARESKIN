@@ -33,7 +33,6 @@ const LegalPage = ({ title, content }) => {
 
                 <footer className="pt-12 border-t border-zinc-100">
                     <p className="text-[10px] font-bold text-zinc-300 uppercase tracking-widest text-center italic">© BareSkin Skincare // Legal Department</p>
-                    <p className="text-[10px] font-bold text-[#007aff] uppercase tracking-widest text-center italic mt-2">Developed by Lokanath Meher.</p>
                 </footer>
             </div>
         </div>

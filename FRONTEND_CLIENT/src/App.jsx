@@ -9,8 +9,6 @@ import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
 import Checkout from './pages/Checkout';
 import MyOrders from './pages/MyOrders';
 import Profile from './pages/Profile';
@@ -22,33 +20,8 @@ import Wishlist from './pages/Wishlist';
 import LegalPage from './pages/LegalPage';
 import RecentlyViewed from './components/RecentlyViewed';
 import Compare from './pages/Compare';
-import About from './pages/About';
-import Transparency from './pages/Transparency';
-import FAQ from './pages/FAQ';
-import Contact from './pages/Contact';
 
-// Mobile and Tablet Optimized Experience Imports
-import { useDevice } from './utils/useDevice';
-import MobileNavbar from './mobile_tablet/components/MobileNavbar';
-import MobileBottomNav from './mobile_tablet/components/MobileBottomNav';
-import MobileFooter from './mobile_tablet/components/MobileFooter';
-import MobileHome from './mobile_tablet/pages/MobileHome';
-import MobileProducts from './mobile_tablet/pages/MobileProducts';
-import MobileProductDetails from './mobile_tablet/pages/MobileProductDetails';
-import MobileCart from './mobile_tablet/pages/MobileCart';
-import MobileProfile from './mobile_tablet/pages/MobileProfile';
-import MobileSkinQuiz from './mobile_tablet/pages/MobileSkinQuiz';
-import MobileTheLab from './mobile_tablet/pages/MobileTheLab';
-import MobileWishlist from './mobile_tablet/pages/MobileWishlist';
-import MobileLogin from './mobile_tablet/pages/MobileLogin';
-import MobileRegister from './mobile_tablet/pages/MobileRegister';
-import MobileForgotPassword from './mobile_tablet/pages/MobileForgotPassword';
-import MobileResetPassword from './mobile_tablet/pages/MobileResetPassword';
-import MobileCheckout from './mobile_tablet/pages/MobileCheckout';
-import MobileMyOrders from './mobile_tablet/pages/MobileMyOrders';
-import MobileIngredientAnalyzer from './mobile_tablet/pages/MobileIngredientAnalyzer';
-import MobileARTryOn from './mobile_tablet/pages/MobileARTryOn';
-import MobileCompare from './mobile_tablet/pages/MobileCompare';
+
 
 import { AuthContext } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
@@ -71,8 +44,6 @@ import AdminSubscriptions from './admin/pages/AdminSubscriptions';
 import AdminLogin from './admin/pages/Login';
 import ManageBanners from './admin/pages/ManageBanners';
 import AdminPromos from './admin/pages/AdminPromos';
-import AbandonedCarts from './admin/pages/AbandonedCarts';
-import ContactMessages from './admin/pages/ContactMessages';
 
 import { HelmetProvider } from 'react-helmet-async';
 import NotFound from './pages/NotFound';
@@ -80,46 +51,35 @@ import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const location = useLocation();
+  const { } = useContext(AuthContext);
   const isAdminArea = location.pathname.startsWith('/admin');
-  const isProductPage = location.pathname.startsWith('/product/');
-  const { isMobileOrTablet } = useDevice();
 
   return (
     <HelmetProvider>
       <ScrollToTop />
       <div className={`flex flex-col min-h-screen bg-white text-black font-sans ${isAdminArea ? 'overflow-hidden' : ''}`}>
-        {!isAdminArea && (isMobileOrTablet ? (!isProductPage && <MobileNavbar />) : <Navbar />)}
-        <main className={`${isAdminArea ? 'flex-grow' : isMobileOrTablet ? (isProductPage ? 'flex-grow pb-[80px]' : 'flex-grow pt-[140px] pb-[80px]') : 'flex-grow pt-[120px] sm:pt-40 lg:pt-48 pb-[70px] lg:pb-0'}`}>
+        {!isAdminArea && <Navbar />}
+        <main className={`${isAdminArea ? 'flex-grow' : 'flex-grow pt-[120px] sm:pt-40 lg:pt-48'}`}>
           <Routes>
-            <Route path="/login" element={isMobileOrTablet ? <MobileLogin /> : <Login />} />
-            <Route path="/register" element={isMobileOrTablet ? <MobileRegister /> : <Register />} />
-            <Route path="/forgot-password" element={isMobileOrTablet ? <MobileForgotPassword /> : <ForgotPassword />} />
-            <Route path="/reset-password/:token" element={isMobileOrTablet ? <MobileResetPassword /> : <ResetPassword />} />
-            
-            <Route path="/" element={isMobileOrTablet ? <MobileHome /> : <Home />} />
-            <Route path="/products" element={isMobileOrTablet ? <MobileProducts /> : <Products />} />
-            <Route path="/product/:id" element={isMobileOrTablet ? <MobileProductDetails /> : <ProductDetails />} />
-            <Route path="/cart" element={isMobileOrTablet ? <MobileCart /> : <Cart />} />
-            <Route path="/skin-quiz" element={isMobileOrTablet ? <MobileSkinQuiz /> : <SkinQuiz />} />
-            <Route path="/analyze-ingredients" element={isMobileOrTablet ? <MobileIngredientAnalyzer /> : <IngredientAnalyzer />} />
-            <Route path="/the-lab" element={isMobileOrTablet ? <MobileTheLab /> : <TheLab />} />
-            <Route path="/ar-tryon" element={isMobileOrTablet ? <MobileARTryOn /> : <ARTryOn />} />
-            <Route path="/compare" element={isMobileOrTablet ? <MobileCompare /> : <Compare />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/skin-quiz" element={<SkinQuiz />} />
+            <Route path="/analyze-ingredients" element={<IngredientAnalyzer />} />
+            <Route path="/the-lab" element={<TheLab />} />
+            <Route path="/ar-tryon" element={<ARTryOn />} />
+            <Route path="/compare" element={<Compare />} />
             
             {/* Protected User Routes */}
             <Route element={<PrivateRoute />}>
-                <Route path="/checkout" element={isMobileOrTablet ? <MobileCheckout /> : <Checkout />} />
-                <Route path="/my-orders" element={isMobileOrTablet ? <MobileMyOrders /> : <MyOrders />} />
-                <Route path="/profile" element={isMobileOrTablet ? <MobileProfile /> : <Profile />} />
-                <Route path="/wishlist" element={isMobileOrTablet ? <MobileWishlist /> : <Wishlist />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/my-orders" element={<MyOrders />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/wishlist" element={<Wishlist />} />
             </Route>
-
-            {/* Informational Routes */}
-            <Route path="/about" element={<About />} />
-            <Route path="/transparency" element={<Transparency />} />
-            <Route path="/faq" element={<FAQ />} />
-            <Route path="/contact" element={<Contact />} />
-
             {/* Legal Routes */}
             <Route path="/privacy-policy" element={
                 <LegalPage 
@@ -166,19 +126,16 @@ function App() {
                 <Route path="banners" element={<ManageBanners />} />
                 <Route path="subscriptions" element={<AdminSubscriptions />} />
                 <Route path="promos" element={<AdminPromos />} />
-                <Route path="queries" element={<ContactMessages />} />
-                <Route path="abandoned-carts" element={<AbandonedCarts />} />
               </Route>
             </Route>
 
             {/* Catch-all 404 Route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-          {!isAdminArea && isMobileOrTablet && !['/login', '/register', '/profile', '/wishlist', '/cart', '/checkout', '/my-orders'].includes(location.pathname) && <MobileFooter />}
         </main>
-        {!isAdminArea && !isMobileOrTablet && <RecentlyViewed />}
-        {!isAdminArea && !isMobileOrTablet && <Footer />}
-        {!isAdminArea && (isMobileOrTablet ? <MobileBottomNav /> : <BottomNav />)}
+        {!isAdminArea && <RecentlyViewed />}
+        {!isAdminArea && <Footer />}
+        {!isAdminArea && <BottomNav />}
         <ChatBubble />
         <Toaster position="bottom-right" reverseOrder={false} />
       </div>
@@ -187,3 +144,4 @@ function App() {
 }
 
 export default App;
+// Small change for GitHub streak

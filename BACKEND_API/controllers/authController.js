@@ -55,9 +55,6 @@ const registerUser = async (req, res, next) => {
         address: user.address || '',
         points: user.points,
         isAdmin: user.isAdmin,
-        skinType: user.skinType,
-        skinConcerns: user.skinConcerns,
-        usageProtocols: user.usageProtocols,
         token: generateToken(user._id),
       });
     } else {
@@ -100,9 +97,6 @@ const loginUser = async (req, res, next) => {
         isAdmin: user.isAdmin,
         cart: user.cart ? user.cart.filter(c => c.product).map(c => ({ ...c.product.toObject(), qty: c.qty, selectedSize: c.selectedSize })) : [],
         wishlist: user.wishlist || [],
-        skinType: user.skinType,
-        skinConcerns: user.skinConcerns,
-        usageProtocols: user.usageProtocols,
         token: generateToken(user._id),
       });
     } else {
@@ -174,7 +168,7 @@ const googleLogin = async (req, res, next) => {
 const updateUserProfile = async (req, res, next) => {
   try {
     const updateData = {};
-    const fields = ['name', 'phone', 'zip', 'city', 'state', 'address', 'notificationSettings', 'skinType', 'skinConcerns', 'usageProtocols'];
+    const fields = ['name', 'phone', 'zip', 'city', 'state', 'address', 'notificationSettings'];
     
     fields.forEach(field => {
       if (req.body[field] !== undefined) {
@@ -203,9 +197,6 @@ const updateUserProfile = async (req, res, next) => {
           points: updatedUser.points,
           notificationSettings: updatedUser.notificationSettings,
           isAdmin: updatedUser.isAdmin,
-          skinType: updatedUser.skinType,
-          skinConcerns: updatedUser.skinConcerns,
-          usageProtocols: updatedUser.usageProtocols,
         },
         token: generateToken(updatedUser._id),
       });
@@ -299,102 +290,6 @@ const syncWishlist = async (req, res, next) => {
   }
 };
 
-// @desc    Forgot Password
-// @route   POST /api/auth/forgotpassword
-// @access  Public
-const forgotPassword = async (req, res, next) => {
-  try {
-    const user = await User.findOne({ email: req.body.email });
-    if (!user) {
-      return res.status(404).json({ success: false, message: 'There is no user with that email' });
-    }
-
-    // Get reset token
-    const crypto = require('crypto');
-    const resetToken = crypto.randomBytes(20).toString('hex');
-
-    // Hash token and set to resetPasswordToken field
-    user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-
-    // Set expire
-    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
-
-    await user.save();
-
-    // Create reset url
-    // Use the frontendUrl passed from the client if available, so it works perfectly across devices (e.g. mobile phones accessing the local IP)
-    const baseUrl = req.body.frontendUrl || `${req.protocol}://${req.hostname}:5173`;
-    const resetUrl = `${baseUrl}/reset-password/${resetToken}`;
-
-    const message = `
-      <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto;">
-        <h1 style="color: #000; font-style: italic; text-transform: uppercase;">BARESKIN.</h1>
-        <h2>Password Reset Request</h2>
-        <p>You are receiving this email because you (or someone else) has requested the reset of a password.</p>
-        <p>Please click the link below to reset your password. This link is valid for 10 minutes.</p>
-        <a href="${resetUrl}" style="display: inline-block; padding: 10px 20px; background-color: #000; color: #fff; text-decoration: none; font-weight: bold; border-radius: 5px;">Reset Password</a>
-        <br/><br/>
-        <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
-        <p style="color: #888; font-size: 12px;">BareSkin Premium Essentials</p>
-      </div>
-    `;
-
-    try {
-      await sendEmail({
-        email: user.email,
-        subject: 'Password Reset Token',
-        html: message,
-      });
-
-      res.status(200).json({ success: true, message: 'Email sent' });
-    } catch (err) {
-      console.error(err);
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-      await user.save({ validateBeforeSave: false });
-
-      return res.status(500).json({ success: false, message: 'Email could not be sent' });
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Reset Password
-// @route   PUT /api/auth/resetpassword/:resettoken
-// @access  Public
-const resetPassword = async (req, res, next) => {
-  try {
-    const crypto = require('crypto');
-    // Get hashed token
-    const resetPasswordToken = crypto.createHash('sha256').update(req.params.resettoken).digest('hex');
-
-    const user = await User.findOne({
-      resetPasswordToken,
-      resetPasswordExpire: { $gt: Date.now() },
-    });
-
-    if (!user) {
-      return res.status(400).json({ success: false, message: 'Invalid token' });
-    }
-
-    // Set new password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(req.body.password, salt);
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
-
-    await user.save();
-
-    res.status(200).json({
-      success: true,
-      token: generateToken(user._id),
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 module.exports = {
   registerUser,
   loginUser,
@@ -402,7 +297,5 @@ module.exports = {
   updateUserProfile,
   updateUserPassword,
   syncCart,
-  syncWishlist,
-  forgotPassword,
-  resetPassword
+  syncWishlist
 };

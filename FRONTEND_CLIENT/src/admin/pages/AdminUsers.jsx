@@ -193,7 +193,6 @@ const AdminUsers = () => {
 
             <footer className="py-10 text-center">
                 <p className="text-[10px] font-black uppercase tracking-[0.5em] text-zinc-300 italic">User Management Panel // 2026 BareSkin Cloud</p>
-                <p className="text-[10px] font-bold text-[#007aff] uppercase tracking-widest text-center italic mt-2">Developed by Lokanath Meher.</p>
             </footer>
         </div>
     );

@@ -8,15 +8,9 @@ import { WishlistContext } from '../context/WishlistContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 
-const renderBannerText = (text, formatPrice) => {
-    if (!text) return "";
-    return text.replace(/{formatPrice\((\d+)\)}/gi, (match, price) => {
-        return formatPrice ? formatPrice(Number(price)) : `₹${price}`;
-    });
-};
+
 
 const Navbar = () => {
-
     const { formatPrice } = useCurrency();
 
     const { user } = useContext(AuthContext);
@@ -37,7 +31,6 @@ const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
     const [msgIndex, setMsgIndex] = useState(0);
     const [searchQuery, setSearchQuery] = useState("");
-    const [activeMobileTab, setActiveMobileTab] = useState('');
 
     // Fetch Banners from API
     useEffect(() => {
@@ -93,7 +86,7 @@ const Navbar = () => {
                         >
                             <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.4em] flex items-center gap-6">
                                 <span className="opacity-20 group-hover:opacity-100 transition-opacity">/</span>
-                                {renderBannerText(text, formatPrice)}
+                                {text}
                                 <span className="opacity-20 group-hover:opacity-100 transition-opacity">/</span>
                             </span>
                         </div>
@@ -130,22 +123,7 @@ const Navbar = () => {
                                 name: 'Categories', 
                                 type: 'dropdown',
                                 subItems: [
-                                    { 
-                                        name: 'Face Care', 
-                                        path: '/products?category=Face Care', 
-                                        icon: <Sparkles size={14} />,
-                                        nestedItems: [
-                                            { name: 'Cleansers', path: '/products?category=Face Care&search=Cleansers' },
-                                            { name: 'Exfoliators', path: '/products?category=Face Care&search=Exfoliators' },
-                                            { name: 'Toners & Mists', path: '/products?category=Face Care&search=Toners %26 Mists' },
-                                            { name: 'Serums', path: '/products?category=Face Care&search=Serums' },
-                                            { name: 'Moisturizers', path: '/products?category=Face Care&search=Moisturizers' },
-                                            { name: 'Sunscreens', path: '/products?category=Face Care&search=Sunscreens' },
-                                            { name: 'Face Masks', path: '/products?category=Face Care&search=Face Masks' },
-                                            { name: 'Eye Care', path: '/products?category=Face Care&search=Eye Care' },
-                                            { name: 'Face Oils', path: '/products?category=Face Care&search=Face Oils' },
-                                        ]
-                                    },
+                                    { name: 'Face Care', path: '/products?category=Face Care', icon: <Sparkles size={14} /> },
                                     { name: 'Lip Care', path: '/products?category=Lip Care', icon: <Droplets size={14} /> },
                                     { name: 'Hair Care', path: '/products?category=Hair Care', icon: <Wind size={14} /> },
                                     { name: 'Body Care', path: '/products?category=Body Care', icon: <Sun size={14} /> },
@@ -174,41 +152,16 @@ const Navbar = () => {
                                         <ChevronDown size={10} className="transition-transform duration-300 group-hover:rotate-180" />
                                     </button>
                                     <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-56 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 transform translate-y-2 group-hover:translate-y-0 z-50">
-                                        <div className="glass-nav rounded-[2rem] overflow-hidden border border-white/40 shadow-2xl p-2 bg-white/95 backdrop-blur-xl">
+                                        <div className="glass-nav rounded-[2rem] overflow-hidden border border-white/40 shadow-2xl p-2">
                                             {item.subItems.map((sub) => (
-                                                sub.nestedItems ? (
-                                                    <div key={sub.name} className="relative group/nested flex items-center justify-between px-5 py-4 text-[9px] font-black text-gray-400 hover:bg-black hover:text-white rounded-2xl transition-all tracking-[0.15em] uppercase italic cursor-pointer">
-                                                        <Link to={sub.path} className="flex items-center gap-4 flex-grow">
-                                                            <span className="opacity-50">{sub.icon}</span>
-                                                            {sub.name}
-                                                        </Link>
-                                                        <ChevronDown size={10} className="-rotate-90 transition-transform" />
-                                                        
-                                                        {/* Nested Flyout Panel */}
-                                                        <div className="absolute top-0 left-full ml-2 w-56 opacity-0 invisible group-hover/nested:opacity-100 group-hover/nested:visible transition-all duration-300 transform translate-x-2 group-hover/nested:translate-x-0 z-[60]">
-                                                            <div className="glass-nav rounded-[2rem] overflow-hidden border border-white/40 shadow-2xl p-2 bg-white/95 backdrop-blur-xl">
-                                                                {sub.nestedItems.map((nested) => (
-                                                                    <Link 
-                                                                        key={nested.name}
-                                                                        to={nested.path}
-                                                                        className="flex items-center gap-4 px-5 py-3 text-[8px] font-black text-gray-400 hover:bg-black hover:text-white rounded-2xl transition-all tracking-[0.15em] uppercase italic"
-                                                                    >
-                                                                        {nested.name}
-                                                                    </Link>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    <Link 
-                                                        key={sub.name}
-                                                        to={sub.path}
-                                                        className="flex items-center gap-4 px-5 py-4 text-[9px] font-black text-gray-400 hover:bg-black hover:text-white rounded-2xl transition-all tracking-[0.15em] uppercase italic"
-                                                    >
-                                                        <span className="opacity-50">{sub.icon}</span>
-                                                        {sub.name}
-                                                    </Link>
-                                                )
+                                                <Link 
+                                                    key={sub.name}
+                                                    to={sub.path}
+                                                    className="flex items-center gap-4 px-5 py-4 text-[9px] font-black text-gray-400 hover:bg-black hover:text-white rounded-2xl transition-all tracking-[0.15em] uppercase italic"
+                                                >
+                                                    <span className="opacity-50">{sub.icon}</span>
+                                                    {sub.name}
+                                                </Link>
                                             ))}
                                         </div>
                                     </div>
@@ -269,10 +222,81 @@ const Navbar = () => {
                                     </span>
                                 )}
                             </Link>
+
+                            <button 
+                                className="lg:hidden p-2.5 bg-zinc-50 rounded-xl text-black hover:bg-black hover:text-white transition-all" 
+                                onClick={() => setIsMenuOpen(true)}
+                            >
+                                <Menu size={20} />
+                            </button>
                         </div>
                     </div>
                 </div>
+
+                {/* MOBILE SEARCH BAR */}
+                <div className="lg:hidden w-full flex items-center rounded-2xl px-5 py-3.5 bg-zinc-100/50 backdrop-blur-xl border border-white/40 shadow-inner group transition-all duration-500">
+                    <Search size={14} className="text-zinc-400 mr-3" />
+                    <input 
+                        type="text" 
+                        placeholder="SEARCH PRODUCTS..." 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={handleSearch}
+                        className="bg-transparent text-[10px] font-black tracking-[0.1em] italic outline-none flex-grow placeholder:text-zinc-400"
+                    />
+                </div>
             </nav>
+
+            {/* Premium Mobile Sidebar Overlay */}
+            {isMenuOpen && (
+                <div className="fixed inset-0 z-[200] lg:hidden bg-black/60 backdrop-blur-md animate-fade-in">
+                    <div className="bg-white h-full w-[85%] max-w-sm p-10 flex flex-col animate-slide-in-right relative shadow-2xl">
+                        <button 
+                            onClick={() => setIsMenuOpen(false)} 
+                            className="absolute top-10 right-8 p-3 bg-zinc-50 rounded-2xl hover:bg-black hover:text-white transition-all active:scale-95 shadow-sm"
+                        >
+                            <X size={20} />
+                        </button>
+
+                        <Link to="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 mb-16">
+                            <img src="/LOGO.png" alt="Logo" className="w-10 h-10" />
+                            <span className="text-2xl font-black uppercase italic">BareSkin<span className="text-[#007aff]">.</span></span>
+                        </Link>
+
+                        <div className="flex flex-col gap-8 overflow-y-auto no-scrollbar pb-10">
+                            {[
+                                { name: 'Home', path: '/' },
+                                { name: 'Shop All', path: '/products' },
+
+                                { name: 'Categories', path: '/products' },
+                                 { name: 'Science', path: '/the-lab' },
+                                { name: 'Skin Quiz', path: '/skin-quiz' },
+                                { name: 'My Wishlist', path: '/wishlist' },
+                                { name: 'My Orders', path: '/my-orders' },
+                                { name: 'Support', path: '#' }
+                            ].map((item) => (
+                                <Link 
+                                    key={item.name} 
+                                    to={item.path} 
+                                    onClick={() => setIsMenuOpen(false)} 
+                                    className="flex items-center justify-between group"
+                                >
+                                    <span className="text-2xl font-black italic uppercase tracking-tighter text-zinc-300 group-hover:text-black transition-all">
+                                        {item.name}
+                                    </span>
+                                    <ArrowRight size={20} className="text-zinc-100 group-hover:text-[#007aff] transition-all -translate-x-4 group-hover:translate-x-0" />
+                                </Link>
+                            ))}
+                        </div>
+
+                        <div className="mt-auto flex flex-col gap-6 pt-10 border-t border-zinc-100">
+                            <Link to="/login" onClick={() => setIsMenuOpen(false)} className="text-[10px] font-black italic uppercase tracking-[0.3em] text-[#007aff] underline underline-offset-8">User Login</Link>
+                            <span className="text-[8px] font-black uppercase tracking-[0.4em] text-zinc-300 ">&copy; {new Date().getFullYear()} BareSkin Skincare</span>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </header>
     );
 };

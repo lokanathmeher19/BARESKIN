@@ -26,11 +26,8 @@ const fixAdmin = async () => {
         { isAdmin: false }
     );
     console.log(`Demoted ${demoteResult.modifiedCount} other users from admin status.`);
-    } finally {
-        await mongoose.disconnect();
-        console.log('Disconnected from DB');
-        process.exit(0);
-    }
+    
+    process.exit(0);
   } catch (error) {
     console.error(error);
     process.exit(1);
