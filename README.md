@@ -1,12 +1,12 @@
 # BareSkin
 
-BareSkin is a modern skincare e-commerce platform built with a React frontend and an Express.js backend. It offers a full shopping experience for skincare products, including product discovery, cart and checkout, user accounts, subscriptions, promotions, and an admin dashboard for store management.
+BareSkin is a full-stack skincare commerce platform designed to deliver a seamless shopping experience for customers while providing a powerful administrative dashboard for business operations. Built with a modern React frontend and a scalable Express.js backend, the application supports product discovery, secure transactions, subscriptions, promotional campaigns, and content management.
 
 ## Overview
 
-This project combines a polished storefront with a robust management layer for administrators. Users can browse products, view detailed information, add items to cart or wishlist, complete purchases, and access skincare-focused tools such as a skin quiz and ingredient analyzer. Admins can manage products, orders, users, subscriptions, banners, and promo codes.
+BareSkin brings together a polished customer-facing storefront and a robust internal management system. Customers can explore skincare products, view detailed product information, save favorites, manage their cart, complete purchases, and access intelligent skincare tools such as a skin quiz and an ingredient analyzer. Administrators can manage products, orders, users, subscriptions, banners, and promotional offers from a centralized dashboard.
 
-## Tech Stack
+## Technology Stack
 
 ### Frontend
 - React 19
@@ -21,18 +21,18 @@ This project combines a polished storefront with a robust management layer for a
 - Node.js
 - Express.js
 - MongoDB with Mongoose
-- JWT Authentication
-- Google OAuth
-- Razorpay payments
-- Cloudinary media storage
-- Nodemailer email support
-- Node-cron scheduled jobs
+- JWT-based authentication
+- Google OAuth integration
+- Razorpay payment processing
+- Cloudinary media management
+- Nodemailer for transactional emails
+- Node-cron for scheduled automation
 
-## Project Pipeline
+## System Flow
 
 ```mermaid
 flowchart LR
-    A[User] --> B[React Frontend]
+    A[Customer] --> B[React Frontend]
     B --> C[Express API]
     C --> D[MongoDB]
     C --> E[Cloudinary]
@@ -41,25 +41,25 @@ flowchart LR
     C --> H[Cron Jobs]
 ```
 
-The application flow is:
-1. Users interact with the Vite-based storefront.
-2. The frontend sends requests to the Express API.
-3. The backend processes authentication, products, cart, orders, payments, subscriptions, and promotions.
-4. Data is stored in MongoDB and media is handled through Cloudinary.
-5. Background jobs and email notifications support order and subscription workflows.
+The platform operates through the following flow:
+1. Customers interact with the modern storefront interface.
+2. The frontend communicates with the Express API for all core operations.
+3. The backend handles authentication, product management, cart workflows, orders, payments, subscriptions, and promotions.
+4. Product data and user information are stored in MongoDB.
+5. Media assets, payment gateways, and scheduled automation complete the end-to-end experience.
 
-## Key Features
+## Core Features
 
-- User authentication and profile management
-- Product listing and product detail pages
-- Cart, checkout, and order history
-- Wishlist and compare features
-- Skin quiz and ingredient analyzer tools
-- AR try-on experience
-- Subscription management
-- Promo code support
-- Admin dashboard for store operations
-- Banner and promotional content management
+- Secure user authentication and profile management
+- Responsive product catalog with detailed product views
+- Shopping cart, checkout, and order history
+- Wishlist and product comparison tools
+- Interactive skincare assessment tools, including a skin quiz and ingredient analyzer
+- Augmented reality try-on experience
+- Subscription-based purchasing workflows
+- Promo code and campaign management
+- Admin dashboard for store operations and content control
+- Banner and promotional content administration
 
 ## Project Structure
 
@@ -87,10 +87,10 @@ BARESKIN/
 
 ## Prerequisites
 
-Make sure the following tools are installed on your machine:
-- Node.js 18+
-- npm 9+
-- MongoDB instance
+Ensure the following tools are installed on your machine:
+- Node.js 18 or later
+- npm 9 or later
+- A running MongoDB instance
 
 ## Installation
 
@@ -100,13 +100,13 @@ Make sure the following tools are installed on your machine:
    cd BARESKIN
    ```
 
-2. Install dependencies for the whole workspace
+2. Install dependencies for the full workspace
    ```bash
    npm run install:all
    ```
 
 3. Configure environment variables for the backend
-   Create a file named `.env` inside the `BACKEND_API` folder and add the required values:
+   Create a `.env` file inside the `BACKEND_API` directory and add the required configuration values:
 
    ```env
    PORT=5000
@@ -137,7 +137,7 @@ Make sure the following tools are installed on your machine:
 
 ## Running the Project
 
-### Start both frontend and backend together
+### Start both the frontend and backend together
 ```bash
 npm run dev
 ```
@@ -148,7 +148,7 @@ npm run server
 npm run client
 ```
 
-The app will generally be available at:
+The application will be available at:
 - Frontend: http://localhost:5173
 - Backend API: http://localhost:5000
 
@@ -166,9 +166,9 @@ The app will generally be available at:
 
 ## Deployment Notes
 
-- Deploy the frontend to a static host such as Vercel or Netlify.
-- Deploy the backend to a Node.js-compatible hosting provider such as Render, Railway, or VPS.
-- Make sure environment variables are configured securely in the deployment platform.
+- Deploy the frontend to a static hosting platform such as Vercel or Netlify.
+- Deploy the backend to a Node.js-compatible platform such as Render, Railway, or a VPS.
+- Configure all required environment variables securely in the deployment environment.
 
 ## License
 
