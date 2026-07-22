@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { AuthContext } from './AuthContext';
 import api from '../utils/api';
@@ -22,6 +23,7 @@ export const WishlistProvider = ({ children }) => {
 
     useEffect(() => {
         if (user && user.wishlist) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setWishlist(user.wishlist);
         } else if (!user) {
             setWishlist([]); // Clear on logout

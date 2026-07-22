@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
 import { Package, Smartphone, Users, DollarSign, Activity, TrendingUp, ShieldCheck, Zap, Sparkles } from 'lucide-react';
-import { useCurrency } from '../../context/CurrencyContext';
 import { 
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
     BarChart, Bar, Cell
@@ -9,8 +8,6 @@ import {
 
 
 const Dashboard = () => {
-    const { formatPrice } = useCurrency();
-
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

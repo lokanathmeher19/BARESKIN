@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import { Tag, Trash2, Plus } from 'lucide-react';
-import { useCurrency } from '../../context/CurrencyContext';
 
 const AdminPromos = () => {
-    const { formatPrice } = useCurrency();
 
     const [promos, setPromos] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -21,7 +19,7 @@ const AdminPromos = () => {
         try {
             const { data } = await api.get('/promos');
             if (data.success) setPromos(data.data);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to fetch promos');
         } finally {
             setLoading(false);
@@ -48,7 +46,7 @@ const AdminPromos = () => {
             await api.delete(`/promos/${id}`);
             toast.success('Deleted successfully');
             fetchPromos();
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to delete');
         }
     };

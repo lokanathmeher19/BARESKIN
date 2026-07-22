@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
 import { Truck, CheckCircle, Clock, ChevronRight, Package, User, Hash, CreditCard, Activity, Search, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useCurrency } from '../../context/CurrencyContext';
 
 const AdminOrders = () => {
-    const { formatPrice } = useCurrency();
-
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -50,7 +47,7 @@ const AdminOrders = () => {
                 setOrders(orders.map(o => o._id === id ? { ...o, paymentStatus: 'Refunded' } : o));
                 toast.success('Order refunded successfully', { id: toastId });
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to process refund', { id: toastId });
         }
     };

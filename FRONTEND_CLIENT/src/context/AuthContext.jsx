@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useState, useEffect } from 'react';
 import api from '../utils/api';
 
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }) => {
         } else {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setUser(null);
         }
     }, [token, user]);
@@ -27,7 +29,7 @@ export const AuthProvider = ({ children }) => {
             if (res.data.token) {
                 setToken(res.data.token);
                 // Spread res.data to include all user fields (points, address, phone, etc.)
-                const { token, ...userData } = res.data;
+                const { token: _token, ...userData } = res.data;
                 setUser(userData);
                 return res.data;
             }
@@ -44,7 +46,7 @@ export const AuthProvider = ({ children }) => {
             if (res.data.token) {
                 setToken(res.data.token);
                 // Spread res.data to include all user fields
-                const { token, ...userData } = res.data;
+                const { token: _token, ...userData } = res.data;
                 setUser(userData);
                 return res.data;
             }

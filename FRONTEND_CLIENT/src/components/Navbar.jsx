@@ -1,4 +1,3 @@
-import { useCurrency } from '../context/CurrencyContext';
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, User, ShoppingBag, Menu, X, Command, Cpu, ArrowRight, ChevronDown, Sparkles, Wind, Droplets, Sun, Fingerprint, Heart } from 'lucide-react';
@@ -11,8 +10,6 @@ import api from '../utils/api';
 
 
 const Navbar = () => {
-    const { formatPrice } = useCurrency();
-
     const { user } = useContext(AuthContext);
     const { cart } = useContext(CartContext);
     const { wishlist } = useContext(WishlistContext);

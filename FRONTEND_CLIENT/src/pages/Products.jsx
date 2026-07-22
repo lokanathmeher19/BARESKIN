@@ -1,4 +1,3 @@
-import { useCurrency } from '../context/CurrencyContext';
 import React, { useContext, useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
@@ -34,8 +33,6 @@ const priceRanges = [
 ];
 
 const Products = () => {
-    const { formatPrice } = useCurrency();
-
     const { products, loading } = useContext(ProductContext);
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -85,6 +82,7 @@ const Products = () => {
                 filtered.sort((a, b) => b.price - a.price);
             }
 
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFilteredProducts(filtered);
         }
     }, [selectedCategory, selectedConcern, selectedPriceRange, searchQuery, sortBy, products, loading]);
@@ -92,6 +90,7 @@ const Products = () => {
     // Handle incoming category from URL
     useEffect(() => {
         if (categoryQuery) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setSelectedCategory(categoryQuery);
         }
         if (searchParam) {

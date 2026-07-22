@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 import { Plus, Trash2, Save, X, ToggleLeft, ToggleRight } from 'lucide-react';
-import { useCurrency } from '../../context/CurrencyContext';
 
 const ManageBanners = () => {
-    const { formatPrice } = useCurrency();
-
     const [banners, setBanners] = useState([]);
     const [loading, setLoading] = useState(true);
     const [newBanner, setNewBanner] = useState('');

@@ -14,6 +14,7 @@ const RecentlyViewed = () => {
         // Read history from localStorage when path changes
         const saved = localStorage.getItem('recentlyViewed');
         if (saved) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setHistory(JSON.parse(saved));
         }
     }, [location.pathname]);

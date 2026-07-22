@@ -8,10 +8,8 @@ import {
 } from 'lucide-react';
 import { ProductContext } from '../../context/ProductContext';
 import toast from 'react-hot-toast';
-import { useCurrency } from '../../context/CurrencyContext';
 
 const AddProduct = () => {
-    const { formatPrice } = useCurrency();
 
     const { addProductState } = React.useContext(ProductContext);
     const navigate = useNavigate();
@@ -43,7 +41,7 @@ const AddProduct = () => {
     const [variantInput, setVariantInput] = useState({ size: '', price: '', stock: '' });
 
     const skinTypeOptions = ['All', 'Oily', 'Dry', 'Sensitive', 'Combination', 'Neutral', 'Acne-Prone'];
-    const categoryOptions = ['Skin Care', 'Lip Care', 'Hair Care', 'Body Care', 'Makeup', 'Beauty', "Men's Care"];
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -95,14 +93,7 @@ const AddProduct = () => {
         }
     };
 
-    const isStepComplete = (step) => {
-        switch(step) {
-            case 'core': return formData.name && formData.category && formData.price && formData.brand;
-            case 'science': return formData.description && formData.skinType.length > 0;
-            case 'media': return formData.image.startsWith('http');
-            default: return false;
-        }
-    };
+
 
     return (
         <div className="max-w-[1200px] mx-auto py-10 px-6 animate-in fade-in duration-700">

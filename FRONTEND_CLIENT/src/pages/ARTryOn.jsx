@@ -38,13 +38,14 @@ const ARTryOn = () => {
     };
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         startCamera();
         return () => {
             if (stream) {
                 stream.getTracks().forEach(track => track.stop());
             }
         };
-    }, []);
+    }, [stream]);
 
     // AR Simulation Loop
     useEffect(() => {

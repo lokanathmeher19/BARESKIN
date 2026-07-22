@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Routes, Route, useLocation, Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -51,7 +51,7 @@ import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   const location = useLocation();
-  const { } = useContext(AuthContext);
+
   const isAdminArea = location.pathname.startsWith('/admin');
 
   return (

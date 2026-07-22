@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ArrowRight, Home, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
-
 const NotFound = () => {
     return (
         <div className="min-h-screen bg-white flex items-center justify-center px-6 pt-20 overflow-hidden relative">

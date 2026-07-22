@@ -8,11 +8,8 @@ import {
 } from 'lucide-react';
 import { ProductContext } from '../../context/ProductContext';
 import toast from 'react-hot-toast';
-import { useCurrency } from '../../context/CurrencyContext';
 
 const EditProduct = () => {
-    const { formatPrice } = useCurrency();
-
     const { updateProductState } = React.useContext(ProductContext);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -45,8 +42,6 @@ const EditProduct = () => {
     const [variantInput, setVariantInput] = useState({ size: '', price: '', stock: '' });
 
     const skinTypeOptions = ['All', 'Oily', 'Dry', 'Sensitive', 'Combination', 'Neutral', 'Acne-Prone'];
-    const categoryOptions = ['Skin Care', 'Lip Care', 'Hair Care', 'Body Care', 'Makeup', 'Beauty', "Men's Care"];
-
     const fetchProduct = async () => {
         try {
             const res = await api.get(`/products/${id}`);
@@ -83,7 +78,7 @@ const EditProduct = () => {
 
     useEffect(() => {
         fetchProduct();
-    }, [id]);
+    }, [id, fetchProduct]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
