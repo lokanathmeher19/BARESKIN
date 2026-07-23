@@ -4,8 +4,33 @@ import { Globe, Mail, MapPin, Phone } from 'lucide-react';
 
 const Footer = () => {
     return (
-        <footer className="bg-white border-t border-zinc-100 pt-24 md:pt-32 pb-12 overflow-hidden">
-            <div className="max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-12 lg:gap-24 mb-24 text-center md:text-left">
+        <footer className="bg-white border-t border-zinc-100 overflow-hidden">
+            {/* Newsletter Section */}
+            <div className="bg-zinc-50 border-b border-zinc-100 py-16 md:py-24">
+                <div className="max-w-[1440px] mx-auto px-6 lg:px-12 flex flex-col lg:flex-row items-center justify-between gap-10">
+                    <div className="text-center lg:text-left">
+                        <h3 className="text-2xl md:text-4xl italic font-black tracking-tighter text-black mb-3 uppercase">
+                            Join The BareSkin Club<span className="text-[#007aff]">.</span>
+                        </h3>
+                        <p className="text-zinc-400 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase italic">
+                            Subscribe for early access to new products, exclusive offers, and expert skincare tips.
+                        </p>
+                    </div>
+                    <form className="w-full lg:w-auto flex flex-col sm:flex-row items-center gap-3" onSubmit={(e) => { e.preventDefault(); alert('Subscribed to Newsletter successfully!'); }}>
+                        <input 
+                            type="email" 
+                            placeholder="YOUR EMAIL ADDRESS" 
+                            required
+                            className="w-full sm:w-80 px-8 py-5 bg-white border border-zinc-200 rounded-[2rem] text-[10px] md:text-xs font-black tracking-widest outline-none focus:border-[#007aff] transition-all placeholder:text-zinc-300 italic uppercase shadow-sm"
+                        />
+                        <button type="submit" className="w-full sm:w-auto shrink-0 px-10 py-5 bg-black text-white rounded-[2rem] text-[10px] font-black uppercase tracking-[0.3em] italic hover:bg-[#007aff] hover:shadow-2xl hover:shadow-[#007aff]/30 transition-all duration-500">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div className="pt-20 md:pt-24 max-w-[1440px] mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 md:gap-12 lg:gap-24 mb-20 text-center md:text-left">
                 
                 {/* Brand Info */}
                 <div className="flex flex-col items-center md:items-start gap-8">
