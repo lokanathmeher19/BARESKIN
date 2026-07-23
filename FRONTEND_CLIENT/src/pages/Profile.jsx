@@ -200,7 +200,7 @@ const Profile = () => {
         }
     };
 
-    const handleUpdatePaymentMethod = async (id) => {
+    const handleUpdatePaymentMethod = async () => {
         toast.success('Payment Method Portal Securely Authenticated. Linking active default cards.', { icon: '💳' });
     };
 

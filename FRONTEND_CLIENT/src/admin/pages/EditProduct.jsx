@@ -132,14 +132,7 @@ const EditProduct = () => {
         }
     };
 
-    const isStepComplete = (step) => {
-        switch(step) {
-            case 'core': return formData.name && formData.category && formData.price && formData.brand;
-            case 'science': return formData.description && formData.skinType.length > 0;
-            case 'media': return formData.image.startsWith('http');
-            default: return false;
-        }
-    };
+
 
     if (loading) return (
         <div className="fixed inset-0 bg-white flex flex-col items-center justify-center p-20 z-[9999] animate-fade-in">

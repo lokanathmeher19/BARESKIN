@@ -3,7 +3,10 @@ import api from '../../utils/api';
 import { Truck, CheckCircle, Clock, ChevronRight, Package, User, Hash, CreditCard, Activity, Search, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
+import { useCurrency } from '../../context/CurrencyContext';
+
 const AdminOrders = () => {
+    const { formatPrice } = useCurrency();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { ProductContext } from '../context/ProductContext';
@@ -47,7 +47,7 @@ const Products = () => {
     const [sortBy, setSortBy] = useState("Newest");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [viewMode, setViewMode] = useState("large"); // default to large grid (2-3 columns)
-    const filterRef = useRef(null);
+
 
     useEffect(() => {
         if (!loading && products) {
