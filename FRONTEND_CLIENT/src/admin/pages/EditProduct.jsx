@@ -42,7 +42,7 @@ const EditProduct = () => {
     const [variantInput, setVariantInput] = useState({ size: '', price: '', stock: '' });
 
     const skinTypeOptions = ['All', 'Oily', 'Dry', 'Sensitive', 'Combination', 'Neutral', 'Acne-Prone'];
-    const fetchProduct = async () => {
+    const fetchProduct = React.useCallback(async () => {
         try {
             const res = await api.get(`/products/${id}`);
             const p = res.data.data;
@@ -74,11 +74,11 @@ const EditProduct = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id, navigate]);
 
     useEffect(() => {
         fetchProduct();
-    }, [id, fetchProduct]);
+    }, [fetchProduct]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

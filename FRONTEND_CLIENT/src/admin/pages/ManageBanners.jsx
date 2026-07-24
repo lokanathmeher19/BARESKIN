@@ -85,7 +85,7 @@ const ManageBanners = () => {
                                 type="text" 
                                 value={newBanner}
                                 onChange={(e) => setNewBanner(e.target.value)}
-                                placeholder="Enter banner text (e.g. FREE SHIPPING ABOVE {formatPrice(499)})"
+                                placeholder="Enter banner text (e.g. FREE SHIPPING ABOVE ₹499)"
                                 className="flex-1 bg-zinc-50 border border-zinc-100 rounded-xl px-6 py-3 text-sm font-bold italic outline-none focus:border-[#007aff]"
                                 autoFocus
                             />

@@ -16,10 +16,10 @@ const Navbar = () => {
     const navigate = useNavigate();
     
     const [banners, setBanners] = useState([
-        "FREE SHIPPING ON ALL ORDERS ABOVE {formatPrice(499)}",
+        "FREE SHIPPING ON ALL ORDERS ABOVE ₹499",
         "FLAT 10% OFF ON YOUR FIRST ORDER | USE CODE: BARE10",
         "BUY 2 GET 1 FREE ON ALL LIP CARE ESSENTIALS",
-        "COMPLIMENTARY SKIN ANALYSIS ON ORDERS ABOVE {formatPrice(1499)}"
+        "COMPLIMENTARY SKIN ANALYSIS ON ORDERS ABOVE ₹1499"
     ]);
 
     const cartItemsCount = cart.reduce((acc, item) => acc + item.qty, 0);

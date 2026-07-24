@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+﻿import React, { useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import { ProductContext } from '../context/ProductContext';
@@ -26,10 +26,10 @@ const concerns = [
 
 const priceRanges = [
     { label: "All Prices", min: 0, max: 100000 },
-    { label: "Under {formatPrice(500)}", min: 0, max: 500 },
-    { label: "{formatPrice(500)} - {formatPrice(1000)}", min: 500, max: 1000 },
-    { label: "{formatPrice(1000)} - {formatPrice(2000)}", min: 1000, max: 2000 },
-    { label: "Over {formatPrice(2000)}", min: 2000, max: 100000 }
+    { label: "Under ₹500", min: 0, max: 500 },
+    { label: "₹500 - ₹1000", min: 500, max: 1000 },
+    { label: "₹1000 - ₹2000", min: 1000, max: 2000 },
+    { label: "Over ₹2000", min: 2000, max: 100000 }
 ];
 
 const Products = () => {
