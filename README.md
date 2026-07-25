@@ -170,6 +170,10 @@ The application will be available at:
 - Deploy the backend to a Node.js-compatible platform such as Render, Railway, or a VPS.
 - Configure all required environment variables securely in the deployment environment.
 
+## Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page if you want to contribute.
+
 ## License
 
 This project is licensed under the ISC license.
