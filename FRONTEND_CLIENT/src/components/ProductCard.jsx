@@ -53,7 +53,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
                     <img 
                         src={product.image} 
                         alt={product.name} 
-                        className="w-full h-full object-contain mix-blend-darken scale-90 group-hover:scale-100 transition-transform duration-500"
+                        className="w-full h-full object-contain mix-blend-darken scale-90 group-hover:scale-100 transition-transform duration-500" loading="lazy"
                     />
                     {/* Wishlist Heart - Mobile absolute to image, Desktop absolute to card */}
                     <button 
@@ -153,7 +153,7 @@ const ProductCard = ({ product, viewMode = 'grid' }) => {
                 <img 
                     src={product.image} 
                     alt={product.name} 
-                    className="w-full h-full object-contain mix-blend-darken scale-90 group-hover:scale-95 transition-transform duration-700"
+                    className="w-full h-full object-contain mix-blend-darken scale-90 group-hover:scale-95 transition-transform duration-700" loading="lazy"
                 />
             </div>
 

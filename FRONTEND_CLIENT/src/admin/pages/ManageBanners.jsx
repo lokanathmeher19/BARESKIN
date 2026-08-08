@@ -9,10 +9,6 @@ const ManageBanners = () => {
     const [newBanner, setNewBanner] = useState('');
     const [isAdding, setIsAdding] = useState(false);
 
-    useEffect(() => {
-        fetchBanners();
-    }, []);
-
     const fetchBanners = async () => {
         try {
             const { data } = await api.get('/banners/admin');
@@ -23,6 +19,10 @@ const ManageBanners = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        fetchBanners();
+    }, []);
 
     const handleAddBanner = async () => {
         if (!newBanner.trim()) return;

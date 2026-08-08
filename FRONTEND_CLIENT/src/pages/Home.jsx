@@ -78,15 +78,7 @@ const Home = () => {
 
     const slide = heroSlides[currentSlide];
 
-    if (loading) return (
-        <div className="flex h-screen items-center justify-center bg-white">
-            <div className="flex flex-col items-center">
-                <div className="w-16 h-1 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-[#007aff] animate-loading-bar w-0"></div>
-                </div>
-            </div>
-        </div>
-    );
+    // Full-page loader removed to improve mobile LCP and rendering speed
 
     return (
         <div className="w-full bg-white overflow-x-hidden">
@@ -229,7 +221,7 @@ const Home = () => {
                         ].map((cat, i) => (
                             <Link key={i} to={cat.path} className="flex flex-col items-center gap-3 shrink-0 group">
                                 <div className="w-20 h-20 rounded-full border-2 border-white shadow-xl overflow-hidden group-active:scale-95 transition-all outline outline-2 outline-transparent group-hover:outline-[#007aff] outline-offset-4">
-                                    <img src={cat.img} alt={cat.name} className="w-full h-full object-cover" />
+                                    <img src={cat.img} alt={cat.name} className="w-full h-full object-cover" loading="lazy" />
                                 </div>
                                 <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 group-hover:text-black italic">{cat.name}</span>
                             </Link>
@@ -240,7 +232,7 @@ const Home = () => {
                     <div className="hidden lg:grid grid-cols-4 gap-4 md:gap-6">
                     {/* Skin Care - Desktop Large / Mobile Single */}
                     <div className="sm:col-span-2 lg:col-span-2 lg:row-span-2 relative group overflow-hidden tech-card h-[400px] md:h-[600px] lg:h-[624px]">
-                        <img src={skinCareImg} alt="Skin" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                        <img src={skinCareImg} alt="Skin" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
                         <div className="absolute bottom-10 left-10 md:bottom-12 md:left-12">
                             <h3 className="text-white text-3xl md:text-5xl lg:text-6xl mb-6">Face.</h3>
@@ -257,7 +249,7 @@ const Home = () => {
                         { name: "Men's", img: mensPromoImg, cls: "sm:col-span-2 h-[250px] md:h-[300px]", path: "/products?category=Men's Care" }
                     ].map((cat, i) => (
                         <div key={i} className={`relative group overflow-hidden tech-card ${cat.cls}`}>
-                            <img src={cat.img} alt={cat.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                            <img src={cat.img} alt={cat.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" loading="lazy" />
                             <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all"></div>
                             <div className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end">
                                 <h3 className="text-white text-2xl md:text-3xl">{cat.name}.</h3>
@@ -286,7 +278,15 @@ const Home = () => {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-                    {products && products.length > 0 ? (
+                    {loading ? (
+                        Array(4).fill(0).map((_, i) => (
+                            <div key={i} className="flex flex-col gap-4 animate-pulse">
+                                <div className="w-full aspect-[4/5] bg-gray-200 rounded-[2rem]"></div>
+                                <div className="h-4 bg-gray-200 w-2/3 rounded-full"></div>
+                                <div className="h-4 bg-gray-200 w-1/3 rounded-full"></div>
+                            </div>
+                        ))
+                    ) : products && products.length > 0 ? (
                         [...products]
                             .sort((a, b) => (b.rating || 0) - (a.rating || 0))
                             .slice(0, 8)
@@ -295,7 +295,7 @@ const Home = () => {
                             ))
                     ) : (
                         <div className="col-span-full py-40 bg-zinc-50 border-2 border-dashed border-zinc-100 rounded-[3.5rem] flex flex-col items-center justify-center">
-                            <span className="text-[11px] font-black tracking-[0.5em] text-zinc-300 uppercase animate-pulse">Loading Products...</span>
+                            <span className="text-[11px] font-black tracking-[0.5em] text-zinc-300 uppercase animate-pulse">No Products Found</span>
                         </div>
                     )}
                 </div>
