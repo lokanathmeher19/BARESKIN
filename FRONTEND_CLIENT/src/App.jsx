@@ -57,7 +57,7 @@ function App() {
   return (
     <HelmetProvider>
       <ScrollToTop />
-      <div className={`flex flex-col min-h-screen bg-white text-black font-sans ${isAdminArea ? 'overflow-hidden' : ''}`}>
+      <div className={`flex flex-col min-h-screen bg-white text-black font-sans`}>
         {!isAdminArea && <Navbar />}
         <main className={`${isAdminArea ? 'flex-grow' : 'flex-grow pt-[120px] sm:pt-40 lg:pt-48'}`}>
           <Routes>

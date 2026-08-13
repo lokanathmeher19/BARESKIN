@@ -14,12 +14,12 @@ const AdminLayout = () => {
     });
 
     return (
-        <div className="flex min-h-screen bg-[#fafafa] overflow-x-hidden">
+        <div className="flex h-screen bg-[#fafafa] overflow-hidden">
             {/* Dedicated Sidebar */}
             <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
             {/* Main Workspace Area */}
-            <div className={`flex-1 transition-all duration-500 min-h-screen flex flex-col relative ${isSidebarOpen ? 'ml-0' : 'lg:ml-72'}`}>
+            <div className={`flex-1 transition-all duration-500 h-screen flex flex-col relative ${isSidebarOpen ? 'ml-0' : 'lg:ml-72'}`}>
                 {/* Background Accent */}
                 <div className="absolute top-0 right-0 w-1/2 h-[600px] bg-[#007aff]/[0.02] blur-[150px] pointer-events-none"></div>
                 
@@ -53,7 +53,7 @@ const AdminLayout = () => {
                     </div>
                 </header>
 
-                <main className="flex-1 p-6 md:p-10 relative z-10">
+                <main className="flex-1 p-6 md:p-10 relative z-10 overflow-y-auto overflow-x-hidden">
                     <div className="max-w-[1600px] mx-auto">
                         <Outlet />
                     </div>

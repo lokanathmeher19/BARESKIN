@@ -138,7 +138,8 @@ const AdminSubscriptions = () => {
 
             {/* Table */}
             <div className="bg-white rounded-[2.5rem] border border-zinc-100 overflow-hidden shadow-sm">
-                <table className="w-full text-left border-collapse">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="bg-zinc-50 border-b border-zinc-100">
                             <th className="p-8 text-[10px] font-black uppercase text-zinc-400">Subscriber</th>
@@ -227,7 +228,8 @@ const AdminSubscriptions = () => {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
     );

@@ -95,83 +95,85 @@ const ProductList = () => {
                         <Filter size={14} /> Batch Actions
                     </button>
                 </div>
-                <table className="w-full text-left">
-                    <thead>
-                        <tr className="bg-zinc-50 text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
-                            <th className="px-6 py-4">Image</th>
-                            <th className="px-6 py-4">Product Details</th>
-                            <th className="px-6 py-4 text-center">Price</th>
-                            <th className="px-6 py-4 text-center">Inventory</th>
-                            <th className="px-6 py-4 text-center">Promos/Badges</th>
-                            <th className="px-6 py-4 text-right">Settings</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-100">
-                        {filteredProducts.map((product) => (
-                            <tr key={product._id} className="hover:bg-zinc-50/50 transition-colors">
-                                <td className="px-6 py-4 shrink-0">
-                                    <div className="w-16 h-16 bg-white border border-zinc-100 rounded-lg overflow-hidden p-1 flex items-center justify-center">
-                                        <img 
-                                            src={product.image} 
-                                            alt={product.name} 
-                                            className="max-w-full max-h-full object-contain" 
-                                        />
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <h3 className="text-sm font-bold text-zinc-900 group-hover:text-[#007aff] transition-colors">{product.name}</h3>
-                                    <div className="flex items-center gap-2 mt-1">
-                                        <span className="text-[10px] px-2 py-0.5 bg-zinc-100 text-zinc-500 rounded font-bold uppercase">{product.category}</span>
-                                        <span className="text-[10px] text-zinc-300 font-bold tracking-tighter uppercase italic">{product.brand || 'Original'}</span>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 text-center">
-                                    <span className="text-sm font-bold text-black italic">{formatPrice(Number(product.price))}</span>
-                                </td>
-                                <td className="px-6 py-4 text-center">
-                                    <div className="flex flex-col items-center gap-1">
-                                        <div className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${product.stock > 10 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                                            {product.stock > 10 ? 'Active' : 'Low Stock'}
-                                        </div>
-                                        <span className="text-xs font-bold text-zinc-500">{product.stock} units</span>
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 text-center">
-                                    <div className="flex flex-col items-center gap-1">
-                                        {product.promoTag ? (
-                                            <span className="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded italic truncate max-w-[100px]">{product.promoTag}</span>
-                                        ) : (
-                                            <span className="text-[9px] text-zinc-300 italic font-bold">No Promo</span>
-                                        )}
-                                        {product.badgeText ? (
-                                            <span className="text-[9px] font-black text-[#007aff] bg-[#007aff]/5 px-2 py-0.5 rounded uppercase tracking-tighter">{product.badgeText}</span>
-                                        ) : (
-                                            <span className="text-[9px] text-zinc-300 italic font-bold">No Badge</span>
-                                        )}
-                                    </div>
-                                </td>
-                                <td className="px-6 py-4 text-right">
-                                    <div className="flex justify-end gap-2">
-                                        <button 
-                                            onClick={() => navigate(`/admin/edit-product/${product._id}`)}
-                                            className="p-2 text-zinc-400 hover:text-black transition-colors"
-                                            title="Edit Item"
-                                        >
-                                            <Edit size={16} />
-                                        </button>
-                                        <button 
-                                            onClick={() => handleDelete(product._id)} 
-                                            className="p-2 text-zinc-400 hover:text-red-500 transition-colors"
-                                            title="Remove Item"
-                                        >
-                                            <Trash2 size={16} />
-                                        </button>
-                                    </div>
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left min-w-[800px]">
+                        <thead>
+                            <tr className="bg-zinc-50 text-[11px] font-bold text-zinc-400 uppercase tracking-wider">
+                                <th className="px-6 py-4">Image</th>
+                                <th className="px-6 py-4">Product Details</th>
+                                <th className="px-6 py-4 text-center">Price</th>
+                                <th className="px-6 py-4 text-center">Inventory</th>
+                                <th className="px-6 py-4 text-center">Promos/Badges</th>
+                                <th className="px-6 py-4 text-right">Settings</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-zinc-100">
+                            {filteredProducts.map((product) => (
+                                <tr key={product._id} className="hover:bg-zinc-50/50 transition-colors">
+                                    <td className="px-6 py-4 shrink-0">
+                                        <div className="w-16 h-16 bg-white border border-zinc-100 rounded-lg overflow-hidden p-1 flex items-center justify-center">
+                                            <img 
+                                                src={product.image} 
+                                                alt={product.name} 
+                                                className="max-w-full max-h-full object-contain" 
+                                            />
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <h3 className="text-sm font-bold text-zinc-900 group-hover:text-[#007aff] transition-colors">{product.name}</h3>
+                                        <div className="flex items-center gap-2 mt-1">
+                                            <span className="text-[10px] px-2 py-0.5 bg-zinc-100 text-zinc-500 rounded font-bold uppercase">{product.category}</span>
+                                            <span className="text-[10px] text-zinc-300 font-bold tracking-tighter uppercase italic">{product.brand || 'Original'}</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 text-center">
+                                        <span className="text-sm font-bold text-black italic">{formatPrice(Number(product.price))}</span>
+                                    </td>
+                                    <td className="px-6 py-4 text-center">
+                                        <div className="flex flex-col items-center gap-1">
+                                            <div className={`text-[10px] font-black uppercase px-2 py-0.5 rounded ${product.stock > 10 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                                {product.stock > 10 ? 'Active' : 'Low Stock'}
+                                            </div>
+                                            <span className="text-xs font-bold text-zinc-500">{product.stock} units</span>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 text-center">
+                                        <div className="flex flex-col items-center gap-1">
+                                            {product.promoTag ? (
+                                                <span className="text-[9px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded italic truncate max-w-[100px]">{product.promoTag}</span>
+                                            ) : (
+                                                <span className="text-[9px] text-zinc-300 italic font-bold">No Promo</span>
+                                            )}
+                                            {product.badgeText ? (
+                                                <span className="text-[9px] font-black text-[#007aff] bg-[#007aff]/5 px-2 py-0.5 rounded uppercase tracking-tighter">{product.badgeText}</span>
+                                            ) : (
+                                                <span className="text-[9px] text-zinc-300 italic font-bold">No Badge</span>
+                                            )}
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 text-right">
+                                        <div className="flex justify-end gap-2">
+                                            <button 
+                                                onClick={() => navigate(`/admin/edit-product/${product._id}`)}
+                                                className="p-2 text-zinc-400 hover:text-black transition-colors"
+                                                title="Edit Item"
+                                            >
+                                                <Edit size={16} />
+                                            </button>
+                                            <button 
+                                                onClick={() => handleDelete(product._id)} 
+                                                className="p-2 text-zinc-400 hover:text-red-500 transition-colors"
+                                                title="Remove Item"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
 
                 {filteredProducts.length === 0 && (
                     <div className="py-24 text-center">

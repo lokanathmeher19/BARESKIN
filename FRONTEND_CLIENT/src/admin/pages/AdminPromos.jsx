@@ -82,33 +82,35 @@ const AdminPromos = () => {
             </div>
 
             <div className="bg-white border border-zinc-100 rounded-2xl overflow-hidden">
-                <table className="w-full text-left">
-                    <thead className="bg-zinc-50 border-b border-zinc-100 text-[10px] uppercase font-black tracking-widest text-zinc-400">
-                        <tr>
-                            <th className="p-4">Code</th>
-                            <th className="p-4">Discount</th>
-                            <th className="p-4">Usage</th>
-                            <th className="p-4">Expiry</th>
-                            <th className="p-4 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-50 text-sm">
-                        {promos.map(promo => (
-                            <tr key={promo._id} className="hover:bg-zinc-50/50">
-                                <td className="p-4 font-black text-[#007aff]"><Tag size={14} className="inline mr-2"/>{promo.code}</td>
-                                <td className="p-4 font-bold">{promo.discountType === 'percentage' ? `${promo.discountValue}%` : `₹${promo.discountValue}`}</td>
-                                <td className="p-4 text-zinc-500">{promo.usedCount} / {promo.usageLimit}</td>
-                                <td className="p-4 text-zinc-500">{new Date(promo.expiryDate).toLocaleDateString()}</td>
-                                <td className="p-4 text-right">
-                                    <button onClick={() => handleDelete(promo._id)} className="text-red-500 hover:bg-red-50 p-2 rounded-lg"><Trash2 size={16}/></button>
-                                </td>
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left">
+                        <thead className="bg-zinc-50 border-b border-zinc-100 text-[10px] uppercase font-black tracking-widest text-zinc-400">
+                            <tr>
+                                <th className="p-4">Code</th>
+                                <th className="p-4">Discount</th>
+                                <th className="p-4">Usage</th>
+                                <th className="p-4">Expiry</th>
+                                <th className="p-4 text-right">Actions</th>
                             </tr>
-                        ))}
-                        {promos.length === 0 && !loading && (
-                            <tr><td colSpan="5" className="p-8 text-center text-zinc-400">No promo codes found.</td></tr>
-                        )}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="divide-y divide-zinc-50 text-sm">
+                            {promos.map(promo => (
+                                <tr key={promo._id} className="hover:bg-zinc-50/50">
+                                    <td className="p-4 font-black text-[#007aff]"><Tag size={14} className="inline mr-2"/>{promo.code}</td>
+                                    <td className="p-4 font-bold">{promo.discountType === 'percentage' ? `${promo.discountValue}%` : `₹${promo.discountValue}`}</td>
+                                    <td className="p-4 text-zinc-500">{promo.usedCount} / {promo.usageLimit}</td>
+                                    <td className="p-4 text-zinc-500">{new Date(promo.expiryDate).toLocaleDateString()}</td>
+                                    <td className="p-4 text-right">
+                                        <button onClick={() => handleDelete(promo._id)} className="text-red-500 hover:bg-red-50 p-2 rounded-lg"><Trash2 size={16}/></button>
+                                    </td>
+                                </tr>
+                            ))}
+                            {promos.length === 0 && !loading && (
+                                <tr><td colSpan="5" className="p-8 text-center text-zinc-400">No promo codes found.</td></tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

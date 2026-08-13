@@ -96,7 +96,8 @@ const AdminUsers = () => {
 
             {/* Table Area */}
             <div className="bg-white rounded-[4rem] border border-zinc-100 shadow-[0_50px_100px_-40px_rgba(0,0,0,0.04)] overflow-hidden">
-                <table className="min-w-full divide-y divide-zinc-50">
+                <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-zinc-50">
                     <thead>
                         <tr className="bg-zinc-50/30">
                             <th className="px-12 py-10 text-left luxe-subheading opacity-50">User Name</th>
@@ -176,7 +177,8 @@ const AdminUsers = () => {
                             </tr>
                         ))}
                     </tbody>
-                </table>
+                    </table>
+                </div>
 
                 {filteredUsers.length === 0 && (
                     <div className="py-32 flex flex-col items-center justify-center space-y-6">
