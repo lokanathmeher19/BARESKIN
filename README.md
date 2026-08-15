@@ -65,7 +65,7 @@ The platform operates through the following flow:
 
 ```text
 BARESKIN/
-├── BACKEND_API/
+├── backend/
 │   ├── config/
 │   ├── controllers/
 │   ├── jobs/
@@ -74,7 +74,7 @@ BARESKIN/
 │   ├── routes/
 │   ├── utils/
 │   └── server.js
-├── FRONTEND_CLIENT/
+├── frontend/
 │   ├── src/
 │   │   ├── admin/
 │   │   ├── components/
@@ -106,7 +106,7 @@ Ensure the following tools are installed on your machine:
    ```
 
 3. Configure environment variables for the backend
-   Create a `.env` file inside the `BACKEND_API` directory and add the required configuration values:
+   Create a `.env` file inside the `backend` directory and add the required configuration values:
 
    ```env
    PORT=5000
